@@ -1,6 +1,6 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "Human Development Analysis"
+author: "Zohaib Anwar, Lu Bin Liu, Michelle Strayer"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
