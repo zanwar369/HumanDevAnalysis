@@ -1,0 +1,91 @@
+---
+author:
+title: "EDAV Fall 2020 PSet 4"
+output: html_document
+---
+
+This assignment is designed to help you get started on the final project. Be sure to review the final project instructions (https://edav.info/project.html).
+    
+### 1. The Team
+
+[8 points]
+
+a) Who's on the team? (Include names and UNIs)
+
+Zohaib Anwar (za2281)
+Michelle Strayer (mas2560)
+Lu Bin Liu (ll3450)
+
+b) How do you plan to divide up the work? (Grading is on a group basis. The point of asking is to encourage you to think about this and design a plan.)
+
+Zohaib Anwar 
+* Setup GitHub repo and bookdown template
+* Data Transformation and Missing Data for `Education` indicator of human development     
+* Results - analysis for one pairwise indicator of human development 
+* Interactive component
+
+Michelle Strayer 
+* Introduction
+* Conclusion
+* Results - analysis for one pairwise indicator of human development 
+* Data Transformation and Missing Data for `Human Security` indicator of human development
+* Interactive Component
+
+Lu Bin Liu
+* Writeup for Data Source 
+* Data Transformation and Missing Data for `Inequality` indicator of human development
+* Results - analysis for one pairwise indicator of human development 
+* Interactive component
+
+c) What is your plan for managing the git/GitHub workflow? That is, who will merge pull requests? How will you attempt to avoid conflicts? How will you communicate?
+
+All team members will clone the repo, work on a branch, and be responsible for merging their own pull requests. Each team member will have dedicated directories with our individual markdown files for their part of the report. Work was divided so there is minimal overlap between the sections. Once a branch is merged, Zohaib will compile the individual markdown files into the bookdown and render the final bookdown to avoid merge conflicts. 
+
+### 2. The Questions
+
+[10 points]
+
+List three questions that you hope you will be able to answer from your research. (It's ok if these change as your work progresses.)
+
+a) Any relationships between `Inequality` versus `Human Security`   
+  
+  
+b) Any relationships between `Inequality` versus `Education`   
+  
+  
+c) Any relationships between `Human Security` versus `Education`     
+  
+
+### 3. GitHub repo
+
+[8 points]
+
+a) Set up your final project repository following the EDAVproject template. Provide the link to the repo.
+
+https://github.com/zanwar369/HumanDevAnalysis 
+
+b) Make sure that all team members have write access to the repository and have practiced making contributions. Provide a link to the contributors page of your repository showing that all team members have made contributions to the repo (Note that we do not have the ability to see who has write access, only contributors):
+
+https://github.com/zanwar369/HumanDevAnalysis/graphs/contributors 
+
+### 4. Data Sources
+
+[8 points]
+
+Write a draft of the [Data Sources chapter](https://edav.info/project#report-format).
+
+
+### 5. Data Transformation
+
+[8 points]
+
+Write a draft of the [Data Transformation chapter](https://edav.info/project#report-format)
+
+
+### 6. Missing Values
+
+[8 points]
+
+Write a draft of the [Missing Values chapter](https://edav.info/project#report-format)
+
+
