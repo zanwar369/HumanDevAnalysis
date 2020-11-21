@@ -40,7 +40,6 @@ Investigation showed that there are a number of issues with this data set as sum
 
 * It was not stated in the source documentation, but given that the data is time series, it is possible that the method of data collection has changed over time, such that for the same country, comparisons of values in a feature in different years may not be completely appropriate. 
 
-
 ### INEQUALITY DATA TRANSFORMATION
 
 The `Inequality` indicator has 15 features from years 2010 to 2018 (one column per year). However, the data table for 6 of these features were not available for download. The remaining 9 features for which data tables were available and was extracted were:
@@ -68,7 +67,6 @@ The `Inequality` indicator has 15 features from years 2010 to 2018 (one column p
 Note that the column 'HDI Rank (2018)' is kept as a reference column and not for analysis. 
 
 ```{r warning = FALSE,  message = FALSE}
-setwd("C:/Users/lubin/Desktop/2020 Fall/3 - Data Visualization/Final Project")
 
 temp <- list.files(path = "./inequality_rawdata", pattern="*.csv")
  
@@ -295,8 +293,15 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
 ```
 
 
-### others
+### Variable Selection
 
 
 
+```{r,fig.height=12, fig.width = 12, warning = FALSE }
+ggpairs(inequality_df[,c(4,12,6, 7,10, 5, 9, 11, 8)], progress = FALSE,
+        upper = list(continuous = wrap("cor", size = 4)),
+        labeller = label_wrap_gen(10)) + 
+      theme(strip.text = element_text(size = 8))
 
+```
+  
