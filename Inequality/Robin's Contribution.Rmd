@@ -1,0 +1,307 @@
+---
+title: "final project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(readxl)
+library(readr)
+library(stringr)
+library(ggplot2)
+library(GGally)
+```
+
+### Data Sources
+
+The data used for this project is downloaded from the [United Nations Development Programme - Human Development Reports website](http://hdr.undp.org/en/data). The United Nations Development Programme's (UNDP) Human Development Report Office (HDRO) compiles this data for the purpose of tracking human well being in countries around the world. This data is used extensively by the HDRO in its (near) annual Human Development Report (HDR). The report highlights human development in large part using various the human development indices (HDI), derived metrics for measuring human development which takes into account factors beyond economics. However for this project, HDI will not be a principal part of the investigation.       
+
+According to the [Human Development Report 2019: Reader's Guide](http://hdr.undp.org/en/content/human-development-report-2019-readers-guide), the data used, at least for the 2019 HDR, is collected "from international data agencies with the mandate, resources, and expertise to collect national data on specific indicators". Based on the "Statistical Acknowledgement" section of the guide, the HDR data was aggregated by the HDRO from a large number of organizations that are reputable and specializes in the field from which the data was collected.        
+
+The data available for download from UNDP's website linked in the first paragraph consists of 12 different indicators of human development (plus HDI) and for each indicator, there are a number of descriptive features of that indicator for which data is available. For example, there are 9 features which fall under the `Demography` indicator, ranging from "Median age (years)" to "Young age (0-14) dependency ratio (per 100 people ages 15-64)". For each feature, a data table, if available, is provided where the columns include `HDI Rank (2018)`, `Country`, and one column for every year (i.e. `1990`) for which data is aggregated. Every column except `Country` contains numerical data. The years for which data is available falls in the range from 1990 to 2018.  
+
+For this project, we will be examining 3 of the 12 indicators: `Inequality`, `Human Security`, and `Education`, which has 15, ___, and ___ features respectively. These features will be investigated in further detail in subsequent sections.     
+
+Investigation showed that there are a number of issues with this data set as summarized below:
+
+* The [Human Development Report 2019: Reader's Guide](http://hdr.undp.org/en/content/human-development-report-2019-readers-guide) note that due to data accessibility and processing methodology, there may be discrepancies in data between national and international agencies.
+
+* While the data set contains data from 1990 to 2018, it does not consistently store data for this time frame for every feature for every indicator. For example, some features have data going back to 1990 but others only back to 2010.
+
+* Even within the same indicator, difference features have data for different time intervals. Some features have data for each year, others every 5 years. 
+
+* Data for some feature do not have data in even time intervals. For example, "Prison population (per 100,000 people)" has data for years 2003, 2005, 2010, 2011 etc.  
+
+* As will be detailed in subsequent sections, the proportion of missing data is high for some countries. 
+
+* For certain feature - country combinations, 2018 data was not available and was filled with the data from the most recent available year.
+
+* It was not stated in the source documentation, but given that the data is time series, it is possible that the method of data collection has changed over time, such that for the same country, comparisons of values in a feature in different years may not be completely appropriate. 
+
+### INEQUALITY DATA TRANSFORMATION
+
+The `Inequality` indicator has 15 features from years 2010 to 2018 (one column per year). However, the data table for 6 of these features were not available for download. The remaining 9 features for which data tables were available and was extracted were:
+
+* Coefficient of Human Inequality
+
+* Inequality-adjusted education index
+
+* Inequality-adjusted HDI (IHDI)
+
+* Inequality-adjusted income index
+
+* Inequality-adjusted life expectancy index
+
+* Inequality in education (%)^
+
+* Inequality in income (%)^
+
+* Inequality in life expectancy (%)
+
+* Overall loss in HDI due to inequality (%)
+
+^ Data for `2018` is either from 2018 or the latest year available. 
+
+Note that the column 'HDI Rank (2018)' is kept as a reference column and not for analysis. 
+
+```{r warning = FALSE,  message = FALSE}
+
+temp <- list.files(path = "./inequality_rawdata", pattern="*.csv")
+ 
+inequality_list <- list()
+for(i in 1:length(temp)){
+  inequality_list[[i]] <- read_csv(paste0("./inequality_rawdata/", temp[i]), skip = 1) %>%
+                    select("HDI Rank (2018)", Country, `2010`, `2011`, `2012`, `2013`, 
+                           `2014`, `2015`, `2016`, `2017`, `2018`) 
+}
+names(inequality_list) <- sub("\\..*", "", temp)
+```
+
+Now to take a high level look at the data itself, print the head and tail of the sixth data frame in the list `inequality_list`, which contains data for the "Inequality in education (%)" as a sample:
+
+```{r}
+print(head(inequality_list[[6]]))
+print(tail(inequality_list[[6]]))
+```
+
+Inspection of the remaining data frame indicate that the last rows for every data frame in `inequality_list` are `NA`. In addition, some data frames have foot notes at the end of the table that was read in as a value in the first column. These rows are removed. 
+
+```{r}
+inequality_list[[1]] <- inequality_list[[1]] %>% 
+                            filter(row_number() <= n()-1)
+inequality_list[[2]] <- inequality_list[[2]] %>% 
+                            filter(row_number() <= n()-1)
+inequality_list[[3]] <- inequality_list[[3]] %>% 
+                            filter(row_number() <= n()-1)
+inequality_list[[4]] <- inequality_list[[4]] %>% 
+                            filter(row_number() <= n()-1)
+inequality_list[[5]] <- inequality_list[[5]] %>% 
+                            filter(row_number() <= n()-1)
+inequality_list[[6]] <- inequality_list[[6]] %>% 
+                            filter(row_number() <= n()-3)
+inequality_list[[7]] <- inequality_list[[7]] %>% 
+                            filter(row_number() <= n()-3)
+inequality_list[[8]] <- inequality_list[[8]] %>% 
+                            filter(row_number() <= n()-2)
+inequality_list[[9]] <- inequality_list[[9]] %>% 
+                            filter(row_number() <= n()-1)
+```
+
+The below shows that the number of rows in the data frame for each feature is different. This implies not every feature has the same list of countries. 
+
+
+```{r warning = FALSE,  message = FALSE}
+for(i in 1:length(inequality_list)){
+  row <- dim(inequality_list[[i]])[1]
+  column <- dim(inequality_list[[i]])[2]
+  print(paste0(sub("\\..*", "", temp[i])," feature has ", row, " rows and ", column, " columns."))
+}
+
+```
+To investigate this further:
+
+```{r, message = FALSE, warning = FALSE}
+
+differences <- c()
+for(i in 1:length(inequality_list)){
+  for(j in 1:length(inequality_list)){
+    differences <- c(differences,setdiff(inequality_list[[i]]$Country, inequality_list[[j]]$Country))
+  }
+}
+
+print(unique(differences))
+```
+It looks like these four countries shows up for some features and not others. We can expect a lot of missing data for at least these four countries. 
+
+The next step is to create a single tidy data frames for `Inequality`. Each data frame in `inequality_list` has column headings 2010 to 2018 which are values not variables. In addition, each data frame in `inequality_list` is from the same observational unit (`Inequality`) and should be in one data frame. To convert the list of data frames `inequality_list` into a single tidy data frame, use `pivot_longer` and `full_join` to create the tidy data frame `inequality_df`.   
+
+```{r, echo=FALSE}
+inequality_df <- inequality_list[[1]] %>% 
+                    pivot_longer(!c('HDI Rank (2018)', 'Country'), 
+                                 names_to = "Year", 
+                                 values_to = names(inequality_list[1]))
+
+for(i in 2:length(inequality_list)){
+  temp_df <- inequality_list[[i]] %>% 
+                    pivot_longer(!c('HDI Rank (2018)', 'Country'), 
+                                 names_to = "Year", 
+                                 values_to = names(inequality_list[i]))
+  inequality_df <- inequality_df %>%
+                      full_join(temp_df %>% select(-'HDI Rank (2018)'), 
+                                by = c('Country','Year'))
+}
+
+head(inequality_df)
+
+```
+
+Note that the columns of `inequality_df` are currently all of type `<chr>` when only `Country` should be of type `<chr>`, `Year` should be of type integer, and the remaining be of type numeric.  This is because missing values are given as '..' instead of `NA`.  Convert the relevant columns to numeric which coerces '..' to `NA`'s in the process.  
+
+```{r warning = FALSE}
+inequality_df[,4:12] <- sapply(inequality_df[,4:12], as.numeric)
+inequality_df$Year <- as.integer(inequality_df$Year)
+head(inequality_df)
+```
+
+To complete the data transformation, notice that under `Country`, the last 17 rows of each data frame contain aggregate data regional data, and are not countries: 
+
+```{r}
+tail(inequality_list[[1]]$Country,17)
+```
+Therefore, they will be removed from `inequality_df`.
+
+```{r}
+not_countries <- tail(inequality_list[[1]]$Country,17)
+ 
+inequality_df <- inequality_df %>% 
+  filter(!(Country %in% not_countries))
+```
+
+The head and tail of the tidy data frame is:
+
+```{r}
+head(inequality_df)
+tail(inequality_df)
+```
+
+
+### Missing Data
+
+
+Below is a boxplot of the count of missing data per feature.
+
+```{r fig.width = 8}
+prop_missing_features <- data.frame(var = names(colMeans(is.na(inequality_df))), 
+            prop_missing = unname(colMeans(is.na(inequality_df)))) %>%
+          filter(prop_missing > 0)  
+
+prop_missing_features %>%
+    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
+    geom_col() +
+    coord_flip()
+```
+
+The above shows that for 7 of the 9 features, 20-25% of its entries are missing.
+
+Since there is only 9 years and 9 features, a heat map is an appropriate to visualize combinations of missing data between `Year` and the different features to see if there's any relationship in proportion of missing data for a specific feature across years (and vice versa). 
+
+```{r fig.height = 6, fig.width = 8}
+
+prop_missing_year<- inequality_df %>% 
+  group_by(Year) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup() %>% 
+  select(-Country, -'HDI Rank (2018)') %>% 
+  pivot_longer(-Year, names_to = 'features' , values_to = 'year_prop_missing') 
+
+prop_missing_year%>%
+  ggplot(aes(x = factor(Year), y = fct_reorder(features, -year_prop_missing, mean))) +
+  geom_tile(aes(fill = year_prop_missing)) +
+  scale_fill_continuous(high = "#132B43", low = "#56B1F7")
+  
+```
+
+The above heat map is drawn such that the feature with the largest proportion of missing data is at the bottom. From the heat map, it looks like 2011 and 2012 have the highest rates of missing data for every features aside from "Inequality in life expectancy (%)" and "Inequality-adjusted life expectancy index". However, note that the proportion of missing data peaks at around 0.3 and most feature-year combinations have proportion of missing data that are below 0.2, which are manageable.  
+
+The below is the aggregate sum of number of missing entries over all features for each country, filtering only the countries with at least one missing entry.  
+
+```{r fig.height = 12, fig.width = 8}
+
+prop_missing_countries<- inequality_df %>% 
+  group_by(Country) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup()
+
+prop_missing_countries <- data.frame(Country = prop_missing_countries$Country, 
+                                     country_prop_missing =  rowMeans(prop_missing_countries[,4:12])) %>% 
+                          filter(country_prop_missing > 0) 
+
+prop_missing_countries %>% 
+    ggplot(aes(x = fct_reorder(Country, country_prop_missing, .desc =FALSE), y = country_prop_missing)) +
+    geom_col() +
+    coord_flip()
+```
+
+It looks like 100% of the data is missing for Saint Kitts and Nevis, Liechtenstein, and Dominica. In addition, >87.5% of the data is missing for Nauru, Marshall Islands, Andorra, and Tuvalu. All of these countries are extremely small (most are islands) and it is possible that `Inequality` data is not collected nationally and/or data collection is not prioritized by the relevant international organizations.  
+
+
+Due to the large volume of countries, a heat map is not an effective way to visualize the relationship in proportion of data missing between countries and features. A parallel coordinate plot was drawn instead to determine if there's any relationship between features and proportion of missing data for different countries.
+
+```{r, fig.height = 8, fig.width=8}
+
+inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>% 
+  group_by(Country) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup() %>% 
+  select(-Year, -'HDI Rank (2018)', -Country) %>%
+  ggparcoord(alpha = 0.2,
+             scale = 'globalminmax',
+             splineFactor = 0)  +
+  theme(axis.text.x = element_text(angle = 90))
+
+```
+
+* Most countries appear to not be missing data for "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)"  
+
+* For remaining features, at intervals of around 0.1 from 0 to 1, there are clusters of countries missing that proportion of data for each feature. 
+
+* There is a small number of countries missing data for most to all of the features (flat line at the top), these are likely the smaller countries found in the bar charts.
+
+* For "Coefficient of Human Inequality", "Inequality-adjusted HDI (IDHI)", and "Inequality-adjusted HDI (IDHI)", countries generally miss the same proportion of the data for all 3 features, indicating that they may be related. 
+
+* For "Inequality-adjusted income index" and "Inequality in income (%)", countries generally miss the same proportion of the data for these two features; they are likely related. In addition, countries generally are missing an equal to or smaller proportion of data for these two features than the 3 features mentioned in the previous bullet. 
+
+* For "Inequality-adjusted education index" and "Inequality in education (%)" countries generally miss the same proportion of the data for these two features; they are likely related.
+
+
+```{r, fig.height = 8, fig.width=10, echo = FALSE}
+#  library(parcoords)
+# inequality_df %>% 
+#   group_by(Country) %>% 
+#   summarise_all(~ sum(is.na(.))/n()) %>%
+#   ungroup() %>% 
+#   select(-Year, -'HDI Rank (2018)', -Country)  %>% 
+#   rename('a' = "Coefficient of Human Inequality", 'b' = "Inequality-adjusted education index", 'c' = "Inequality-adjusted HDI (IHDI)" , 'd'="Inequality-adjusted income index", 'e'="Inequality-adjusted life expectancy index", 'f'="Inequality in education (%)" , 'g' ="Inequality in income (%)" , 'h' = "Inequality in life expectancy (%)"  , 'i' =          "Overall loss in HDI due to inequality (%)" ) %>%
+#   parcoords(rownames = FALSE
+#   ,brushMode = "1d-multi"
+#   ,brushPredicate = "OR"
+#   ,alphaOnBrushed = 0.2
+#   ,reorderable = TRUE)
+
+```
+
+
+### Variable Selection
+
+
+
+```{r,fig.height=12, fig.width = 12, warning = FALSE }
+ggpairs(inequality_df[,c(4,12,6, 7,10, 5, 9, 11, 8)], progress = FALSE,
+        upper = list(continuous = wrap("cor", size = 4)),
+        labeller = label_wrap_gen(10)) + 
+      theme(strip.text = element_text(size = 8))
+
+```
+  
