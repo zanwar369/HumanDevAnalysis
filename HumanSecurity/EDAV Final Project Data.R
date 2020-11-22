@@ -1,3 +1,4 @@
+library(tidyverse)
 Homeless.natural.disaster <- read.csv("Homeless.natural.disaster.csv")
 Homicide.rate <- read.csv("Homicide.rate.csv")
 Prison.popn <- read.csv("Prison.population.csv")
@@ -36,7 +37,7 @@ Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)
 Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
 Human.Security <- Human.Security[30:5684,]
 
-
+write.csv(Human.Security, "~/Desktop/EDAV Project/HumanDevAnalysis\\Human.Security.csv")
 
 
 
