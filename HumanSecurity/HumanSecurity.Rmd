@@ -1,0 +1,148 @@
+---
+title: "Human.Security"
+author: "Michelle Strayer"
+---
+
+Below is the code required to compose and organize the Human Security dataset.
+
+Transforming this data largely required reorganizing the dataframe into a tidy
+format.  A great number of data values are missing, discussed below.  Converting
+the data from its .csv file into a workable R dataframe required removing 
+blank columns (which had been left in the Excel files for visual appeal) and 
+renaming columns to prime them for the pivot_longer function.  Further, to 
+avoid losing data when merging the Human Security variable datasets (Homeless-
+ness from natural disasters, Homicide rate, Prison population, Refugees by 
+country of origin, Suicide rate for males, and Suicide rate for females), the 
+all.x and all.y conditions were specified.  Then, to ensure that all missing
+data were coded appropriately, a for loop was introduced to convert all numeric
+data columns in the dataset into numeric type.  The result is a tidy dataset of 
+all Human Security variables.
+
+```{r}
+library(tidyverse)
+Homeless.natural.disaster <- read.csv("Homeless.natural.disaster.csv")
+Homicide.rate <- read.csv("Homicide.rate.csv")
+Prison.popn <- read.csv("Prison.population.csv")
+Refugees <- read.csv("Refugees.csv")
+Suicide.rate.M <- read.csv("Suicide.rate.M.csv")
+Suicide.rate.F <- read.csv("Suicide.rate.F.csv")
+
+names(Homeless.natural.disaster)[2:30] <- c("1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018")
+
+dcol <- 2
+for (i in 1:ncol(Homeless.natural.disaster)) {
+  Homeless.natural.disaster[,dcol] <- as.numeric(Homeless.natural.disaster[,dcol])
+  dcol <- dcol +1
+}
+
+Homicide.rate <- subset(Homicide.rate, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9, X.10))
+names(Homicide.rate)[2:13] <- c("1990", "1995", "2000", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+
+dcol <- 2
+for (i in 1:ncol(Homicide.rate)) {
+  Homicide.rate[,dcol] <- as.numeric(Homicide.rate[,dcol])
+  dcol <- dcol +1
+}
+
+Prison.popn <- subset(Prison.popn, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
+names(Prison.popn)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+
+dcol <- 2
+for (i in 1:ncol(Prison.popn)) {
+  Prison.popn[,dcol] <- as.numeric(Prison.popn[,dcol])
+  dcol <- dcol +1
+}
+
+Refugees <- subset(Refugees, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
+names(Refugees)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+
+dcol <- 2
+for (i in 1:ncol(Refugees)) {
+  Refugees[,dcol] <- as.numeric(Refugees[,dcol])
+  dcol <- dcol +1
+}
+
+Suicide.rate.F <- subset(Suicide.rate.F, select = -c(X, X.1, X.2))
+names(Suicide.rate.F)[2:5] <- c("2000", "2010", "2015", "2016")
+
+dcol <- 2
+for (i in 1:ncol(Suicide.rate.F)) {
+  Suicide.rate.F[,dcol] <- as.numeric(Suicide.rate.F[,dcol])
+  dcol <- dcol +1
+}
+
+Suicide.rate.M <- subset(Suicide.rate.M, select = -c(X, X.1, X.2))
+names(Suicide.rate.M)[2:5] <- c("2000", "2010", "2015", "2016")
+
+dcol <- 2
+for (i in 1:ncol(Suicide.rate.M)) {
+  Suicide.rate.M[,dcol] <- as.numeric(Suicide.rate.M[,dcol])
+  dcol <- dcol +1
+}
+
+HND <- pivot_longer(Homeless.natural.disaster, cols = !Country, names_to = "Year", values_to = "Homeless.ND")
+HR <- pivot_longer(Homicide.rate, cols = !Country, names_to = "Year", values_to = "Homicide.rate")
+PP <- pivot_longer(Prison.popn, cols = !Country, names_to = "Year", values_to = "Prison.popn")
+R <- pivot_longer(Refugees, cols = !Country, names_to = "Year", values_to = "Refugees")
+SRF <- pivot_longer(Suicide.rate.F, cols = !Country, names_to = "Year", values_to = "Suicide.rate.F")
+SRM <- pivot_longer(Suicide.rate.M, cols = !Country, names_to = "Year", values_to = "Suicide.rate.M")
+
+Human.Security <- merge(HND, HR, all.x = T, all.y = T)
+Human.Security <- merge(Human.Security, PP, all.x = T, all.y = T)
+Human.Security <- merge(Human.Security, R, all.x = T, all.y = T)
+Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)  
+Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
+Human.Security <- Human.Security[30:5684,]
+
+```
+
+
+```{r, echo = FALSE}
+write.csv(Human.Security, "~/Desktop/EDAV Project/HumanDevAnalysis\\Human.Security.csv")
+```
+
+Missing Data
+
+A significant proportion of data in the Human.Security dataframe is missing.
+Largely, this seems to be the product of uneven variable tracking.  Homelessness
+due to natural disasters seems to be tracked in most countries on a yearly
+basis between 1990 and 2018.  By contrast, Homicide rate was recorded only in 
+1990, 1995, 2000, 2005, and yearly from 2010 to 2017.  As another exmaple, 
+suicide rate for both males and females were recorded only in the years 2000, 
+2010, 2015, and 2016.
+
+```{r}
+colnames(Homeless.natural.disaster)[2:30]
+```
+```{r}
+colnames(Homicide.rate)[2:13]
+```
+```{r}
+colnames(Suicide.rate.F)[2:5]
+colnames(Suicide.rate.M)[2:5]
+```
+
+
+Importantly, data also appears to be missing among outlying island countries and
+countries in the African continent.  For example, the chart below notes missing 
+Homicide data.
+
+A notable chunk of countries (obs. numbers 50-100) seem to be missing data
+between 1990 and 2005.  However, the largest amount of missing data seems to 
+be concentrated in observations 150 to 192, which includes Mironesia and many of
+the countries on and around the African continent (ie. Nigeria, Sudan, Senegal).
+
+
+```{r}
+x <- missing_data.frame(Homicide.rate)
+image(x)
+```
+
+This trend is not unknown in international data collection.  Lower 
+infrastructural development renders data collection difficult, and factors like 
+human rights and humanitarian crises, political violence, and political 
+instability can hinder data collection processes. 
+
+
+
+
