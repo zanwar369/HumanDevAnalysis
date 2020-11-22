@@ -18,11 +18,11 @@ library(GGally)
 
 The data used for this project is downloaded from the [United Nations Development Programme - Human Development Reports website](http://hdr.undp.org/en/data). The United Nations Development Programme's (UNDP) Human Development Report Office (HDRO) compiles this data for the purpose of tracking human well being in countries around the world. This data is used extensively by the HDRO in its (near) annual Human Development Report (HDR). The report highlights human development in large part using various the human development indices (HDI), derived metrics for measuring human development which takes into account factors beyond economics. However for this project, HDI will not be a principal part of the investigation.       
 
-According to the [Human Development Report 2019: Reader's Guide](http://hdr.undp.org/en/content/human-development-report-2019-readers-guide), the data used, at least for the 2019 HDR, is collected "from international data agencies with the mandate, resources, and expertise to collect national data on specific indicators". Based on the "Statistical Acknowledgement" section of the guide, the HDR data was aggregated by the HDRO from a large number of organizations that are reputable and specializes in the field from which the data was collected.        
+According to the [Human Development Report 2019: Reader's Guide](http://hdr.undp.org/en/content/human-development-report-2019-readers-guide), the data used, at least for the 2019 HDR, is collected "from international data agencies with the mandate, resources, and expertise to collect national data on specific indicators". Based on the "Statistical Acknowledgement" section of the guide, the HDR data was aggregated by the HDRO from a large number of organizations that are reputable and specializes in the field from which the data was collected. For the 2019 HDR, these included international agencies like [the World Health Organization, the World Bank, and many others](http://hdr.undp.org/sites/default/files/2019_statistical_references.pdf). The HDRO also provides [contact information](http://hdr.undp.org/en/statistics/understanding/sources), where available, for organizations it sourced HDR data from.           
 
 The data available for download from UNDP's website linked in the first paragraph consists of 12 different indicators of human development (plus HDI) and for each indicator, there are a number of descriptive features of that indicator for which data is available. For example, there are 9 features which fall under the `Demography` indicator, ranging from "Median age (years)" to "Young age (0-14) dependency ratio (per 100 people ages 15-64)". For each feature, a data table, if available, is provided where the columns include `HDI Rank (2018)`, `Country`, and one column for every year (i.e. `1990`) for which data is aggregated. Every column except `Country` contains numerical data. The years for which data is available falls in the range from 1990 to 2018.  
 
-For this project, we will be examining 3 of the 12 indicators: `Inequality`, `Human Security`, and `Education`, which has 15, ___, and ___ features respectively. These features will be investigated in further detail in subsequent sections.     
+For this project, we will be examining 3 of the 12 indicators: `Inequality`, `Human Security`, and `Education`, which has 15, 7, and 19 features respectively. These features will be investigated in further detail in subsequent sections.     
 
 Investigation showed that there are a number of issues with this data set as summarized below:
 
@@ -38,7 +38,8 @@ Investigation showed that there are a number of issues with this data set as sum
 
 * For certain feature - country combinations, 2018 data was not available and was filled with the data from the most recent available year.
 
-* It was not stated in the source documentation, but given that the data is time series, it is possible that the method of data collection has changed over time, such that for the same country, comparisons of values in a feature in different years may not be completely appropriate. 
+* It was not explicitly stated in the source documentation, but given that the data is collected from 1990-2018 and aggregated from numerous sources, it is possible that there lacks consistency in data collection and computation of certain metrics over time. [For instance, method of calculating the HDI is continuously being adjusted.](http://hdr.undp.org/en/humandev)
+
 
 ### INEQUALITY DATA TRANSFORMATION
 
@@ -160,7 +161,7 @@ head(inequality_df)
 Note that the columns of `inequality_df` are currently all of type `<chr>` when only `Country` should be of type `<chr>`, `Year` should be of type integer, and the remaining be of type numeric.  This is because missing values are given as '..' instead of `NA`.  Convert the relevant columns to numeric which coerces '..' to `NA`'s in the process.  
 
 ```{r warning = FALSE}
-inequality_df[,4:12] <- sapply(inequality_df[,4:12], as.numeric)
+inequality_df[,4:12] <- as.data.frame(sapply(inequality_df[,4:12], as.numeric))
 inequality_df$Year <- as.integer(inequality_df$Year)
 head(inequality_df)
 ```
@@ -184,10 +185,11 @@ The head and tail of the tidy data frame is:
 ```{r}
 head(inequality_df)
 tail(inequality_df)
+inequality_df %>% write.csv('inequality_tidy.csv', row.names = FALSE)
 ```
 
 
-### Missing Data
+### MISSING DATA - INEQUALITY
 
 
 Below is a boxplot of the count of missing data per feature.
@@ -293,7 +295,9 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
 ```
 
 
-### Variable Selection
+
+
+### SECTION 5 RESULTS -  Variable Selection - incomplete
 
 
 

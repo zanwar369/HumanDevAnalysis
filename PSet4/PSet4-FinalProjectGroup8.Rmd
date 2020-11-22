@@ -19,23 +19,37 @@ Lu Bin Liu (ll3450)
 b) How do you plan to divide up the work? (Grading is on a group basis. The point of asking is to encourage you to think about this and design a plan.)
 
 Zohaib Anwar 
+
 * Setup GitHub repo and bookdown template
-* Data Transformation and Missing Data for `Education` indicator of human development     
+
+* Data Transformation and Missing Data for `Education` indicator of human development 
+
 * Results - analysis for one pairwise indicator of human development 
+
 * Interactive component
 
 Michelle Strayer 
+
 * Introduction
+
 * Conclusion
+
 * Results - analysis for one pairwise indicator of human development 
+
 * Data Transformation and Missing Data for `Human Security` indicator of human development
+
 * Interactive Component
 
 Lu Bin Liu
+
 * Writeup for Data Source 
+
 * Data Transformation and Missing Data for `Inequality` indicator of human development
+
 * Results - analysis for one pairwise indicator of human development 
+
 * Interactive component
+
 
 c) What is your plan for managing the git/GitHub workflow? That is, who will merge pull requests? How will you attempt to avoid conflicts? How will you communicate?
 
@@ -47,13 +61,13 @@ All team members will clone the repo, work on a branch, and be responsible for m
 
 List three questions that you hope you will be able to answer from your research. (It's ok if these change as your work progresses.)
 
-a) Any relationships between `Inequality` versus `Human Security`   
+a) Are there any relationships between human development indicators `Inequality` versus `Human Security`?   
   
   
-b) Any relationships between `Inequality` versus `Education`   
+b) Are there any  relationships between  human development indicators `Inequality` versus `Education`?   
   
   
-c) Any relationships between `Human Security` versus `Education`     
+c) Are there any  relationships between  human development indicators `Human Security` versus `Education`?     
   
 
 ### 3. GitHub repo
@@ -74,6 +88,7 @@ https://github.com/zanwar369/HumanDevAnalysis/graphs/contributors
 
 Write a draft of the [Data Sources chapter](https://edav.info/project#report-format).
 
+https://zanwar369.github.io/HumanDevAnalysis/data-sources.html
 
 ### 5. Data Transformation
 
@@ -81,6 +96,7 @@ Write a draft of the [Data Sources chapter](https://edav.info/project#report-for
 
 Write a draft of the [Data Transformation chapter](https://edav.info/project#report-format)
 
+https://zanwar369.github.io/HumanDevAnalysis/data-transformation.html
 
 ### 6. Missing Values
 
@@ -88,4 +104,5 @@ Write a draft of the [Data Transformation chapter](https://edav.info/project#rep
 
 Write a draft of the [Missing Values chapter](https://edav.info/project#report-format)
 
+https://zanwar369.github.io/HumanDevAnalysis/missing-values.html
 
