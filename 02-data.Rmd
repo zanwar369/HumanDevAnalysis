@@ -1,2 +1,26 @@
 # Data sources
 
+The data used for this project is downloaded from the [United Nations Development Programme - Human Development Reports website](http://hdr.undp.org/en/data). The United Nations Development Programme's (UNDP) Human Development Report Office (HDRO) compiles this data for the purpose of tracking human well being in countries around the world. This data is used extensively by the HDRO in its (near) annual Human Development Report (HDR). The report highlights human development in large part using various the human development indices (HDI), derived metrics for measuring human development which takes into account factors beyond economics. However for this project, HDI will not be a principal part of the investigation.       
+
+According to the [Human Development Report 2019: Reader's Guide](http://hdr.undp.org/en/content/human-development-report-2019-readers-guide), the data used, at least for the 2019 HDR, is collected "from international data agencies with the mandate, resources, and expertise to collect national data on specific indicators". Based on the "Statistical Acknowledgement" section of the guide, the HDR data was aggregated by the HDRO from a large number of organizations that are reputable and specializes in the field from which the data was collected. For the 2019 HDR, these included international agencies like [the World Health Organization, the World Bank, and many others](http://hdr.undp.org/sites/default/files/2019_statistical_references.pdf). The HDRO also provides [contact information](http://hdr.undp.org/en/statistics/understanding/sources), where available, for organizations it sourced HDR data from.           
+
+The data available for download from UNDP's website linked in the first paragraph consists of 12 different indicators of human development (plus HDI) and for each indicator, there are a number of descriptive features of that indicator for which data is available. For example, there are 9 features which fall under the `Demography` indicator, ranging from "Median age (years)" to "Young age (0-14) dependency ratio (per 100 people ages 15-64)". For each feature, a data table, if available, is provided where the columns include `HDI Rank (2018)`, `Country`, and one column for every year (i.e. `1990`) for which data is aggregated. Every column except `Country` contains numerical data. The years for which data is available falls in the range from 1990 to 2018.  
+
+For this project, we will be examining 3 of the 12 indicators: `Inequality`, `Human Security`, and `Education`, which has 15, 7, and 19 features respectively. These features will be investigated in further detail in subsequent sections.     
+
+Investigation showed that there are a number of issues with this data set as summarized below:
+
+* The [Human Development Report 2019: Reader's Guide](http://hdr.undp.org/en/content/human-development-report-2019-readers-guide) note that due to data accessibility and processing methodology, there may be discrepancies in data between national and international agencies.
+
+* While the data set contains data from 1990 to 2018, it does not consistently store data for this time frame for every feature for every indicator. For example, some features have data going back to 1990 but others only back to 2010.
+
+* Even within the same indicator, difference features have data for different time intervals. Some features have data for each year, others every 5 years. 
+
+* Data for some feature do not have data in even time intervals. For example, "Prison population (per 100,000 people)" has data for years 2003, 2005, 2010, 2011 etc.  
+
+* As will be detailed in subsequent sections, the proportion of missing data is high for some countries. 
+
+* For certain feature - country combinations, 2018 data was not available and was filled with the data from the most recent available year.
+
+* It was not explicitly stated in the source documentation, but given that the data is collected from 1990-2018 and aggregated from numerous sources, it is possible that there lacks consistency in data collection and computation of certain metrics over time. [For instance, method of calculating the HDI is continuously being adjusted.](http://hdr.undp.org/en/humandev)
+

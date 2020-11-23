@@ -62,12 +62,14 @@ All team members will clone the repo, work on a branch, and be responsible for m
 List three questions that you hope you will be able to answer from your research. (It's ok if these change as your work progresses.)
 
 a) Are there any relationships between human development indicators `Inequality` versus `Human Security`?   
-  
+   Specifically does increased Human Security correlate with higher or lower inequality? Or is the relationship random?
   
 b) Are there any  relationships between  human development indicators `Inequality` versus `Education`?   
+   Does higher inequality imply more educaiton in a society? For example, the U.S. struggles with inequality, while in less developed economies, inequality would be less of an issue versus general poverty
   
   
 c) Are there any  relationships between  human development indicators `Human Security` versus `Education`?     
+   If a country is high on security does that imply the populace is generally more eduacted? The answer would seem to be yes but it woulde be interesting to delve into and confirm.
   
 
 ### 3. GitHub repo
