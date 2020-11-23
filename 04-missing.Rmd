@@ -9,7 +9,7 @@ library(ggplot2)
 library(GGally)
 ```
 
-### HUMAN SECURITY MISSING DATA
+### Human Security Missing Data
 
 A significant proportion of data in the Human.Security dataframe is missing.
 Largely, this seems to be the product of uneven variable tracking.  Homelessness
@@ -20,6 +20,10 @@ suicide rate for both males and females were recorded only in the years 2000,
 2010, 2015, and 2016.
 
 ```{r}
+Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.tidy.csv")
+Homicide.rate <- read.csv("./HumanSecurity/Homicide.tidy.csv")
+Suicide.rate.F <- read.csv("./HumanSecurity/SR.F.tidy.csv")
+Suicide.rate.M <- read.csv("./HumanSecurity/SR.M.tidy.csv")
 colnames(Homeless.natural.disaster)[2:30]
 ```
 ```{r}
