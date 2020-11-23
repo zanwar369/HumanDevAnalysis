@@ -37,7 +37,7 @@ Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)
 Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
 Human.Security <- Human.Security[30:5684,]
 
-#write.csv(Human.Security, "Human.Security.csv") 
+write.csv(Human.Security, "Human.Security.csv") 
 
 
 
