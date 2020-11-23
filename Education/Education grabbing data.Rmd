@@ -1,0 +1,67 @@
+---
+title: "Final Project Education"
+author: "Zohaib Anwar"
+date: "November 18, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,root.dir = '.')
+```
+
+
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+```
+
+
+
+```{r}
+#dr="C:\\Users\\Zohaib\\Desktop\\Lectures\\Columbia\\Visualization\\Final Project\\csv"
+#setwd(dr)
+dr="./csv"
+file_list <- list.files(path=dr,pattern="*.csv")
+dttyp<-c("EdInd","ExpSch","ExpSchF","ExpSchM","GovMon","GERPP","GERP","GERS","GERT",
+         "LitR","MYSch","MYSchF","MYSchM","PerPSInt","PerSSInt","PopSSF25U","PopSSM25U",
+         "PSDrop","PSTchTrn","PISAMth","PISARead","PISAScn","PupTchRPS","SurvRSGE")
+dfls <- list()
+for (i in 1:length(file_list)){
+   df_temp<-read.csv(paste(dr,"/",file_list[i],sep=""),skip=1,header=T, 
+                      check.names = F,na.strings=c("..",""," ","<NA>"))
+   df_temp<-subset(df_temp,!grepl("[a-z]:",df_temp$`HDI Rank (2018)`))
+   df_temp$`HDI Rank (2018)`<-as.numeric(df_temp$`HDI Rank (2018)`)
+   df_temp$var<-dttyp[i]
+#   dfls[[i]]<-df_temp[!sapply(df_temp, function(x) all(is.na(x)))]
+
+   if (i==1) {
+     df_ed<-df_temp[!sapply(df_temp, function(x) all(is.na(x)))]}
+   else {df_ed<-bind_rows(df_ed,df_temp[!sapply(df_temp, function(x) all(is.na(x)))])}
+   
+}
+df_ed<-df_ed[,!grepl("\\.[0-9]",colnames(df_ed))]
+```
+
+
+
+```{r}
+df_ed_lg<-df_ed %>%
+            pivot_longer(cols=!c("HDI Rank (2018)","Country","var"),names_to="Year",values_to="HDI") 
+
+df_ed_td<-df_ed_lg %>%
+            pivot_wider(names_from="var",values_from="HDI")
+
+parcoords(df_pull,
+            brushMode="1D-axes",
+            reorderable=T,
+            queue=T,
+            color=list(
+              colorScale="scaleOrdinal",
+              colorBy="newspaper",
+              colorScheme="schemeCategory10"),
+            withD3=TRUE
+          
+          )
+```
