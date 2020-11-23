@@ -237,7 +237,7 @@ The head and tail of the tidy data frame is:
 ```{r}
 head(inequality_df)
 tail(inequality_df)
-inequality_df %>% write.csv('./Inequality/inequality_tidy.csv', row.names = FALSE)
+inequality_df %>% write_csv('./Inequality/inequality_tidy.csv')
 ```
 
 

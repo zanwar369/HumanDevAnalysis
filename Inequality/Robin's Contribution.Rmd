@@ -185,14 +185,14 @@ The head and tail of the tidy data frame is:
 ```{r}
 head(inequality_df)
 tail(inequality_df)
-inequality_df %>% write.csv('inequality_tidy.csv', row.names = FALSE)
+inequality_df %>% write_csv('inequality_tidy.csv')
 ```
 
 
 ### MISSING DATA - INEQUALITY
 
 
-Below is a boxplot of the count of missing data per feature.
+Below is a bar plot showing the count of missing data per feature.
 
 ```{r fig.width = 8}
 prop_missing_features <- data.frame(var = names(colMeans(is.na(inequality_df))), 
@@ -271,7 +271,7 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
 
 * There is a small number of countries missing data for most to all of the features (flat line at the top), these are likely the smaller countries found in the bar charts.
 
-* For "Coefficient of Human Inequality", "Inequality-adjusted HDI (IDHI)", and "Inequality-adjusted HDI (IDHI)", countries generally miss the same proportion of the data for all 3 features, indicating that they may be related. 
+* For "Coefficient of Human Inequality", "Inequality-adjusted HDI (IHDI)", and "Inequality-adjusted HDI (IDHI)", countries generally miss the same proportion of the data for all 3 features, indicating that they may be related. 
 
 * For "Inequality-adjusted income index" and "Inequality in income (%)", countries generally miss the same proportion of the data for these two features; they are likely related. In addition, countries generally are missing an equal to or smaller proportion of data for these two features than the 3 features mentioned in the previous bullet. 
 

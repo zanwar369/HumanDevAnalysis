@@ -15,21 +15,101 @@ library(GGally)
 
 
 
-###INEQUALITY MISSING DATA
+### INEQUALITY MISSING DATA
 
 
+```{r  warning = FALSE,  message = FALSE} 
+inequality_df <- read_csv("./Inequality/inequality_tidy.csv")
+```
+
+Below is a bar plot showing the count of missing data per feature.
+
+```{r fig.width = 8}
+prop_missing_features <- data.frame(var = names(colMeans(is.na(inequality_df))), 
+            prop_missing = unname(colMeans(is.na(inequality_df)))) %>%
+          filter(prop_missing > 0)  
+
+prop_missing_features %>%
+    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
+    geom_col() +
+    coord_flip()
+```
 
 
+The above shows that for 7 of the 9 features, 20-25% of its entries are missing.
+
+Since there is only 9 years and 9 features, a heat map is an appropriate to visualize combinations of missing data between `Year` and the different features to see if there's any relationship in proportion of missing data for a specific feature across years (and vice versa). 
+
+```{r fig.height = 6, fig.width = 8}
+
+prop_missing_year<- inequality_df %>% 
+  group_by(Year) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup() %>% 
+  select(-Country, -'HDI Rank (2018)') %>% 
+  pivot_longer(-Year, names_to = 'features' , values_to = 'year_prop_missing') 
+
+prop_missing_year%>%
+  ggplot(aes(x = factor(Year), y = fct_reorder(features, -year_prop_missing, mean))) +
+  geom_tile(aes(fill = year_prop_missing)) +
+  scale_fill_continuous(high = "#132B43", low = "#56B1F7")
+  
+```
 
 
+The above heat map is drawn such that the feature with the largest proportion of missing data is at the bottom. From the heat map, it looks like 2011 and 2012 have the highest rates of missing data for every features aside from "Inequality in life expectancy (%)" and "Inequality-adjusted life expectancy index". However, note that the proportion of missing data peaks at around 0.3 and most feature-year combinations have proportion of missing data that are below 0.2, which are manageable.  
+
+The below is the aggregate sum of number of missing entries over all features for each country, filtering only the countries with at least one missing entry.  
+
+```{r fig.height = 12, fig.width = 8}
+
+prop_missing_countries<- inequality_df %>% 
+  group_by(Country) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup()
+
+prop_missing_countries <- data.frame(Country = prop_missing_countries$Country, 
+                                     country_prop_missing =  rowMeans(prop_missing_countries[,4:12])) %>% 
+                          filter(country_prop_missing > 0) 
+
+prop_missing_countries %>% 
+    ggplot(aes(x = fct_reorder(Country, country_prop_missing, .desc =FALSE), y = country_prop_missing)) +
+    geom_col() +
+    coord_flip()
+```
 
 
+It looks like 100% of the data is missing for Saint Kitts and Nevis, Liechtenstein, and Dominica. In addition, >87.5% of the data is missing for Nauru, Marshall Islands, Andorra, and Tuvalu. All of these countries are extremely small (most are islands) and it is possible that `Inequality` data is not collected nationally and/or data collection is not prioritized by the relevant international organizations.  
 
 
+Due to the large volume of countries, a heat map is not an effective way to visualize the relationship in proportion of data missing between countries and features. A parallel coordinate plot was drawn instead to determine if there's any relationship between features and proportion of missing data for different countries.
+
+```{r, fig.height = 8, fig.width=8}
+
+inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>% 
+  group_by(Country) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup() %>% 
+  select(-Year, -'HDI Rank (2018)', -Country) %>%
+  ggparcoord(alpha = 0.2,
+             scale = 'globalminmax',
+             splineFactor = 0)  +
+  theme(axis.text.x = element_text(angle = 90))
+
+```
 
 
+* Most countries appear to not be missing data for "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)"  
 
+* For remaining features, at intervals of around 0.1 from 0 to 1, there are clusters of countries missing that proportion of data for each feature. 
 
+* There is a small number of countries missing data for most to all of the features (flat line at the top), these are likely the smaller countries found in the bar charts.
+
+* For "Coefficient of Human Inequality", "Inequality-adjusted HDI (IHDI)", and "Inequality-adjusted HDI (IDHI)", countries generally miss the same proportion of the data for all 3 features, indicating that they may be related. 
+
+* For "Inequality-adjusted income index" and "Inequality in income (%)", countries generally miss the same proportion of the data for these two features; they are likely related. In addition, countries generally are missing an equal to or smaller proportion of data for these two features than the 3 features mentioned in the previous bullet. 
+
+* For "Inequality-adjusted education index" and "Inequality in education (%)" countries generally miss the same proportion of the data for these two features; they are likely related.
 
 
 
