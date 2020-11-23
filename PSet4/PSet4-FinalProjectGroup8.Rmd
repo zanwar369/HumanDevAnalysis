@@ -13,7 +13,9 @@ This assignment is designed to help you get started on the final project. Be sur
 a) Who's on the team? (Include names and UNIs)
 
 Zohaib Anwar (za2281)
+
 Michelle Strayer (mas2560)
+
 Lu Bin Liu (ll3450)
 
 b) How do you plan to divide up the work? (Grading is on a group basis. The point of asking is to encourage you to think about this and design a plan.)
@@ -34,9 +36,9 @@ Michelle Strayer
 
 * Conclusion
 
-* Results - analysis for one pairwise indicator of human development 
-
 * Data Transformation and Missing Data for `Human Security` indicator of human development
+
+* Results - analysis for one pairwise indicator of human development 
 
 * Interactive Component
 
@@ -69,7 +71,7 @@ b) Are there any  relationships between  human development indicators `Inequalit
   
   
 c) Are there any  relationships between  human development indicators `Human Security` versus `Education`?     
-   If a country is high on security does that imply the populace is generally more eduacted? The answer would seem to be yes but it woulde be interesting to delve into and confirm.
+   If a country is high on security does that imply the populace is generally more educated? The answer would seem to be yes but it would be interesting to delve into and confirm.
   
 
 ### 3. GitHub repo
