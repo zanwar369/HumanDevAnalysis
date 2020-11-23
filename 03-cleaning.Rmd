@@ -22,11 +22,15 @@ data columns in the dataset into numeric type.  The result is a tidy dataset of
 all Human Security variables.
 
 ```{r}
-library(dplyr)
 library(tidyverse)
+library(dplyr)
 library(readxl)
 library(readr)
 library(stringr)
+```
+
+```{r,eval=FALSE}
+
 
 Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.natural.disaster.csv")
 Homicide.rate <- read.csv("./HumanSecurity/Homicide.rate.csv")
@@ -90,7 +94,7 @@ Human.Security <- Human.Security[30:5684,]
 ```
 
 
-```{r, echo = FALSE}
+```{r, echo = FALSE,eval=FALSE}
 write.csv(Human.Security, "./HumanSecurity/Human.Security.csv")
 ```
 
@@ -243,12 +247,12 @@ inequality_df %>% write.csv('./Inequality/inequality_tidy.csv', row.names = FALS
 ### EDUCATION DATA TRANSFORMATION
 
 
-In order to read in the educaiton data-- I first take in every file in the relevant Education directory. With this data I determine the relevant NAs in the files, and code those as NAs. Similarly I skip the first line in the file which are blank. Then I remove any rows that are irrelevant-- specifically the rows with footnotes. Finally I remove additional columns, and change data types if necessary, and am then ready to transform the data itself.
+In order to read in the education data-- I first take in every file in the relevant Education directory. With this data I determine the relevant NAs in the files, and code those as NAs. Similarly I skip the first line in the file which are blank. Then I remove any rows that are irrelevant-- specifically the rows with footnotes. Finally I remove additional columns, and change data types if necessary, and am then ready to transform the data itself.
 
-```{r}
+```{r,echo=TRUE}
 
-dr="./csv"
-file_list <- list.files(path=dr,pattern="*./Education/csv")
+dr="./Education/csv"
+file_list <- list.files(path=dr,pattern="*.csv")
 dttyp<-c("EdInd","ExpSch","ExpSchF","ExpSchM","GovMon","GERPP","GERP","GERS","GERT",
          "LitR","MYSch","MYSchF","MYSchM","PerPSInt","PerSSInt","PopSSF25U","PopSSM25U",
          "PSDrop","PSTchTrn","PISAMth","PISARead","PISAScn","PupTchRPS","SurvRSGE")
@@ -269,21 +273,10 @@ df_ed<-df_ed[,!grepl("\\.[0-9]",colnames(df_ed))]
 
 Once the files are read in correctly I create two separate forms of the data. One with each variable as a column, and year as its own signular column using pivot longer, and wider, and one where the relevant education vartiables are also in a singular column. While the seconde format is not necessarily tidy this will help look at missings across the data.
 
-```{r}
+```{r,echo=TRUE}
 df_ed_lg<-df_ed %>%
             pivot_longer(cols=!c("HDI Rank (2018)","Country","var"),names_to="Year",values_to="HDI") 
 df_ed_td<-df_ed_lg %>%
             pivot_wider(names_from="var",values_from="HDI")
-parcoords(df_pull,
-            brushMode="1D-axes",
-            reorderable=T,
-            queue=T,
-            color=list(
-              colorScale="scaleOrdinal",
-              colorBy="newspaper",
-              colorScheme="schemeCategory10"),
-            withD3=TRUE
-          
-          )
 ```
 

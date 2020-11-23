@@ -24,7 +24,7 @@
 <meta name="author" content="Zohaib Anwar, Lu Bin Liu, Michelle Strayer" />
 
 
-<meta name="date" content="2020-11-18" />
+<meta name="date" content="2020-11-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,6 +55,69 @@
 <script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -74,8 +137,16 @@
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
-<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
-<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a></li>
+<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a>
+<ul>
+<li class="chapter" data-level="3.0.1" data-path="data-transformation.html"><a href="data-transformation.html#human-security-data-transformation"><i class="fa fa-check"></i><b>3.0.1</b> Human Security Data Transformation</a></li>
+<li class="chapter" data-level="3.0.2" data-path="data-transformation.html"><a href="data-transformation.html#inequality-data-transformation"><i class="fa fa-check"></i><b>3.0.2</b> INEQUALITY DATA TRANSFORMATION</a></li>
+<li class="chapter" data-level="3.0.3" data-path="data-transformation.html"><a href="data-transformation.html#education-data-transformation"><i class="fa fa-check"></i><b>3.0.3</b> EDUCATION DATA TRANSFORMATION</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="missing-values.html"><a href="missing-values.html#human-security-missing-data"><i class="fa fa-check"></i><b>4.0.1</b> HUMAN SECURITY MISSING DATA</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
@@ -100,7 +171,149 @@
             <section class="normal" id="section-">
 <div id="data-transformation" class="section level1" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Data transformation</h1>
+<p>In order to work with the amount of data we split the work into three separate buckets– Human Security, education, and inequality.
+We all performed similar transformations detailed below.</p>
+<div id="human-security-data-transformation" class="section level3" number="3.0.1">
+<h3><span class="header-section-number">3.0.1</span> Human Security Data Transformation</h3>
+<p>Below is the code required to compose and organize the Human Security dataset.</p>
+<p>Transforming this data largely required reorganizing the dataframe into a tidy
+format. A great number of data values are missing, discussed below. Converting
+the data from its .csv file into a workable R dataframe required removing
+blank columns (which had been left in the Excel files for visual appeal) and
+renaming columns to prime them for the pivot_longer function. Further, to
+avoid losing data when merging the Human Security variable datasets (Homeless-
+ness from natural disasters, Homicide rate, Prison population, Refugees by
+country of origin, Suicide rate for males, and Suicide rate for females), the
+all.x and all.y conditions were specified. Then, to ensure that all missing
+data were coded appropriately, a for loop was introduced to convert all numeric
+data columns in the dataset into numeric type. The result is a tidy dataset of
+all Human Security variables.</p>
+</div>
+<div id="inequality-data-transformation" class="section level3" number="3.0.2">
+<h3><span class="header-section-number">3.0.2</span> INEQUALITY DATA TRANSFORMATION</h3>
+<p>The <code>Inequality</code> indicator has 15 features from years 2010 to 2018 (one column per year). However, the data table for 6 of these features were not available for download. The remaining 9 features for which data tables were available and was extracted were:</p>
+<ul>
+<li><p>Coefficient of Human Inequality</p></li>
+<li><p>Inequality-adjusted education index</p></li>
+<li><p>Inequality-adjusted HDI (IHDI)</p></li>
+<li><p>Inequality-adjusted income index</p></li>
+<li><p>Inequality-adjusted life expectancy index</p></li>
+<li><p>Inequality in education (%)^</p></li>
+<li><p>Inequality in income (%)^</p></li>
+<li><p>Inequality in life expectancy (%)</p></li>
+<li><p>Overall loss in HDI due to inequality (%)</p></li>
+</ul>
+<p>^ Data for <code>2018</code> is either from 2018 or the latest year available.</p>
+<p>Note that the column ‘HDI Rank (2018)’ is kept as a reference column and not for analysis.</p>
+<p>Now to take a high level look at the data itself, print the head and tail of the sixth data frame in the list <code>inequality_list</code>, which contains data for the “Inequality in education (%)” as a sample:</p>
+<pre><code>## # A tibble: 6 x 11
+##   `HDI Rank (2018)` Country     `2010` `2011` `2012` `2013` `2014` `2015` `2016` `2017` `2018`
+##   &lt;chr&gt;             &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; 
+## 1 170               Afghanistan 39.3   39.3   39.3   45.0   44.8   44.8   45.4   45.4   45.4  
+## 2 69                Albania     12.7   11.9   11.9   11.9   11.9   11.9   9.1    8.5    12.3  
+## 3 82                Algeria     ..     ..     ..     ..     ..     ..     33.7   33.7   33.7  
+## 4 36                Andorra     ..     ..     ..     ..     ..     ..     ..     9.4    10.0  
+## 5 149               Angola      26.2   ..     34.6   34.6   34.6   34.6   34.3   34.3   34.3  
+## 6 48                Argentina   12.1   12.1   12.1   8.6    8.1    8.1    6.1    6.2    6.2</code></pre>
+<pre><code>## # A tibble: 6 x 11
+##   `HDI Rank (2018)`                                                                    Country                                       `2010` `2011` `2012` `2013` `2014` `2015` `2016` `2017` `2018`
+##   &lt;chr&gt;                                                                                &lt;chr&gt;                                         &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; 
+## 1 &lt;NA&gt;                                                                                 Small Island Developing States                27.6   29.6   30.1   22.0   21.1   20.5   19.9   19.6   19.7  
+## 2 &lt;NA&gt;                                                                                 Organization for Economic Co-operation and D~ 8.4    9.0    9.6    10.2   9.5    9.5    10.0   8.3    8.2   
+## 3 &lt;NA&gt;                                                                                 World                                         26.2   26.3   27.0   27.2   26.9   25.9   25.7   22.3   17.4  
+## 4 a: See http://hdr.undp.org/en/composite/IHDI for the list of surveys used to estima~ &lt;NA&gt;                                          &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;  
+## 5 b: Data refer to 2018 or the most recent year available.                             &lt;NA&gt;                                          &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;  
+## 6 &lt;NA&gt;                                                                                 &lt;NA&gt;                                          &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;</code></pre>
+<p>Inspection of the remaining data frame indicate that the last rows for every data frame in <code>inequality_list</code> are <code>NA</code>. In addition, some data frames have foot notes at the end of the table that was read in as a value in the first column. These rows are removed.</p>
+<p>The below shows that the number of rows in the data frame for each feature is different. This implies not every feature has the same list of countries.</p>
+<pre><code>## [1] &quot;Coefficient of Human Inequality feature has 206 rows and 11 columns.&quot;
+## [1] &quot;Inequality-adjusted education index feature has 206 rows and 11 columns.&quot;
+## [1] &quot;Inequality-adjusted HDI (IHDI) feature has 206 rows and 11 columns.&quot;
+## [1] &quot;Inequality-adjusted income index feature has 208 rows and 11 columns.&quot;
+## [1] &quot;Inequality-adjusted life expectancy index feature has 208 rows and 11 columns.&quot;
+## [1] &quot;Inequality in education (%) feature has 208 rows and 11 columns.&quot;
+## [1] &quot;Inequality in income (%) feature has 208 rows and 11 columns.&quot;
+## [1] &quot;Inequality in life expectancy (%) feature has 208 rows and 11 columns.&quot;
+## [1] &quot;Overall loss in HDI due to inequality (%) feature has 206 rows and 11 columns.&quot;</code></pre>
+<p>To investigate this further:</p>
+<pre><code>## [1] &quot;Nauru&quot;                               &quot;Tuvalu&quot;                              &quot;Korea (Democratic People&#39;s Rep. of)&quot; &quot;Somalia&quot;</code></pre>
+<p>It looks like these four countries shows up for some features and not others. We can expect a lot of missing data for at least these four countries.</p>
+<p>The next step is to create a single tidy data frames for <code>Inequality</code>. Each data frame in <code>inequality_list</code> has column headings 2010 to 2018 which are values not variables. In addition, each data frame in <code>inequality_list</code> is from the same observational unit (<code>Inequality</code>) and should be in one data frame. To convert the list of data frames <code>inequality_list</code> into a single tidy data frame, use <code>pivot_longer</code> and <code>full_join</code> to create the tidy data frame <code>inequality_df</code>.</p>
+<pre><code>## # A tibble: 6 x 12
+##   `HDI Rank (2018)` Country  Year  `Coefficient of ~ `Inequality-adjus~ `Inequality-adju~ `Inequality-adju~ `Inequality-adju~ `Inequality in ~ `Inequality in ~ `Inequality in l~ `Overall loss in~
+##               &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;             &lt;chr&gt;              &lt;chr&gt;             &lt;chr&gt;             &lt;chr&gt;             &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;             &lt;chr&gt;            
+## 1               170 Afghani~ 2010  ..                0.226              ..                ..                0.260             39.3             ..               58.8              ..               
+## 2               170 Afghani~ 2011  ..                0.227              ..                ..                0.314             39.3             ..               50.9              ..               
+## 3               170 Afghani~ 2012  ..                0.237              ..                ..                0.318             39.3             ..               50.9              ..               
+## 4               170 Afghani~ 2013  30.0              0.219              0.333             0.391             0.430             45.0             10.8             34.3              31.4             
+## 5               170 Afghani~ 2014  30.0              0.223              0.335             0.389             0.434             44.8             10.8             34.3              31.4             
+## 6               170 Afghani~ 2015  30.4              0.224              0.334             0.388             0.429             44.8             10.8             35.7              31.9</code></pre>
+<p>Note that the columns of <code>inequality_df</code> are currently all of type <code>&lt;chr&gt;</code> when only <code>Country</code> should be of type <code>&lt;chr&gt;</code>, <code>Year</code> should be of type integer, and the remaining be of type numeric. This is because missing values are given as ‘..’ instead of <code>NA</code>. Convert the relevant columns to numeric which coerces ‘..’ to <code>NA</code>’s in the process.</p>
+<pre><code>## # A tibble: 6 x 12
+##   `HDI Rank (2018)` Country   Year `Coefficient of ~ `Inequality-adjus~ `Inequality-adju~ `Inequality-adju~ `Inequality-adju~ `Inequality in ~ `Inequality in ~ `Inequality in l~ `Overall loss in~
+##               &lt;dbl&gt; &lt;chr&gt;    &lt;int&gt;             &lt;dbl&gt;              &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;
+## 1               170 Afghani~  2010              NA                0.226            NA                NA                 0.26              39.3             NA                58.8              NA  
+## 2               170 Afghani~  2011              NA                0.227            NA                NA                 0.314             39.3             NA                50.9              NA  
+## 3               170 Afghani~  2012              NA                0.237            NA                NA                 0.318             39.3             NA                50.9              NA  
+## 4               170 Afghani~  2013              30                0.219             0.333             0.391             0.43              45               10.8              34.3              31.4
+## 5               170 Afghani~  2014              30                0.223             0.335             0.389             0.434             44.8             10.8              34.3              31.4
+## 6               170 Afghani~  2015              30.4              0.224             0.334             0.388             0.429             44.8             10.8              35.7              31.9</code></pre>
+<p>To complete the data transformation, notice that under <code>Country</code>, the last 17 rows of each data frame contain aggregate data regional data, and are not countries:</p>
+<pre><code>##  [1] &quot;Human Development&quot;                                      &quot;Very high human development&quot;                            &quot;High human development&quot;                                
+##  [4] &quot;Medium human development&quot;                               &quot;Low human development&quot;                                  &quot;Developing Countries&quot;                                  
+##  [7] &quot;Regions&quot;                                                &quot;Arab States&quot;                                            &quot;East Asia and the Pacific&quot;                             
+## [10] &quot;Europe and Central Asia&quot;                                &quot;Latin America and the Caribbean&quot;                        &quot;South Asia&quot;                                            
+## [13] &quot;Sub-Saharan Africa&quot;                                     &quot;Least Developed Countries&quot;                              &quot;Small Island Developing States&quot;                        
+## [16] &quot;Organization for Economic Co-operation and Development&quot; &quot;World&quot;</code></pre>
+<p>Therefore, they will be removed from <code>inequality_df</code>.</p>
+<p>The head and tail of the tidy data frame is:</p>
+<pre><code>## # A tibble: 6 x 12
+##   `HDI Rank (2018)` Country   Year `Coefficient of ~ `Inequality-adjus~ `Inequality-adju~ `Inequality-adju~ `Inequality-adju~ `Inequality in ~ `Inequality in ~ `Inequality in l~ `Overall loss in~
+##               &lt;dbl&gt; &lt;chr&gt;    &lt;int&gt;             &lt;dbl&gt;              &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;
+## 1               170 Afghani~  2010              NA                0.226            NA                NA                 0.26              39.3             NA                58.8              NA  
+## 2               170 Afghani~  2011              NA                0.227            NA                NA                 0.314             39.3             NA                50.9              NA  
+## 3               170 Afghani~  2012              NA                0.237            NA                NA                 0.318             39.3             NA                50.9              NA  
+## 4               170 Afghani~  2013              30                0.219             0.333             0.391             0.43              45               10.8              34.3              31.4
+## 5               170 Afghani~  2014              30                0.223             0.335             0.389             0.434             44.8             10.8              34.3              31.4
+## 6               170 Afghani~  2015              30.4              0.224             0.334             0.388             0.429             44.8             10.8              35.7              31.9</code></pre>
+<pre><code>## # A tibble: 6 x 12
+##   `HDI Rank (2018)` Country  Year `Coefficient of H~ `Inequality-adjus~ `Inequality-adju~ `Inequality-adju~ `Inequality-adju~ `Inequality in ~ `Inequality in ~ `Inequality in l~ `Overall loss in~
+##               &lt;dbl&gt; &lt;chr&gt;   &lt;int&gt;              &lt;dbl&gt;              &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;
+## 1                NA Somalia  2013                 NA                 NA                NA                NA             0.313             NA                 NA              42.1                NA
+## 2                NA Somalia  2014                 NA                 NA                NA                NA             0.316             43.5               NA              42.1                NA
+## 3                NA Somalia  2015                 NA                 NA                NA                NA             0.32              43.5               NA              42.1                NA
+## 4                NA Somalia  2016                 NA                 NA                NA                NA             0.341             NA                 NA              38.9                NA
+## 5                NA Somalia  2017                 NA                 NA                NA                NA             0.345             NA                 NA              38.9                NA
+## 6                NA Somalia  2018                 NA                 NA                NA                NA             0.348             NA                 NA              38.9                NA</code></pre>
+</div>
+<div id="education-data-transformation" class="section level3" number="3.0.3">
+<h3><span class="header-section-number">3.0.3</span> EDUCATION DATA TRANSFORMATION</h3>
+<p>In order to read in the education data– I first take in every file in the relevant Education directory. With this data I determine the relevant NAs in the files, and code those as NAs. Similarly I skip the first line in the file which are blank. Then I remove any rows that are irrelevant– specifically the rows with footnotes. Finally I remove additional columns, and change data types if necessary, and am then ready to transform the data itself.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-transformation.html#cb10-1" aria-hidden="true" tabindex="-1"></a>dr<span class="ot">=</span><span class="st">&quot;./Education/csv&quot;</span></span>
+<span id="cb10-2"><a href="data-transformation.html#cb10-2" aria-hidden="true" tabindex="-1"></a>file_list <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path=</span>dr,<span class="at">pattern=</span><span class="st">&quot;*.csv&quot;</span>)</span>
+<span id="cb10-3"><a href="data-transformation.html#cb10-3" aria-hidden="true" tabindex="-1"></a>dttyp<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;EdInd&quot;</span>,<span class="st">&quot;ExpSch&quot;</span>,<span class="st">&quot;ExpSchF&quot;</span>,<span class="st">&quot;ExpSchM&quot;</span>,<span class="st">&quot;GovMon&quot;</span>,<span class="st">&quot;GERPP&quot;</span>,<span class="st">&quot;GERP&quot;</span>,<span class="st">&quot;GERS&quot;</span>,<span class="st">&quot;GERT&quot;</span>,</span>
+<span id="cb10-4"><a href="data-transformation.html#cb10-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;LitR&quot;</span>,<span class="st">&quot;MYSch&quot;</span>,<span class="st">&quot;MYSchF&quot;</span>,<span class="st">&quot;MYSchM&quot;</span>,<span class="st">&quot;PerPSInt&quot;</span>,<span class="st">&quot;PerSSInt&quot;</span>,<span class="st">&quot;PopSSF25U&quot;</span>,<span class="st">&quot;PopSSM25U&quot;</span>,</span>
+<span id="cb10-5"><a href="data-transformation.html#cb10-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;PSDrop&quot;</span>,<span class="st">&quot;PSTchTrn&quot;</span>,<span class="st">&quot;PISAMth&quot;</span>,<span class="st">&quot;PISARead&quot;</span>,<span class="st">&quot;PISAScn&quot;</span>,<span class="st">&quot;PupTchRPS&quot;</span>,<span class="st">&quot;SurvRSGE&quot;</span>)</span>
+<span id="cb10-6"><a href="data-transformation.html#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="data-transformation.html#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(file_list)){</span>
+<span id="cb10-8"><a href="data-transformation.html#cb10-8" aria-hidden="true" tabindex="-1"></a>   df_temp<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="fu">paste</span>(dr,<span class="st">&quot;/&quot;</span>,file_list[i],<span class="at">sep=</span><span class="st">&quot;&quot;</span>),<span class="at">skip=</span><span class="dv">1</span>,<span class="at">header=</span>T, </span>
+<span id="cb10-9"><a href="data-transformation.html#cb10-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">check.names =</span> F,<span class="at">na.strings=</span><span class="fu">c</span>(<span class="st">&quot;..&quot;</span>,<span class="st">&quot;&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;&lt;NA&gt;&quot;</span>))</span>
+<span id="cb10-10"><a href="data-transformation.html#cb10-10" aria-hidden="true" tabindex="-1"></a>   df_temp<span class="ot">&lt;-</span><span class="fu">subset</span>(df_temp,<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;[a-z]:&quot;</span>,df_temp<span class="sc">$</span><span class="st">`</span><span class="at">HDI Rank (2018)</span><span class="st">`</span>))</span>
+<span id="cb10-11"><a href="data-transformation.html#cb10-11" aria-hidden="true" tabindex="-1"></a>   df_temp<span class="sc">$</span><span class="st">`</span><span class="at">HDI Rank (2018)</span><span class="st">`</span><span class="ot">&lt;-</span><span class="fu">as.numeric</span>(df_temp<span class="sc">$</span><span class="st">`</span><span class="at">HDI Rank (2018)</span><span class="st">`</span>)</span>
+<span id="cb10-12"><a href="data-transformation.html#cb10-12" aria-hidden="true" tabindex="-1"></a>   df_temp<span class="sc">$</span>var<span class="ot">&lt;-</span>dttyp[i]</span>
+<span id="cb10-13"><a href="data-transformation.html#cb10-13" aria-hidden="true" tabindex="-1"></a>   <span class="cf">if</span> (i<span class="sc">==</span><span class="dv">1</span>) {</span>
+<span id="cb10-14"><a href="data-transformation.html#cb10-14" aria-hidden="true" tabindex="-1"></a>     df_ed<span class="ot">&lt;-</span>df_temp[<span class="sc">!</span><span class="fu">sapply</span>(df_temp, <span class="cf">function</span>(x) <span class="fu">all</span>(<span class="fu">is.na</span>(x)))]}</span>
+<span id="cb10-15"><a href="data-transformation.html#cb10-15" aria-hidden="true" tabindex="-1"></a>   <span class="cf">else</span> {df_ed<span class="ot">&lt;-</span><span class="fu">bind_rows</span>(df_ed,df_temp[<span class="sc">!</span><span class="fu">sapply</span>(df_temp, <span class="cf">function</span>(x) <span class="fu">all</span>(<span class="fu">is.na</span>(x)))])}</span>
+<span id="cb10-16"><a href="data-transformation.html#cb10-16" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb10-17"><a href="data-transformation.html#cb10-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-18"><a href="data-transformation.html#cb10-18" aria-hidden="true" tabindex="-1"></a>df_ed<span class="ot">&lt;-</span>df_ed[,<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.[0-9]&quot;</span>,<span class="fu">colnames</span>(df_ed))]</span></code></pre></div>
+<p>Once the files are read in correctly I create two separate forms of the data. One with each variable as a column, and year as its own signular column using pivot longer, and wider, and one where the relevant education vartiables are also in a singular column. While the seconde format is not necessarily tidy this will help look at missings across the data.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="data-transformation.html#cb11-1" aria-hidden="true" tabindex="-1"></a>df_ed_lg<span class="ot">&lt;-</span>df_ed <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="data-transformation.html#cb11-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">pivot_longer</span>(<span class="at">cols=</span><span class="sc">!</span><span class="fu">c</span>(<span class="st">&quot;HDI Rank (2018)&quot;</span>,<span class="st">&quot;Country&quot;</span>,<span class="st">&quot;var&quot;</span>),<span class="at">names_to=</span><span class="st">&quot;Year&quot;</span>,<span class="at">values_to=</span><span class="st">&quot;HDI&quot;</span>) </span>
+<span id="cb11-3"><a href="data-transformation.html#cb11-3" aria-hidden="true" tabindex="-1"></a>df_ed_td<span class="ot">&lt;-</span>df_ed_lg <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="data-transformation.html#cb11-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">pivot_wider</span>(<span class="at">names_from=</span><span class="st">&quot;var&quot;</span>,<span class="at">values_from=</span><span class="st">&quot;HDI&quot;</span>)</span></code></pre></div>
 
+</div>
 </div>
             </section>
 

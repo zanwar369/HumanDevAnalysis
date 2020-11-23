@@ -1,7 +1,11 @@
 introduction
 data-sources
 data-transformation
+human-security-data-transformation
+inequality-data-transformation
+education-data-transformation
 missing-values
+human-security-missing-data
 results
 interactive-component
 conclusion
