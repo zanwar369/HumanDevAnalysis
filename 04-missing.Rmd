@@ -11,6 +11,45 @@ library(GGally)
 
 ### HUMAN SECURITY MISSING DATA
 
+A significant proportion of data in the Human.Security dataframe is missing.
+Largely, this seems to be the product of uneven variable tracking.  Homelessness
+due to natural disasters seems to be tracked in most countries on a yearly
+basis between 1990 and 2018.  By contrast, Homicide rate was recorded only in 
+1990, 1995, 2000, 2005, and yearly from 2010 to 2017.  As another exmaple, 
+suicide rate for both males and females were recorded only in the years 2000, 
+2010, 2015, and 2016.
+
+```{r}
+colnames(Homeless.natural.disaster)[2:30]
+```
+```{r}
+colnames(Homicide.rate)[2:13]
+```
+```{r}
+colnames(Suicide.rate.F)[2:5]
+colnames(Suicide.rate.M)[2:5]
+```
+
+
+Importantly, data also appears to be missing among outlying island countries and
+countries in the African continent.  For example, the chart below notes missing 
+Homicide data.
+
+A notable chunk of countries (obs. numbers 50-100) seem to be missing data
+between 1990 and 2005.  However, the largest amount of missing data seems to 
+be concentrated in observations 150 to 192, which includes Mironesia and many of
+the countries on and around the African continent (ie. Nigeria, Sudan, Senegal).
+
+
+```{r}
+x <- missing_data.frame(Homicide.rate)
+image(x)
+```
+
+This trend is not unknown in international data collection.  Lower 
+infrastructural development renders data collection difficult, and factors like 
+human rights and humanitarian crises, political violence, and political 
+instability can hinder data collection processes. 
 
 
 
