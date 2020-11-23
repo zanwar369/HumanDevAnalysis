@@ -29,7 +29,7 @@ library(readr)
 library(stringr)
 ```
 
-```{r,eval=FALSE}
+```{r}
 
 
 Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.natural.disaster.csv")
