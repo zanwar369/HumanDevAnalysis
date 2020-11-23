@@ -98,7 +98,7 @@ Human.Security <- Human.Security[30:5684,]
 
 
 ```{r, echo = FALSE}
-write.csv(Human.Security, "Human.Security.csv")
+#write.csv(Human.Security, "Human.Security.csv")
 ```
 
 Missing Data
