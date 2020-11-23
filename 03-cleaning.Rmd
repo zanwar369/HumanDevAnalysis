@@ -3,106 +3,8 @@
 In order to work with the amount of data we split the work into three separate buckets-- Human Security, education, and inequality.
 We all performed similar transformations detailed below.
 
-### Human Security Data Transformation
 
-
-Below is the code required to compose and organize the Human Security dataset.
-
-Transforming this data largely required reorganizing the dataframe into a tidy
-format.  A great number of data values are missing, discussed below.  Converting
-the data from its .csv file into a workable R dataframe required removing 
-blank columns (which had been left in the Excel files for visual appeal) and 
-renaming columns to prime them for the pivot_longer function.  Further, to 
-avoid losing data when merging the Human Security variable datasets (Homeless-
-ness from natural disasters, Homicide rate, Prison population, Refugees by 
-country of origin, Suicide rate for males, and Suicide rate for females), the 
-all.x and all.y conditions were specified.  Then, to ensure that all missing
-data were coded appropriately, a for loop was introduced to convert all numeric
-data columns in the dataset into numeric type.  The result is a tidy dataset of 
-all Human Security variables.
-
-```{r}
-library(tidyverse)
-library(dplyr)
-library(readxl)
-library(readr)
-library(stringr)
-```
-
-```{r}
-
-
-Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.natural.disaster.csv")
-Homicide.rate <- read.csv("./HumanSecurity/Homicide.rate.csv")
-Prison.popn <- read.csv("./HumanSecurity/Prison.population.csv")
-Refugees <- read.csv("./HumanSecurity/Refugees.csv")
-Suicide.rate.M <- read.csv("./HumanSecurity/Suicide.rate.M.csv")
-Suicide.rate.F <- read.csv("./HumanSecurity/Suicide.rate.F.csv")
-
-names(Homeless.natural.disaster)[2:30] <- c("1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018")
-dcol <- 2
-for (i in 2:ncol(Homeless.natural.disaster)) {
-  Homeless.natural.disaster[,dcol] <- as.numeric(Homeless.natural.disaster[,dcol])
-  dcol <- dcol +1
-}
-
-Homicide.rate <- subset(Homicide.rate, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9, X.10))
-names(Homicide.rate)[2:13] <- c("1990", "1995", "2000", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
-dcol <- 2
-for (i in 2:ncol(Homicide.rate)) {
-  Homicide.rate[,dcol] <- as.numeric(Homicide.rate[,dcol])
-  dcol <- dcol +1
-}
-
-Prison.popn <- subset(Prison.popn, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
-names(Prison.popn)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
-dcol <- 2
-for (i in 1:ncol(Prison.popn)) {
-  Prison.popn[,dcol] <- as.numeric(Prison.popn[,dcol])
-  dcol <- dcol +1
-}
-
-Refugees <- subset(Refugees, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
-names(Refugees)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
-dcol <- 2
-for (i in 1:ncol(Refugees)) {
-  Refugees[,dcol] <- as.numeric(Refugees[,dcol])
-  dcol <- dcol +1
-}
-
-Suicide.rate.F <- subset(Suicide.rate.F, select = -c(X, X.1, X.2))
-names(Suicide.rate.F)[2:5] <- c("2000", "2010", "2015", "2016")
-dcol <- 2
-for (i in 2:ncol(Suicide.rate.F)) {
-  Suicide.rate.F[,dcol] <- as.numeric(Suicide.rate.F[,dcol])
-  dcol <- dcol +1
-}
-
-Suicide.rate.M <- subset(Suicide.rate.M, select = -c(X, X.1, X.2))
-names(Suicide.rate.M)[2:5] <- c("2000", "2010", "2015", "2016")
-dcol <- 2
-for (i in 2:ncol(Suicide.rate.M)) {
-  Suicide.rate.M[,dcol] <- as.numeric(Suicide.rate.M[,dcol])
-  dcol <- dcol +1
-}
-
-HND <- pivot_longer(Homeless.natural.disaster, cols = !Country, names_to = "Year", values_to = "Homeless.ND")
-HR <- pivot_longer(Homicide.rate, cols = !Country, names_to = "Year", values_to = "Homicide.rate")
-PP <- pivot_longer(Prison.popn, cols = !Country, names_to = "Year", values_to = "Prison.popn")
-R <- pivot_longer(Refugees, cols = !Country, names_to = "Year", values_to = "Refugees")
-SRF <- pivot_longer(Suicide.rate.F, cols = !Country, names_to = "Year", values_to = "Suicide.rate.F")
-SRM <- pivot_longer(Suicide.rate.M, cols = !Country, names_to = "Year", values_to = "Suicide.rate.M")
-Human.Security <- merge(HND, HR, all.x = T, all.y = T)
-Human.Security <- merge(Human.Security, PP, all.x = T, all.y = T)
-Human.Security <- merge(Human.Security, R, all.x = T, all.y = T)
-Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)  
-Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
-Human.Security <- Human.Security[30:5684,]
-```
-
-
-
-### INEQUALITY DATA TRANSFORMATION
+## INEQUALITY DATA TRANSFORMATION
 
 The `Inequality` indicator has 15 features from years 2010 to 2018 (one column per year). However, the data table for 6 of these features were not available for download. The remaining 9 features for which data tables were available and was extracted were:
 
@@ -130,7 +32,15 @@ Note that the column 'HDI Rank (2018)' is kept as a reference column and not for
 
 First read all files:
 
-```{rwarning = FALSE,  message = FALSE, echo =TRUE}
+```{r}
+library(dplyr)
+library(tidyverse)
+library(readxl)
+library(readr)
+library(stringr)
+```
+
+```{r warning = FALSE,  message = FALSE, echo =TRUE}
 temp <- list.files(path = "./Inequality/inequality_rawdata", pattern="*.csv")
  
 inequality_list <- list()
@@ -245,10 +155,100 @@ inequality_df %>% write_csv('./Inequality/inequality_tidy.csv')
 ```
 
 
+## Human Security Data Transformation
+
+
+Below is the code required to compose and organize the Human Security dataset.
+
+Transforming this data largely required reorganizing the dataframe into a tidy
+format.  A great number of data values are missing, discussed below.  Converting
+the data from its .csv file into a workable R dataframe required removing 
+blank columns (which had been left in the Excel files for visual appeal) and 
+renaming columns to prime them for the pivot_longer function.  Further, to 
+avoid losing data when merging the Human Security variable datasets (Homeless-
+ness from natural disasters, Homicide rate, Prison population, Refugees by 
+country of origin, Suicide rate for males, and Suicide rate for females), the 
+all.x and all.y conditions were specified.  Then, to ensure that all missing
+data were coded appropriately, a for loop was introduced to convert all numeric
+data columns in the dataset into numeric type.  The result is a tidy dataset of 
+all Human Security variables.
 
 
 
-### EDUCATION DATA TRANSFORMATION
+```{r}
+
+
+Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.natural.disaster.csv")
+Homicide.rate <- read.csv("./HumanSecurity/Homicide.rate.csv")
+Prison.popn <- read.csv("./HumanSecurity/Prison.population.csv")
+Refugees <- read.csv("./HumanSecurity/Refugees.csv")
+Suicide.rate.M <- read.csv("./HumanSecurity/Suicide.rate.M.csv")
+Suicide.rate.F <- read.csv("./HumanSecurity/Suicide.rate.F.csv")
+
+names(Homeless.natural.disaster)[2:30] <- c("1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018")
+dcol <- 2
+for (i in 2:ncol(Homeless.natural.disaster)) {
+  Homeless.natural.disaster[,dcol] <- as.numeric(Homeless.natural.disaster[,dcol])
+  dcol <- dcol +1
+}
+
+Homicide.rate <- subset(Homicide.rate, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9, X.10))
+names(Homicide.rate)[2:13] <- c("1990", "1995", "2000", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+dcol <- 2
+for (i in 2:ncol(Homicide.rate)) {
+  Homicide.rate[,dcol] <- as.numeric(Homicide.rate[,dcol])
+  dcol <- dcol +1
+}
+
+Prison.popn <- subset(Prison.popn, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
+names(Prison.popn)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+dcol <- 2
+for (i in 1:ncol(Prison.popn)) {
+  Prison.popn[,dcol] <- as.numeric(Prison.popn[,dcol])
+  dcol <- dcol +1
+}
+
+Refugees <- subset(Refugees, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
+names(Refugees)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+dcol <- 2
+for (i in 1:ncol(Refugees)) {
+  Refugees[,dcol] <- as.numeric(Refugees[,dcol])
+  dcol <- dcol +1
+}
+
+Suicide.rate.F <- subset(Suicide.rate.F, select = -c(X, X.1, X.2))
+names(Suicide.rate.F)[2:5] <- c("2000", "2010", "2015", "2016")
+dcol <- 2
+for (i in 2:ncol(Suicide.rate.F)) {
+  Suicide.rate.F[,dcol] <- as.numeric(Suicide.rate.F[,dcol])
+  dcol <- dcol +1
+}
+
+Suicide.rate.M <- subset(Suicide.rate.M, select = -c(X, X.1, X.2))
+names(Suicide.rate.M)[2:5] <- c("2000", "2010", "2015", "2016")
+dcol <- 2
+for (i in 2:ncol(Suicide.rate.M)) {
+  Suicide.rate.M[,dcol] <- as.numeric(Suicide.rate.M[,dcol])
+  dcol <- dcol +1
+}
+
+HND <- pivot_longer(Homeless.natural.disaster, cols = !Country, names_to = "Year", values_to = "Homeless.ND")
+HR <- pivot_longer(Homicide.rate, cols = !Country, names_to = "Year", values_to = "Homicide.rate")
+PP <- pivot_longer(Prison.popn, cols = !Country, names_to = "Year", values_to = "Prison.popn")
+R <- pivot_longer(Refugees, cols = !Country, names_to = "Year", values_to = "Refugees")
+SRF <- pivot_longer(Suicide.rate.F, cols = !Country, names_to = "Year", values_to = "Suicide.rate.F")
+SRM <- pivot_longer(Suicide.rate.M, cols = !Country, names_to = "Year", values_to = "Suicide.rate.M")
+Human.Security <- merge(HND, HR, all.x = T, all.y = T)
+Human.Security <- merge(Human.Security, PP, all.x = T, all.y = T)
+Human.Security <- merge(Human.Security, R, all.x = T, all.y = T)
+Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)  
+Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
+Human.Security <- Human.Security[30:5684,]
+```
+
+
+
+## Education Data Transformation
 
 
 In order to read in the education data-- I first take in every file in the relevant Education directory. With this data I determine the relevant NAs in the files, and code those as NAs. Similarly I skip the first line in the file which are blank. Then I remove any rows that are irrelevant-- specifically the rows with footnotes. Finally I remove additional columns, and change data types if necessary, and am then ready to transform the data itself.
@@ -282,5 +282,8 @@ df_ed_lg<-df_ed %>%
             pivot_longer(cols=!c("HDI Rank (2018)","Country","var"),names_to="Year",values_to="HDI") 
 df_ed_td<-df_ed_lg %>%
             pivot_wider(names_from="var",values_from="HDI")
+
+df_ed_td %>% write_csv('./Education/Education_Tidy.csv')
+df_ed_lg %>% write_csv('./Education/Education_Wide.csv')
 ```
 

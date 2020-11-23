@@ -9,56 +9,7 @@ library(ggplot2)
 library(GGally)
 ```
 
-### Human Security Missing Data
-
-A significant proportion of data in the Human.Security dataframe is missing.
-Largely, this seems to be the product of uneven variable tracking.  Homelessness
-due to natural disasters seems to be tracked in most countries on a yearly
-basis between 1990 and 2018.  By contrast, Homicide rate was recorded only in 
-1990, 1995, 2000, 2005, and yearly from 2010 to 2017.  As another exmaple, 
-suicide rate for both males and females were recorded only in the years 2000, 
-2010, 2015, and 2016.
-
-```{r}
-Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.tidy.csv")
-Homicide.rate <- read.csv("./HumanSecurity/Homicide.tidy.csv")
-Suicide.rate.F <- read.csv("./HumanSecurity/SR.F.tidy.csv")
-Suicide.rate.M <- read.csv("./HumanSecurity/SR.M.tidy.csv")
-colnames(Homeless.natural.disaster)[2:30]
-```
-```{r}
-colnames(Homicide.rate)[2:13]
-```
-```{r}
-colnames(Suicide.rate.F)[2:5]
-colnames(Suicide.rate.M)[2:5]
-```
-
-
-Importantly, data also appears to be missing among outlying island countries and
-countries in the African continent.  For example, the chart below notes missing 
-Homicide data.
-
-A notable chunk of countries (obs. numbers 50-100) seem to be missing data
-between 1990 and 2005.  However, the largest amount of missing data seems to 
-be concentrated in observations 150 to 192, which includes Mironesia and many of
-the countries on and around the African continent (ie. Nigeria, Sudan, Senegal).
-
-
-```{r}
-x <- missing_data.frame(Homicide.rate)
-image(x)
-```
-
-This trend is not unknown in international data collection.  Lower 
-infrastructural development renders data collection difficult, and factors like 
-human rights and humanitarian crises, political violence, and political 
-instability can hinder data collection processes. 
-
-
-
-
-### INEQUALITY MISSING DATA
+## Inequality Missing Data
 
 
 ```{r  warning = FALSE,  message = FALSE} 
@@ -156,4 +107,87 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
 
 
 
-###EDUCATION MISSING DATA
+## Human Security Missing Data
+
+A significant proportion of data in the Human.Security dataframe is missing.
+Largely, this seems to be the product of uneven variable tracking.  Homelessness
+due to natural disasters seems to be tracked in most countries on a yearly
+basis between 1990 and 2018.  By contrast, Homicide rate was recorded only in 
+1990, 1995, 2000, 2005, and yearly from 2010 to 2017.  As another exmaple, 
+suicide rate for both males and females were recorded only in the years 2000, 
+2010, 2015, and 2016.
+
+```{r}
+Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.tidy.csv")
+Homicide.rate <- read.csv("./HumanSecurity/Homicide.tidy.csv")
+Suicide.rate.F <- read.csv("./HumanSecurity/SR.F.tidy.csv")
+Suicide.rate.M <- read.csv("./HumanSecurity/SR.M.tidy.csv")
+colnames(Homeless.natural.disaster)[2:30]
+```
+```{r}
+colnames(Homicide.rate)[2:13]
+```
+```{r}
+colnames(Suicide.rate.F)[2:5]
+colnames(Suicide.rate.M)[2:5]
+```
+
+
+Importantly, data also appears to be missing among outlying island countries and
+countries in the African continent.  For example, the chart below notes missing 
+Homicide data.
+
+A notable chunk of countries (obs. numbers 50-100) seem to be missing data
+between 1990 and 2005.  However, the largest amount of missing data seems to 
+be concentrated in observations 150 to 192, which includes Mironesia and many of
+the countries on and around the African continent (ie. Nigeria, Sudan, Senegal).
+
+
+```{r}
+x <- missing_data.frame(Homicide.rate)
+image(x)
+```
+
+This trend is not unknown in international data collection.  Lower 
+infrastructural development renders data collection difficult, and factors like 
+human rights and humanitarian crises, political violence, and political 
+instability can hinder data collection processes. 
+
+
+
+
+
+## Education Missing Data
+
+
+```{r warning = FALSE,  message = FALSE}
+
+df_ed_td<-read_csv('./Education/Education_Tidy.csv')
+df_ed_lg<-read_csv('./Education/Education_Wide.csv')
+
+df_ed_td<-df_ed_td[!is.na(df_ed_td$`HDI Rank (2018)`),]
+df_ed_lg<-df_ed_lg[!is.na(df_ed_lg$`HDI Rank (2018)`),]
+
+```
+
+There are 87056 missing values in the entire data frame.
+
+```{r}
+nrow(df_ed_lg[is.na(df_ed_lg$HDI),])
+```
+
+Of those most of the observations seem to concentrated before 2010, where the number of missings declined down to 1 thousand each year, until recently in 2017, and 2018, which saw gains towards 3000.
+```{r}
+df_ed_lg[is.na(df_ed_lg$HDI),] %>% group_by(Year) %>% count() %>% print(n=30)
+```
+
+It looks like missings arer concentrated in the smaller countries.
+```{r, message=FALSE}
+df_ed_lg[is.na(df_ed_lg$HDI),] %>% group_by(Country) %>% summarize(Count=n()) %>% arrange(desc(Count)) %>% print(n=250)
+```
+By variable it looks the number of missings varies quite a bit from 217, all the way up to >5000
+```{r}
+summary(df_ed_td)
+
+```
+df_ed_td
