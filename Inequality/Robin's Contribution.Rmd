@@ -67,7 +67,9 @@ The `Inequality` indicator has 15 features from years 2010 to 2018 (one column p
 
 Note that the column 'HDI Rank (2018)' is kept as a reference column and not for analysis. 
 
-```{r warning = FALSE,  message = FALSE}
+First read all files:
+
+```{r warning = FALSE,  message = FALSE, echo =TRUE}
 
 temp <- list.files(path = "./inequality_rawdata", pattern="*.csv")
  
