@@ -175,7 +175,7 @@ all Human Security variables.
 
 
 
-```{r}
+```{r,echo=TRUE}
 
 
 Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.natural.disaster.csv")
