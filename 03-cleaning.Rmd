@@ -203,7 +203,7 @@ for (i in 2:ncol(Homicide.rate)) {
 Prison.popn <- subset(Prison.popn, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
 names(Prison.popn)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
 dcol <- 2
-for (i in 1:ncol(Prison.popn)) {
+for (i in 2:ncol(Prison.popn)) {
   Prison.popn[,dcol] <- as.numeric(Prison.popn[,dcol])
   dcol <- dcol +1
 }
@@ -211,7 +211,7 @@ for (i in 1:ncol(Prison.popn)) {
 Refugees <- subset(Refugees, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
 names(Refugees)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
 dcol <- 2
-for (i in 1:ncol(Refugees)) {
+for (i in 2:ncol(Refugees)) {
   Refugees[,dcol] <- as.numeric(Refugees[,dcol])
   dcol <- dcol +1
 }
