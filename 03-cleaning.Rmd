@@ -174,8 +174,7 @@ data columns in the dataset into numeric type.  The result is a tidy dataset of
 all Human Security variables.
 
 
-
-```{r,echo=TRUE}
+```{r,echo=TRUE,include=TRUE}
 
 
 Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.natural.disaster.csv")
