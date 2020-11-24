@@ -7,6 +7,7 @@ library(readr)
 library(stringr)
 library(ggplot2)
 library(GGally)
+library(mi)
 ```
 
 ## Inequality Missing Data
@@ -120,16 +121,18 @@ suicide rate for both males and females were recorded only in the years 2000,
 ```{r}
 Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.tidy.csv")
 Homicide.rate <- read.csv("./HumanSecurity/Homicide.tidy.csv")
+rownames(Homicide.rate) <- Homicide.rate$Country
+Homicide.rate <- Homicide.rate[,3:14]
 Suicide.rate.F <- read.csv("./HumanSecurity/SR.F.tidy.csv")
 Suicide.rate.M <- read.csv("./HumanSecurity/SR.M.tidy.csv")
-colnames(Homeless.natural.disaster)[2:30]
+colnames(Homeless.natural.disaster)[3:31]
 ```
 ```{r}
-colnames(Homicide.rate)[2:13]
+colnames(Homicide.rate)[1:12]
 ```
 ```{r}
-colnames(Suicide.rate.F)[2:5]
-colnames(Suicide.rate.M)[2:5]
+colnames(Suicide.rate.F)[3:6]
+colnames(Suicide.rate.M)[3:6]
 ```
 
 
@@ -139,7 +142,7 @@ Homicide data.
 
 A notable chunk of countries (obs. numbers 50-100) seem to be missing data
 between 1990 and 2005.  However, the largest amount of missing data seems to 
-be concentrated in observations 150 to 192, which includes Mironesia and many of
+be concentrated in observations 150 to 192, which includes Micronesia and many of
 the countries on and around the African continent (ie. Nigeria, Sudan, Senegal).
 
 
