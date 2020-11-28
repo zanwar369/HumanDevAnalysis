@@ -239,4 +239,4 @@ By variable it looks the number of missings varies quite a bit from 217, all the
 summary(df_ed_td)
 
 ```
-df_ed_td
+

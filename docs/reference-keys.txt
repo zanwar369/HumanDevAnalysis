@@ -1,0 +1,13 @@
+introduction
+data-sources
+data-transformation
+inequality-data-transformation
+human-security-data-transformation
+education-data-transformation
+missing-values
+inequality-missing-data
+human-security-missing-data
+education-missing-data
+results
+interactive-component
+conclusion
