@@ -118,7 +118,10 @@ basis between 1990 and 2018.  By contrast, Homicide rate was recorded only in
 suicide rate for both males and females were recorded only in the years 2000, 
 2010, 2015, and 2016.
 
+
 ```{r}
+Human.Security <- read.csv("./HumanSecurity/Human.Security.csv")
+Human.Security.2 <- read.csv("./HumanSecurity/Human.Security.2.csv")
 Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.tidy.csv")
 Homicide.rate <- read.csv("./HumanSecurity/Homicide.tidy.csv")
 rownames(Homicide.rate) <- Homicide.rate$Country
@@ -127,13 +130,40 @@ Suicide.rate.F <- read.csv("./HumanSecurity/SR.F.tidy.csv")
 Suicide.rate.M <- read.csv("./HumanSecurity/SR.M.tidy.csv")
 colnames(Homeless.natural.disaster)[3:31]
 ```
+
+
 ```{r}
 colnames(Homicide.rate)[1:12]
 ```
+
 ```{r}
 colnames(Suicide.rate.F)[3:6]
 colnames(Suicide.rate.M)[3:6]
 ```
+
+
+```{r}
+prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security))), 
+            prop_missing = unname(colMeans(is.na(Human.Security)))) %>%
+          filter(prop_missing > 0)  
+
+prop_missing_features %>%
+    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
+    geom_col() +
+    coord_flip() 
+```
+```{r}
+prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security.2))), 
+            prop_missing = unname(colMeans(is.na(Human.Security.2)))) %>%
+          filter(prop_missing > 0)  
+
+prop_missing_features %>%
+    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
+    geom_col() +
+    coord_flip() 
+```
+
+
 
 
 Importantly, data also appears to be missing among outlying island countries and
@@ -157,6 +187,22 @@ human rights and humanitarian crises, political violence, and political
 instability can hinder data collection processes. 
 
 
+```{r fig.height = 16, fig.width = 8}
+
+prop_missing_countries<- Human.Security.2 %>% 
+  group_by(Country) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup()
+
+prop_missing_countries <- data.frame(Country = prop_missing_countries$Country, 
+                                     country_prop_missing =  rowMeans(prop_missing_countries[,2:8])) %>% 
+                          filter(country_prop_missing > .3)
+
+prop_missing_countries %>% 
+    ggplot(aes(x = fct_reorder(Country, country_prop_missing, .desc =FALSE), y = country_prop_missing)) +
+    geom_col() +
+    coord_flip()
+```
 
 
 
