@@ -244,6 +244,12 @@ Human.Security <- merge(Human.Security, R, all.x = T, all.y = T)
 Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)  
 Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
 Human.Security <- Human.Security[30:5684,]
+
+Human.Security.2 <- merge(HND, HR)
+Human.Security.2 <- merge(Human.Security, PP)
+Human.Security.2 <- merge(Human.Security, R)
+Human.Security.2 <- merge(Human.Security, SRF)  
+Human.Security.2 <- merge(Human.Security, SRM)
 ```
 
 
