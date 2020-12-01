@@ -4,7 +4,7 @@ In order to work with the amount of data we split the work into three separate b
 We all performed similar transformations detailed below.
 
 
-## INEQUALITY DATA TRANSFORMATION
+## Inequality Data Transformation
 
 The `Inequality` indicator has 15 features from years 2010 to 2018 (one column per year). However, the data table for 6 of these features were not available for download. The remaining 9 features for which data tables were available and was extracted were:
 
@@ -30,17 +30,16 @@ The `Inequality` indicator has 15 features from years 2010 to 2018 (one column p
 
 Note that the column 'HDI Rank (2018)' is kept as a reference column and not for analysis. 
 
-First read all files:
+First all of the files are read parsing through the inequality directory, and using read.csv to read in the relevant raw data files for each variable.
 
 ```{r}
-library(dplyr)
 library(tidyverse)
 library(readxl)
 library(readr)
 library(stringr)
 ```
 
-```{r warning = FALSE,  message = FALSE, echo =TRUE}
+```{r warning = FALSE,  message = FALSE}
 temp <- list.files(path = "./Inequality/inequality_rawdata", pattern="*.csv")
  
 inequality_list <- list()
@@ -52,7 +51,7 @@ for(i in 1:length(temp)){
 names(inequality_list) <- sub("\\..*", "", temp)
 ```
 
-Now to take a high level look at the data itself, print the head and tail of the sixth data frame in the list `inequality_list`, which contains data for the "Inequality in education (%)" as a sample:
+Now to take a high level look at the data itself, print the head and tail of one of the dataframes in the list `inequality_list`, in this case the dataframe containing data for the "Inequality in education (%)" as a sample:
 
 ```{r}
 print(head(inequality_list[[6]]))
@@ -84,7 +83,6 @@ inequality_list[[9]] <- inequality_list[[9]] %>%
 
 The below shows that the number of rows in the data frame for each feature is different. This implies not every feature has the same list of countries. 
 
-
 ```{r warning = FALSE,  message = FALSE}
 for(i in 1:length(inequality_list)){
   row <- dim(inequality_list[[i]])[1]
@@ -105,9 +103,9 @@ print(unique(differences))
 ```
 It looks like these four countries shows up for some features and not others. We can expect a lot of missing data for at least these four countries. 
 
-The next step is to create a single tidy data frames for `Inequality`. Each data frame in `inequality_list` has column headings 2010 to 2018 which are values not variables. In addition, each data frame in `inequality_list` is from the same observational unit (`Inequality`) and should be in one data frame. To convert the list of data frames `inequality_list` into a single tidy data frame, use `pivot_longer` and `full_join` to create the tidy data frame `inequality_df`.   
+The next step is to create a single tidy dataframe for `Inequality`. Each data frame in `inequality_list` has column headings 2010 to 2018 which are values not variables. In addition, each data frame in `inequality_list` is from the same observational unit (`Inequality`) and should be in one data frame. To convert the list of data frames `inequality_list` into a single tidy data frame, use `pivot_longer` and `full_join` to create the tidy data frame `inequality_df`.   
 
-```{r, echo=FALSE}
+```{r}
 inequality_df <- inequality_list[[1]] %>% 
                     pivot_longer(!c('HDI Rank (2018)', 'Country'), 
                                  names_to = "Year", 
@@ -124,7 +122,7 @@ for(i in 2:length(inequality_list)){
 head(inequality_df)
 ```
 
-Note that the columns of `inequality_df` are currently all of type `<chr>` when only `Country` should be of type `<chr>`, `Year` should be of type integer, and the remaining be of type numeric.  This is because missing values are given as '..' instead of `NA`.  Convert the relevant columns to numeric which coerces '..' to `NA`'s in the process.  
+Note that the columns of `inequality_df` are currently all of type `<chr>` when only `Country` should be of type `<chr>`, `Year` should be of type integer, and the remaining be of type numeric. This is because missing values are given as '..' instead of `NA`.  Convert the relevant columns to numeric which coerces '..' to `NA`'s in the process.  
 
 ```{r warning = FALSE}
 inequality_df[,4:12] <- as.data.frame(sapply(inequality_df[,4:12], as.numeric))
@@ -155,19 +153,26 @@ inequality_df %>% write_csv('./Inequality/inequality_tidy.csv')
 ```
 
 
+<<<<<<< HEAD
 ## Human Security Data Transformation
 
 
-Below is the code required to compose and organize the Human Security dataset.
+Below are the variables pulled from the Human Security dataset:
 
-Transforming this data largely required reorganizing the dataframe into a tidy
-format.  A great number of data values are missing, as discussed below.  Converting
-the data from its .csv file into a workable R dataframe required removing 
-blank columns (which had been left in the .csv files for visual appeal) and 
-renaming columns to prime them for the pivot_longer function. Then, to ensure 
-that all missing data were coded appropriately, a for loop was introduced to convert 
-all numeric data columns in the dataset into numeric type.  The result is a tidy 
-dataset of all Human Security variables.
+* Homelessness due to natural disaster ()
+
+* Homicide rate ()
+
+* Prison population ()
+
+* Refugees by country of origin ()
+
+* Suicide rate (Male) ()
+
+* Suicide rate (Female) ()
+
+
+Transforming this data largely required reorganizing the dataframe into a tidy format.  This was done in a similar fashion to the inequality, and education data manipulations.  This required removing blank columns (which had been left in the .csv files for visual appeal) and renaming columns to prime them for the pivot_longer function. Then, to ensure that all missing data were coded appropriately, a for loop was introduced to convert all numeric data columns in the dataset into numeric type.  The result is a tidy dataset of all Human Security variables.
 
 
 ```{r,echo=TRUE,include=TRUE}
@@ -260,12 +265,6 @@ Human.Security <- merge(Human.Security, R, all.x = T, all.y = T)
 Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)  
 Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
 Human.Security <- Human.Security[30:5684,]
-
-Human.Security.2 <- merge(HND, HR)
-Human.Security.2 <- merge(Human.Security, PP)
-Human.Security.2 <- merge(Human.Security, R)
-Human.Security.2 <- merge(Human.Security, SRF)  
-Human.Security.2 <- merge(Human.Security, SRM)
 ```
 
 
@@ -275,23 +274,82 @@ Human.Security.2 <- merge(Human.Security, SRM)
 
 ## Education Data Transformation
 
+The following are the columns in the education dataset:
 
-In order to read in the education data-- I first take in every file in the relevant Education directory. With this data I determine the relevant NAs in the files, and code those as NAs. Similarly I skip the first line in the file which are blank. Then I remove any rows that are irrelevant-- specifically the rows with footnotes. Finally I remove additional columns, and change data types if necessary, and am then ready to transform the data itself.
+* Education Index
 
-```{r,echo=TRUE}
+* Expected years of schooling (years)
+
+* Expected years of schooling, female (years)
+
+* Expected years of schooling, male (years)
+
+* Government expenditure on education (% of GDP)
+
+* Gross enrollment ratio, pre-primary (% of preschool-age children)
+
+* Gross enrollment ratio, primary (% of primary school-age children)
+
+* Gross enrollment ratio, secondary (% of secondary school-age children)
+
+* Gross enrollment ratio, tertiary (% of tertiary school-age children)
+
+* Literacy rate, adult (% ages 15 and older)
+
+* Mean years of schooling (years)
+
+* Mean years of schooling, female(years)
+
+* Mean years of schooling, male (years)
+
+* Percentage of primary schools with access to the internet
+
+* Percentage of secondary schools with access to the internet
+
+* Population with at least some secondary education (% ages 25 and older)
+
+* Population with at least some secondary education, female (% ages 25 and older)
+
+* Population with at least some secondary education, male (% ages 25 and older)
+
+* Primary school dropout rate (% of primary school cohort)
+
+* Primary School teachers trained to teach (%)
+
+* Programme for International Student Assessment (PISA) score in mathematics
+
+* Programme for International Student Assessment (PISA) score in reading
+
+* Programme for International Student Assessment (PISA) score in science
+
+* Pupil-teacher ratio, primary school (number of pupils per teacher)
+
+* Survival rate to the last grade of lower secondary general education (%)
+
+^ Data for `2018` is either from 2018 or the latest year available. 
+
+Note that the column 'HDI Rank (2018)' is kept as a reference column and not for analysis. 
+
+
+In order to read in, and transform the education data, the method is again similar to the previous two examples. Every file is found, and read from the relevant  Education directory. With this data wew determine the relevant NAs in the files, and code those as such. Similarly, we skip the first lines in the files which are blank. Then we remove any rows that are irrelevant-- specifically the rows with footnotes. Finally, we remove additional columns, and change data types if necessary, and are then ready to transform the data into tidy format.
+
+```{r}
 
 dr="./Education/csv"
 file_list <- list.files(path=dr,pattern="*.csv")
 dttyp<-c("EdInd","ExpSch","ExpSchF","ExpSchM","GovMon","GERPP","GERP","GERS","GERT",
-         "LitR","MYSch","MYSchF","MYSchM","PerPSInt","PerSSInt","PopSSF25U","PopSSM25U",
+         "LitR","MYSch","MYSchF","MYSchM","PerPSInt","PerSSInt","PopSS25U","PopSSF25U","PopSSM25U",
          "PSDrop","PSTchTrn","PISAMth","PISARead","PISAScn","PupTchRPS","SurvRSGE")
 
 for (i in 1:length(file_list)){
    df_temp<-read.csv(paste(dr,"/",file_list[i],sep=""),skip=1,header=T, 
-                      check.names = F,na.strings=c("..",""," ","<NA>"))
+                      check.names = F,na.strings=c("..",""," ","<NA>"),
+                     fileEncoding = "UTF-8")
    df_temp<-subset(df_temp,!grepl("[a-z]:",df_temp$`HDI Rank (2018)`))
    df_temp$`HDI Rank (2018)`<-as.numeric(df_temp$`HDI Rank (2018)`)
+   df_temp<-subset(df_temp,!is.na(df_temp$`HDI Rank (2018)`))
    df_temp$var<-dttyp[i]
+   df_temp$Country[df_temp$Country=="Côte d'Ivoire"]<-"Ivory Coast"
    if (i==1) {
      df_ed<-df_temp[!sapply(df_temp, function(x) all(is.na(x)))]}
    else {df_ed<-bind_rows(df_ed,df_temp[!sapply(df_temp, function(x) all(is.na(x)))])}
@@ -300,15 +358,14 @@ for (i in 1:length(file_list)){
 df_ed<-df_ed[,!grepl("\\.[0-9]",colnames(df_ed))]
 ```
 
-Once the files are read in correctly I create two separate forms of the data. One with each variable as a column, and year as its own signular column using pivot longer, and wider, and one where the relevant education vartiables are also in a singular column. While the seconde format is not necessarily tidy this will help look at missings across the data.
+Once the files are read in correctly we create two separate forms of the data. One with each variable as a column, and year as its own signular column, utilizing the pivot longer and wider functions. The other method leaves relevant education vartiables in a singular column, and another column coresponding to their values.  While the second format is not necessarily tidy-this will help look at missings across the data.
 
-```{r,echo=TRUE}
+```{r}
 df_ed_lg<-df_ed %>%
             pivot_longer(cols=!c("HDI Rank (2018)","Country","var"),names_to="Year",values_to="HDI") 
 df_ed_td<-df_ed_lg %>%
             pivot_wider(names_from="var",values_from="HDI")
 
 df_ed_td %>% write_csv('./Education/Education_Tidy.csv')
-df_ed_lg %>% write_csv('./Education/Education_Wide.csv')
+df_ed_lg %>% write_csv('./Education/Education_LG.csv')
 ```
-
