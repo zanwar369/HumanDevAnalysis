@@ -110,12 +110,7 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
 
 ## Human Security Missing Data
 
-A significant proportion of data in the Human.Security dataframe is missing.
-Largely, this seems to be the product of uneven variable tracking.  Homelessness
-due to natural disasters seems to be tracked in most countries on a yearly
-basis between 1990 and 2018.  By contrast, Homicide rate was recorded only in 
-1990, 1995, 2000, 2005, and yearly from 2010 to 2017.  As another exmaple, 
-suicide rate for both males and females were recorded only in the years 2000, 
+A significant proportion of data in the Human.Security dataframe is missing.  Largely, this seems to be the product of uneven tracking between variables.  Homelessness due to natural disaster is measured on a yearly basis between 1990 and 2018.  By contrast, Homicide rate was recorded only in 1990, 1995, 2000, 2005, and yearly from 2010 to 2017.  As another example, suicide rate for both males and females were recorded only in the years 2000, 
 2010, 2015, and 2016.
 
 
@@ -128,6 +123,16 @@ rownames(Homicide.rate) <- Homicide.rate$Country
 Homicide.rate <- Homicide.rate[,3:14]
 Suicide.rate.F <- read.csv("./HumanSecurity/SR.F.tidy.csv")
 Suicide.rate.M <- read.csv("./HumanSecurity/SR.M.tidy.csv")
+```
+
+Below are the 
+
+```{r}
+
+```
+
+
+```{r}
 colnames(Homeless.natural.disaster)[3:31]
 ```
 
