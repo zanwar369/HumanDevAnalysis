@@ -161,21 +161,16 @@ inequality_df %>% write_csv('./Inequality/inequality_tidy.csv')
 Below is the code required to compose and organize the Human Security dataset.
 
 Transforming this data largely required reorganizing the dataframe into a tidy
-format.  A great number of data values are missing, discussed below.  Converting
+format.  A great number of data values are missing, as discussed below.  Converting
 the data from its .csv file into a workable R dataframe required removing 
-blank columns (which had been left in the Excel files for visual appeal) and 
-renaming columns to prime them for the pivot_longer function.  Further, to 
-avoid losing data when merging the Human Security variable datasets (Homeless-
-ness from natural disasters, Homicide rate, Prison population, Refugees by 
-country of origin, Suicide rate for males, and Suicide rate for females), the 
-all.x and all.y conditions were specified.  Then, to ensure that all missing
-data were coded appropriately, a for loop was introduced to convert all numeric
-data columns in the dataset into numeric type.  The result is a tidy dataset of 
-all Human Security variables.
+blank columns (which had been left in the .csv files for visual appeal) and 
+renaming columns to prime them for the pivot_longer function. Then, to ensure 
+that all missing data were coded appropriately, a for loop was introduced to convert 
+all numeric data columns in the dataset into numeric type.  The result is a tidy 
+dataset of all Human Security variables.
 
 
 ```{r,echo=TRUE,include=TRUE}
-
 
 Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.natural.disaster.csv")
 Homicide.rate <- read.csv("./HumanSecurity/Homicide.rate.csv")
@@ -183,53 +178,74 @@ Prison.popn <- read.csv("./HumanSecurity/Prison.population.csv")
 Refugees <- read.csv("./HumanSecurity/Refugees.csv")
 Suicide.rate.M <- read.csv("./HumanSecurity/Suicide.rate.M.csv")
 Suicide.rate.F <- read.csv("./HumanSecurity/Suicide.rate.F.csv")
+```
+
+First the blank and extraneous rows are removed from each dataset, and the column names are converted to reflect the year each measurement was taken.
+
+```{r,echo=TRUE,include=TRUE}
 
 names(Homeless.natural.disaster)[2:30] <- c("1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018")
+
+Homicide.rate <- subset(Homicide.rate, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9, X.10))
+names(Homicide.rate)[2:13] <- c("1990", "1995", "2000", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+
+Prison.popn <- subset(Prison.popn, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
+names(Prison.popn)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+
+Refugees <- subset(Refugees, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
+names(Refugees)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+
+Suicide.rate.F <- subset(Suicide.rate.F, select = -c(X, X.1, X.2))
+names(Suicide.rate.F)[2:5] <- c("2000", "2010", "2015", "2016")
+
+Suicide.rate.M <- subset(Suicide.rate.M, select = -c(X, X.1, X.2))
+names(Suicide.rate.M)[2:5] <- c("2000", "2010", "2015", "2016")
+```
+
+Then, the numeric data columns are converted to numeric type.  Note that all columns are originally in character type.  Converting to numeric type both eases analysis and allows the blank entries, denoted as ".." to be read as empty (NA).
+
+```{r}
+
 dcol <- 2
 for (i in 2:ncol(Homeless.natural.disaster)) {
   Homeless.natural.disaster[,dcol] <- as.numeric(Homeless.natural.disaster[,dcol])
   dcol <- dcol +1
 }
 
-Homicide.rate <- subset(Homicide.rate, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9, X.10))
-names(Homicide.rate)[2:13] <- c("1990", "1995", "2000", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
 dcol <- 2
 for (i in 2:ncol(Homicide.rate)) {
   Homicide.rate[,dcol] <- as.numeric(Homicide.rate[,dcol])
   dcol <- dcol +1
 }
 
-Prison.popn <- subset(Prison.popn, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
-names(Prison.popn)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
 dcol <- 2
 for (i in 2:ncol(Prison.popn)) {
   Prison.popn[,dcol] <- as.numeric(Prison.popn[,dcol])
   dcol <- dcol +1
 }
 
-Refugees <- subset(Refugees, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
-names(Refugees)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
 dcol <- 2
 for (i in 2:ncol(Refugees)) {
   Refugees[,dcol] <- as.numeric(Refugees[,dcol])
   dcol <- dcol +1
 }
 
-Suicide.rate.F <- subset(Suicide.rate.F, select = -c(X, X.1, X.2))
-names(Suicide.rate.F)[2:5] <- c("2000", "2010", "2015", "2016")
 dcol <- 2
 for (i in 2:ncol(Suicide.rate.F)) {
   Suicide.rate.F[,dcol] <- as.numeric(Suicide.rate.F[,dcol])
   dcol <- dcol +1
 }
 
-Suicide.rate.M <- subset(Suicide.rate.M, select = -c(X, X.1, X.2))
-names(Suicide.rate.M)[2:5] <- c("2000", "2010", "2015", "2016")
 dcol <- 2
 for (i in 2:ncol(Suicide.rate.M)) {
   Suicide.rate.M[,dcol] <- as.numeric(Suicide.rate.M[,dcol])
   dcol <- dcol +1
 }
+```
+
+Finally, the data are converted to a tidy format and merged.
+
+```{r}
 
 HND <- pivot_longer(Homeless.natural.disaster, cols = !Country, names_to = "Year", values_to = "Homeless.ND")
 HR <- pivot_longer(Homicide.rate, cols = !Country, names_to = "Year", values_to = "Homicide.rate")
@@ -237,6 +253,7 @@ PP <- pivot_longer(Prison.popn, cols = !Country, names_to = "Year", values_to = 
 R <- pivot_longer(Refugees, cols = !Country, names_to = "Year", values_to = "Refugees")
 SRF <- pivot_longer(Suicide.rate.F, cols = !Country, names_to = "Year", values_to = "Suicide.rate.F")
 SRM <- pivot_longer(Suicide.rate.M, cols = !Country, names_to = "Year", values_to = "Suicide.rate.M")
+
 Human.Security <- merge(HND, HR, all.x = T, all.y = T)
 Human.Security <- merge(Human.Security, PP, all.x = T, all.y = T)
 Human.Security <- merge(Human.Security, R, all.x = T, all.y = T)
@@ -249,6 +266,9 @@ Human.Security.2 <- merge(Human.Security, PP)
 Human.Security.2 <- merge(Human.Security, R)
 Human.Security.2 <- merge(Human.Security, SRF)  
 Human.Security.2 <- merge(Human.Security, SRM)
+```
+
+
 ```
 
 
