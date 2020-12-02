@@ -1,6 +1,6 @@
 # Missing values
 
-```{r}
+```{r, warning=FALSE,message=FALSE}
 library(tidyverse)
 library(readxl)
 library(readr)
@@ -212,31 +212,56 @@ prop_missing_countries %>%
 ```{r warning = FALSE,  message = FALSE}
 
 df_ed_td<-read_csv('./Education/Education_Tidy.csv')
-df_ed_lg<-read_csv('./Education/Education_Wide.csv')
-
-df_ed_td<-df_ed_td[!is.na(df_ed_td$`HDI Rank (2018)`),]
-df_ed_lg<-df_ed_lg[!is.na(df_ed_lg$`HDI Rank (2018)`),]
-
-```
-
-There are 87056 missing values in the entire data frame.
-
-```{r}
-nrow(df_ed_lg[is.na(df_ed_lg$HDI),])
-```
-
-Of those most of the observations seem to concentrated before 2010, where the number of missings declined down to 1 thousand each year, until recently in 2017, and 2018, which saw gains towards 3000.
-```{r}
-df_ed_lg[is.na(df_ed_lg$HDI),] %>% group_by(Year) %>% count() %>% print(n=30)
-```
-
-It looks like missings arer concentrated in the smaller countries.
-```{r, message=FALSE}
-df_ed_lg[is.na(df_ed_lg$HDI),] %>% group_by(Country) %>% summarize(Count=n()) %>% arrange(desc(Count)) %>% print(n=250)
-```
-By variable it looks the number of missings varies quite a bit from 217, all the way up to >5000
-```{r}
-summary(df_ed_td)
+df_ed_lg<-read_csv('./Education/Education_LG.csv')
+df<-df_ed_td[c(2,4:28)] %>% group_by(Country) %>% select(everything()) %>%
+     summarise_all(funs(sum(is.na(.)))) 
+df$TotalMiss<-rowSums(df[,2:26])
 
 ```
 
+
+There are `r sum(df$TotalMiss)` missing observations across the variables, year and country. The following bar chart displaying an interesting yet confusing pattern. It looks like all countries have between `r min(df$TotalMiss)` and  `r max(df$TotalMiss)`. Keeping in mind the data spans 29 years, and 25 variables, this is sensible, though there doesn't seem to be much of a pttern to missing observations, though smaller countries seem partially more likely to have missing data.
+
+```{r,fig.height=25,fig.width=10}
+ggplot(df,aes(y=fct_reorder(Country,TotalMiss),x=TotalMiss)) +
+geom_col()+ylab("Country")+xlab("")+ggtitle("Total Missing") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+For this analysis we want the variables with the least missing values across Countries to have a complete analysis. Overall it looks like, we can already begin narrowing down some of our variables to the ones that have almost no missings across all countries such as education index, or mean years of schooling. Other interesting notes are that the formerYugoslav Republic of Macedonia seems to have all missing observations-- which is correct according to the original source data, and after a little digging is because it has been replaced by North Macedonia, and is likely a left over. Percent of students without access to internet seems to be reported by very few, and mostly developed countries. The percent of population with at least some secondary education also seems like a variable that is frequently reported.
+
+```{r,fig.height=25,fig.width=20}
+
+ggplot(df[,1:26] %>%
+     pivot_longer(cols=!c("Country"),names_to="Vari",values_to="Val") ,aes(y=Country,x=Vari,fill=Val))+
+  geom_tile()+xlab("Variable")+ggtitle("Missing by variable and Country")+them(plot.title = element_text(hjust = 0.5))
+
+```
+
+
+Breaking down the analysis a little further, it looks we should definitely focus on 2010 onwards gfiving the lack of data across countries on a consistent basis for singular years beforehand. It looks like the data was previously released in 5-year buckets.
+
+```{r,fig.height=25,fig.width=20}
+
+df<-df_ed_lg %>% pivot_wider(names_from="Year",values_from="HDI")
+df_n<-df[c(2,4:32)] %>% group_by(Country) %>% select(everything()) %>%
+     summarise_all(funs(sum(is.na(.)))) 
+ggplot(df_n %>%
+     pivot_longer(cols=!c("Country"),names_to="Year",values_to="Val") ,aes(y=Country,x=Year,fill=Val))+
+  geom_tile()+xlab("Year")+ggtitle("Missing by Year")+theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+Interestingly breakding down the missing variables by year confirms what was seen previously. The most reliable variables will be Education Index, Mean Years of Schooling, and Expected Years of Schooling, according to the lower number of missings throughout the years, as well as population with some secondary education.
+
+```{r,fig.height=25,fig.width=20}
+df<-df_ed_td[c(3:28)] %>% group_by(Year) %>% select(everything()) %>%
+     summarise_all(funs(sum(is.na(.)))) 
+df$Year<-factor(df$Year)
+ggplot(df %>%
+     pivot_longer(cols=!c("Year"),names_to="Variable",values_to="Val") ,aes(y=Year,x=Variable,fill=Val))+
+  geom_tile()+xlab("Variable")+ylab("Year")+ggtitle("Missing by Year and Variable")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
