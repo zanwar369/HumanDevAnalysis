@@ -253,27 +253,40 @@ It looks like 100% of the data is missing for Saint Kitts and Nevis, Liechtenste
 
 Due to the large volume of countries, a heat map is not an effective way to visualize the relationship in proportion of data missing between countries and features. A parallel coordinate plot was drawn instead to determine if there's any relationship between features and proportion of missing data for different countries.
 
-```{r, fig.height = 8, fig.width=8}
+```{r, fig.height = 8, fig.width=10}
 
 inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>% 
   group_by(Country) %>% 
   summarise_all(~ sum(is.na(.))/n()) %>%
   ungroup() %>% 
   select(-Year, -'HDI Rank (2018)', -Country) %>%
+  rename("Coefficient of \nHuman Inequality" = "Coefficient of Human Inequality",
+        "Overall loss in \nHDI due to \ninequality (%)" = "Overall loss in HDI due to inequality (%)",
+        "Inequality\nadjusted \nHDI (IHDI)" = "Inequality-adjusted HDI (IHDI)",
+        "Inequality\nadjusted \nincome index" = "Inequality-adjusted income index",
+        "Inequality in \nincome (%)" = "Inequality in income (%)",
+        "Inequality\nadjusted \neducation index" = "Inequality-adjusted education index",
+        "Inequality in \neducation (%)" = "Inequality in education (%)",
+        "Inequality in \nlife expectancy (%)" = "Inequality in life expectancy (%)",
+        "Inequality\nadjusted \nlife expectancy \nindex" = "Inequality-adjusted life expectancy index"
+         ) %>%
   ggparcoord(alpha = 0.2,
              scale = 'globalminmax',
              splineFactor = 0)  +
-  theme(axis.text.x = element_text(angle = 90))
+  theme(axis.text.x = element_text(angle = 0)) +
+  xlab("") +
+  ylab("") + 
+  ggtitle("Inequality Proportion of Missing Data Parallel Coordinate Plot")
 
 ```
 
-* Most countries appear to not be missing data for "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)"  
+* Most countries appear to not be missing data for "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)" and when they do, both features are missing in similar proportions. 
 
 * For remaining features, at intervals of around 0.1 from 0 to 1, there are clusters of countries missing that proportion of data for each feature. 
 
 * There is a small number of countries missing data for most to all of the features (flat line at the top), these are likely the smaller countries found in the bar charts.
 
-* For "Coefficient of Human Inequality", "Inequality-adjusted HDI (IHDI)", and "Inequality-adjusted HDI (IDHI)", countries generally miss the same proportion of the data for all 3 features, indicating that they may be related. 
+* For "Coefficient of Human Inequality", "Overall loss in HDI due to inequality (%)", and "Inequality-adjusted HDI (IHDI)", countries generally miss the same proportion of the data for all 3 features, indicating that they may be related. 
 
 * For "Inequality-adjusted income index" and "Inequality in income (%)", countries generally miss the same proportion of the data for these two features; they are likely related. In addition, countries generally are missing an equal to or smaller proportion of data for these two features than the 3 features mentioned in the previous bullet. 
 
@@ -299,15 +312,203 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
 
 
 
-### SECTION 5 RESULTS -  Variable Selection - incomplete
+### SECTION 5 RESULTS -  
+
+## Variable Selection - incomplete
+
+### Inequality Variable Selection
+
+From Section 4.0 Missing Data, it was noted from the parallel coordinate plot of the `Inequality` indicator that the following sets of features had the same proportion of missing data for nearly every country, indicating that they may be related: 
+
+* "Coefficient of Human Inequality", "Overall loss in HDI due to inequality (%)", and "Inequality-adjusted HDI (IHDI)"
+
+* "Inequality-adjusted income index" and "Inequality in income (%)"
+
+* "Inequality-adjusted education index" and "Inequality in education (%)"
+
+* "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)"
+
+A scatterplot matrix of all 9 features without the missing data is below and such that pairwise correlations between all features can be examined. The analysis will begin with the feature groups listed above with strong relationships in their missing data, then extend to the remaining feature variable pairs. 
 
 
-
-```{r,fig.height=12, fig.width = 12, warning = FALSE }
+```{r,fig.height=12, fig.width = 12, warning = FALSE ,  message = FALSE}
+#inequality_df <- read_csv("./Inequality/inequality_tidy.csv")
+inequality_df <- read_csv("./inequality_tidy.csv")
 ggpairs(inequality_df[,c(4,12,6, 7,10, 5, 9, 11, 8)], progress = FALSE,
         upper = list(continuous = wrap("cor", size = 4)),
         labeller = label_wrap_gen(10)) + 
       theme(strip.text = element_text(size = 8))
 
 ```
+
+First, look at the feature groups where missing data appear to be in equal proportions for most countries:
+
+* "Coefficient of Human Inequality", "Overall loss in HDI due to inequality (%)", and "Inequality-adjusted HDI (IHDI)": The three pairwise correlation coefficients between these three features are 0.999, -0.954, and -0.950, showing that these three feature are highly correlated when the data is not missing.
+
+* "Inequality-adjusted income index" and "Inequality in income (%)": Correlation coefficient of -0.644. Despite countries missing data for both feature consistently, the two feature do not appear to have as strong of correlation as other cases discussed. 
+
+* "Inequality-adjusted education index" and "Inequality in education (%)": The correlation coefficient is -0.942, showing that these two feature are highly correlated when the data is not missing.
+
+* "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)": The correlation coefficient is -0.976, showing that these two feature are highly correlated when the data is not missing.
+
+On the basis of the results above, the following features can be dropped without significant loss of information:
+
+* "Overall loss in HDI due to inequality (%)" - due to strong correlation with "Coefficient of Human Inequality" and the fact both share similar missing patterns. 
+
+* "Inequality-adjusted HDI (IHDI)" - highly correlated with multiple features, especially "Coefficient of Human Inequality" and "Overall loss in HDI due to inequality (%)" (while also sharing the same missing pattern as the latter two).
+
+* "Inequality-adjusted education index" - highly correlated with "Inequality in education (%)" when data is present and in terms of missing pattern.  
+
+* "Inequality-adjusted life expectancy index" - highly correlated with "Inequality in life expectancy (%)" when data is present and in terms of missing pattern.  
+
+Looking at the pairplot of the 5 remaining variables, it is noted that even though they do not share the same missing patterns, "Coefficient of Human Inequality" is strongly correlated with 3 of the remaining features (absolute correlation coefficient of ~0.9). Therefore, this feature can also be dropped. As a result, the remaining 'Inequality' features to be kept for analysis with other indicators are:
+
+* "Inequality-adjusted income index"
+
+* "Inequality in income (%)"
+
+* "Inequality in education (%)"
+
+* "Inequality in life expectancy (%)"
+
+
+## Inequality versus Education (2010 - 2018)
+
+Robin: Inequality and Human Security
+Zohaib: Education and Human Security
+Michelle: Human Security and Inequality
   
+
+
+
+This section will detail the analysis of `Inequality` versus `Education` indicators for features selected per the above:
+
+`Inequality`
+
+* Inequality-adjusted income index
+
+* Inequality in income (%)
+
+* Inequality in education (%)
+
+* Inequality in life expectancy (%)
+
+`Education`
+
+* Education Index
+
+* Mean Years of Schooling
+
+
+```{r, warning = FALSE, message = FALSE}
+education_df <- read_csv("./Education_Tidy.csv") %>%
+                  filter(Year %in% c(2010:2018)) %>%
+                  select(Country, Year, EdInd, MYSch)
+education_df$Country[education_df$Country == 'Ivory Coast'] = "Côte d'Ivoire"
+
+inequal_ed <- inequality_df %>% 
+  select(Country, Year, 
+         'Inequality-adjusted income index', 
+         'Inequality in income (%)', 
+         'Inequality in education (%)',
+         'Inequality in life expectancy (%)') %>%
+  full_join(education_df, by = c('Country', 'Year'))
+
+temp <- gsub(" ", "_", names(inequal_ed))
+temp <- gsub("-", "_", temp)
+temp <- gsub("\\(%\\)", "perc", temp)
+names(inequal_ed) <-  temp
+
+```
+
+First, all `Inequality` variables were compared with all `Education` variables in a scatterplot, faceted by "Year" from 2010 to 2018 since those were the only years where `Inequality` data was available. It was noted that "Year" did not seem to separate the data as illustrated in the a sample facet plot below for "Mean Year of Schooling" versus "Inequality in life expectancy (%)". This was the case for every combination of variables. 
+
+```{r}
+inequal_ed %>%
+  ggplot(aes(x = Inequality_in_life_expectancy_perc, y = MYSch)) +
+  geom_point() +
+  facet_wrap(~Year)
+```
+
+```{r}
+# inequal_ed %>%
+#     select(-Year) %>% 
+#     group_by(Country) %>%
+#     summarise_all(~var(., na.rm = TRUE)^0.5/mean(.,na.rm = TRUE)) %>% 
+#     select(-Country) %>%
+#     summarise_all(~mean(., na.rm = TRUE))
+
+# * For countries where data is available, the ratio of the standard deviation to the mean of a feature for that country is on average less than 0.2 for each feature.
+
+```
+
+Since there are 6 features in total all of which are continuous, a parallel coordinate plot is the most appropriate visualization tool for this type of data. For each of the six features, group by Country and average the data over all Years from 2010 to 2018 ignoring NA's. The rationale is as follows:
+
+* It was shown from the facet plots previously that "Year" did not distinguish any trends.   
+
+* If every Country-Year combination is a line on the parallel coordinate plot, then it would require that none of the six features have NA's. This is too strong and may lead to under plotting given the amount of missing data in this dataset. This also ensures that every country also shows up only once or not at all. 
+
+```{r}
+library(parcoords)
+inequal_ed %>%
+  group_by(Country) %>%
+  summarise_all(~mean(., na.rm = TRUE)) %>%
+  ungroup() %>%
+  select(-Country, -Year) %>%
+  parcoords(rownames = FALSE
+  ,brushMode = "1d-multi"
+  ,brushPredicate = "OR"
+  ,alphaOnBrushed = 0.2
+  ,reorderable = TRUE
+)
+```
+
+
+
+```{r, fig.height = 7, fig.width=10}
+inequal_ed[, c(1,2,6,4,3,5,7,8)] %>%
+  group_by(Country) %>%
+  summarise_all(~mean(., na.rm = TRUE)) %>%
+  ungroup() %>%
+  rename('Inequality in Income (%)' = Inequality_in_income_perc, 
+         "Inequality in \nEducation (%)" = Inequality_in_education_perc,
+         "Inequality Adjusted \nIncome Index" = Inequality_adjusted_income_index,
+         "Inequality in \nLife Expectancy (%)" = Inequality_in_life_expectancy_perc,
+         'Education Index ' = EdInd,
+         'Mean Years of Schooling' = MYSch) %>% 
+  select(-Country, -Year) %>% 
+  ggparcoord(alpha = 0.25,
+               scale = 'uniminmax',
+               splineFactor = 0)  +
+    theme(axis.text.x = element_text(angle = 0)) +
+    xlab("") +
+    ylab("") +
+    ggtitle("Inequality versus Education Parallel Coordinate Plot")
+```
+
+Some observations:
+
+* The two `Education` variables, "Education Index" and "Mean Years of Schooling", is positively correlated. Therefore, analysis for this section will be made with "Education Index" and such analysis implicitly also applies to "Mean Years of Schooling"
+
+* There is a large cluster of countries (call Cluster 1) with low "Inequality in Income (%)", mid to high "Inequality Adjusted Income Index", low "Inequality in Education (%)", and mid to high "Education Index". 
+
+* For Cluster 1, there's a visible negative correlation between "Inequality in Education (%)" and "Education Index". 
+
+* Since for Cluster 1 "Inequality Adjusted Income Index" is visibly negatively correlated with "Inequality in Education (%)", it can be inferred that the former is positively correlated with "Education Index". 
+
+* There is another cluster of countries (call Cluster 2) exhibiting the opposite trend. This cluster of countries has low to mid "Inequality Adjusted Income Index", high "Inequality in Education (%)", and low-mid "Education Index".
+
+* For countries in Cluster 2, there is no obvious negative correlation between "Inequality Adjusted Income Index" - "Education Index" and  "Inequality in Education (%)" - "Education Index" like in Cluster 1.
+
+* Countries in Cluster 1 has a visible right skew in "Inequality in Education (%)" and a slight left skew in "Education Index", while countries in Cluster 2 exhibit no significant skew for these two features compared to Cluster 1. 
+
+
+
+
+
+
+
+
+
+
+
