@@ -134,7 +134,7 @@ suicide rate for both males and females were recorded only in the years 2000,
 
 ```{r}
 Human.Security <- read.csv("./HumanSecurity/Human.Security.csv")
-Human.Security.2 <- read.csv("./HumanSecurity/Human.Security.2.csv")
+Human.Security.2 <- read.csv("./HumanSecurity/Human.Security.csv")
 Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.tidy.csv")
 Homicide.rate <- read.csv("./HumanSecurity/Homicide.tidy.csv")
 rownames(Homicide.rate) <- Homicide.rate$Country
@@ -246,7 +246,7 @@ For this analysis we want the variables with the least missing values across Cou
 
 ggplot(df[,1:26] %>%
      pivot_longer(cols=!c("Country"),names_to="Vari",values_to="Val") ,aes(y=Country,x=Vari,fill=Val))+
-  geom_tile()+xlab("Variable")+ggtitle("Missing by variable and Country")+them(plot.title = element_text(hjust = 0.5))
+  geom_tile()+xlab("Variable")+ggtitle("Missing by variable and Country")+theme(plot.title = element_text(hjust = 0.5))
 
 ```
 

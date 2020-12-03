@@ -24,7 +24,7 @@
 <meta name="author" content="Zohaib Anwar, Lu Bin Liu, Michelle Strayer" />
 
 
-<meta name="date" content="2020-11-23" />
+<meta name="date" content="2020-12-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -139,9 +139,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#inequality-data-transformation"><i class="fa fa-check"></i><b>3.1</b> INEQUALITY DATA TRANSFORMATION</a></li>
-<li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#human-security-data-transformation"><i class="fa fa-check"></i><b>3.2</b> Human Security Data Transformation</a></li>
-<li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#education-data-transformation"><i class="fa fa-check"></i><b>3.3</b> Education Data Transformation</a></li>
+<li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#inequality-data-transformation"><i class="fa fa-check"></i><b>3.1</b> Inequality Data Transformation</a></li>
+<li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#education-data-transformation"><i class="fa fa-check"></i><b>3.2</b> Education Data Transformation</a></li>
+<li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#complete-data"><i class="fa fa-check"></i><b>3.3</b> Complete Data</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a>
 <ul>
@@ -149,7 +149,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#human-security-missing-data"><i class="fa fa-check"></i><b>4.2</b> Human Security Missing Data</a></li>
 <li class="chapter" data-level="4.3" data-path="missing-values.html"><a href="missing-values.html#education-missing-data"><i class="fa fa-check"></i><b>4.3</b> Education Missing Data</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#variable-selection"><i class="fa fa-check"></i><b>5.1</b> Variable Selection</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="results.html"><a href="results.html#inequality-variable-selection"><i class="fa fa-check"></i><b>5.1.1</b> Inequality Variable Selection</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#education-variable-selection"><i class="fa fa-check"></i><b>5.2</b> Education Variable Selection</a></li>
+<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#inequality-versus-education-2010---2018"><i class="fa fa-check"></i><b>5.3</b> Inequality versus Education (2010 - 2018)</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
 <li class="divider"></li>
@@ -173,7 +181,82 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="results" class="section level1" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Results</h1>
+<div id="variable-selection" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Variable Selection</h2>
+<div id="inequality-variable-selection" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Inequality Variable Selection</h3>
+<p>From Section 4.0 Missing Data, it was noted from the parallel coordinate plot of the <code>Inequality</code> indicator that the following sets of features had the same proportion of missing data for nearly every country, indicating that they may be related:</p>
+<ul>
+<li><p>“Coefficient of Human Inequality”, “Overall loss in HDI due to inequality (%)”, and “Inequality-adjusted HDI (IHDI)”</p></li>
+<li><p>“Inequality-adjusted income index” and “Inequality in income (%)”</p></li>
+<li><p>“Inequality-adjusted education index” and “Inequality in education (%)”</p></li>
+<li><p>“Inequality-adjusted life expectancy index” and “Inequality in life expectancy (%)”</p></li>
+</ul>
+<p>A scatterplot matrix of all 9 features without the missing data is below and such that pairwise correlations between all features can be examined. The analysis will begin with the feature groups listed above with strong relationships in their missing data, then extend to the remaining feature variable pairs.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-43-1.png" width="1152" /></p>
+<p>First, look at the feature groups where missing data appear to be in equal proportions for most countries:</p>
+<ul>
+<li><p>“Coefficient of Human Inequality”, “Overall loss in HDI due to inequality (%)”, and “Inequality-adjusted HDI (IHDI)”: The three pairwise correlation coefficients between these three features are 0.999, -0.954, and -0.950, showing that these three feature are highly correlated when the data is not missing.</p></li>
+<li><p>“Inequality-adjusted income index” and “Inequality in income (%)”: Correlation coefficient of -0.644. Despite countries missing data for both feature consistently, the two feature do not appear to have as strong of correlation as other cases discussed.</p></li>
+<li><p>“Inequality-adjusted education index” and “Inequality in education (%)”: The correlation coefficient is -0.942, showing that these two feature are highly correlated when the data is not missing.</p></li>
+<li><p>“Inequality-adjusted life expectancy index” and “Inequality in life expectancy (%)”: The correlation coefficient is -0.976, showing that these two feature are highly correlated when the data is not missing.</p></li>
+</ul>
+<p>On the basis of the results above, the following features can be dropped without significant loss of information:</p>
+<ul>
+<li><p>“Overall loss in HDI due to inequality (%)” - due to strong correlation with “Coefficient of Human Inequality” and the fact both share similar missing patterns.</p></li>
+<li><p>“Inequality-adjusted HDI (IHDI)” - highly correlated with multiple features, especially “Coefficient of Human Inequality” and “Overall loss in HDI due to inequality (%)” (while also sharing the same missing pattern as the latter two).</p></li>
+<li><p>“Inequality-adjusted education index” - highly correlated with “Inequality in education (%)” when data is present and in terms of missing pattern.</p></li>
+<li><p>“Inequality-adjusted life expectancy index” - highly correlated with “Inequality in life expectancy (%)” when data is present and in terms of missing pattern.</p></li>
+</ul>
+<p>Looking at the pairplot of the 5 remaining variables, it is noted that even though they do not share the same missing patterns, “Coefficient of Human Inequality” is strongly correlated with 3 of the remaining features (absolute correlation coefficient of ~0.9). Therefore, this feature can also be dropped. As a result, the remaining ‘Inequality’ features to be kept for analysis with other indicators are:</p>
+<ul>
+<li><p>“Inequality-adjusted income index”</p></li>
+<li><p>“Inequality in income (%)”</p></li>
+<li><p>“Inequality in education (%)”</p></li>
+<li><p>“Inequality in life expectancy (%)”</p></li>
+</ul>
+</div>
+</div>
+<div id="education-variable-selection" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Education Variable Selection</h2>
+<p>Initially we pull only the variables that had the lest missings as per the missings analysis.I then run ggpairs across these variables to determine if there is further narrrowing we can do in regards to select. Given that the variables are all relatively, highly correlated, it is decided to just take Education Index as the variable of comparions in the analysis of correlations across human development topics.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+</div>
+<div id="inequality-versus-education-2010---2018" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Inequality versus Education (2010 - 2018)</h2>
+<p>This section will detail the analysis of <code>Inequality</code> versus <code>Education</code> indicators for features selected per the above:</p>
+<p><code>Inequality</code></p>
+<ul>
+<li><p>Inequality-adjusted income index</p></li>
+<li><p>Inequality in income (%)</p></li>
+<li><p>Inequality in education (%)</p></li>
+<li><p>Inequality in life expectancy (%)</p></li>
+</ul>
+<p><code>Education</code></p>
+<ul>
+<li><p>Education Index</p></li>
+<li><p>Mean Years of Schooling</p></li>
+</ul>
+<p>First, all <code>Inequality</code> variables were compared with all <code>Education</code> variables in a scatterplot, faceted by “Year” from 2010 to 2018 since those were the only years where <code>Inequality</code> data was available. It was noted that “Year” did not seem to separate the data as illustrated in the a sample facet plot below for “Mean Year of Schooling” versus “Inequality in life expectancy (%)”. This was the case for every combination of variables.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p>Since there are 6 features in total all of which are continuous, a parallel coordinate plot is the most appropriate visualization tool for this type of data. For each of the six features, group by Country and average the data over all Years from 2010 to 2018 ignoring NA’s. The rationale is as follows:</p>
+<ul>
+<li><p>It was shown from the facet plots previously that “Year” did not distinguish any trends.</p></li>
+<li><p>If every Country-Year combination is a line on the parallel coordinate plot, then it would require that none of the six features have NA’s. This is too strong and may lead to under plotting given the amount of missing data in this dataset. This also ensures that every country also shows up only once or not at all.</p></li>
+</ul>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-47-1.png" width="960" /></p>
+<p>Some observations:</p>
+<ul>
+<li><p>The two <code>Education</code> variables, “Education Index” and “Mean Years of Schooling”, is positively correlated. Therefore, analysis for this section will be made with “Education Index” and such analysis implicitly also applies to “Mean Years of Schooling”</p></li>
+<li><p>There is a large cluster of countries (call Cluster 1) with low “Inequality in Income (%)”, mid to high “Inequality Adjusted Income Index”, low “Inequality in Education (%)”, and mid to high “Education Index”.</p></li>
+<li><p>For Cluster 1, there’s a visible negative correlation between “Inequality in Education (%)” and “Education Index”.</p></li>
+<li><p>Since for Cluster 1 “Inequality Adjusted Income Index” is visibly negatively correlated with “Inequality in Education (%)”, it can be inferred that the former is positively correlated with “Education Index”.</p></li>
+<li><p>There is another cluster of countries (call Cluster 2) exhibiting the opposite trend. This cluster of countries has low to mid “Inequality Adjusted Income Index”, high “Inequality in Education (%)”, and low-mid “Education Index”.</p></li>
+<li><p>For countries in Cluster 2, there is no obvious negative correlation between “Inequality Adjusted Income Index” - “Education Index” and “Inequality in Education (%)” - “Education Index” like in Cluster 1.</p></li>
+<li><p>Countries in Cluster 1 has a visible right skew in “Inequality in Education (%)” and a slight left skew in “Education Index”, while countries in Cluster 2 exhibit no significant skew for these two features compared to Cluster 1.</p></li>
+</ul>
 
+</div>
 </div>
             </section>
 

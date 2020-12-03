@@ -2,6 +2,18 @@
 
 ## Variable Selection 
 
+
+```{r,warning=FALSE,message=FALSE}
+
+library(tidyverse)
+library(readxl)
+library(readr)
+library(stringr)
+library(ggplot2)
+library(GGally)
+
+```
+
 ### Inequality Variable Selection
 
 From Section 4.0 Missing Data, it was noted from the parallel coordinate plot of the `Inequality` indicator that the following sets of features had the same proportion of missing data for nearly every country, indicating that they may be related: 
@@ -60,6 +72,21 @@ Looking at the pairplot of the 5 remaining variables, it is noted that even thou
 * "Inequality in life expectancy (%)"
 
 
+
+## Education Variable Selection
+
+Initially we pull only the variables that had the lest missings as per the missings analysis.I then run ggpairs across these variables to determine if there is further narrrowing we can do in regards to select. Given that the variables are all relatively, highly correlated, it is decided to just take Education Index as the variable of comparions in the analysis of correlations across human development topics.
+
+```{r warning = FALSE,  message = FALSE}
+
+df_ed<-read_csv('./Education/Education_Tidy.csv')
+df_ed<-df_ed[,c("HDI Rank (2018)","Country","Year",
+        "EdInd","ExpSch","MYSch","PopSS25U")]
+ggpairs(df_ed[,c("EdInd","ExpSch","MYSch","PopSS25U")])
+```
+
+
+
 ## Inequality versus Education (2010 - 2018)
 
 This section will detail the analysis of `Inequality` versus `Education` indicators for features selected per the above:
@@ -82,10 +109,10 @@ This section will detail the analysis of `Inequality` versus `Education` indicat
 
 
 ```{r, warning = FALSE, message = FALSE}
-education_df <- read_csv("./Inequality/Education_Tidy.csv") %>%
+education_df <- read_csv("./Education/Education_Tidy.csv") %>%
                   filter(Year %in% c(2010:2018)) %>%
                   select(Country, Year, EdInd, MYSch)
-education_df$Country[education_df$Country == 'Ivory Coast'] = "Côte d'Ivoire"
+# education_df$Country[education_df$Country == 'Ivory Coast'] = "Côte d'Ivoire"
 
 inequal_ed <- inequality_df %>% 
   select(Country, Year, 
