@@ -110,89 +110,41 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
 
 ## Human Security Missing Data
 
-A significant proportion of data in the Human.Security dataframe is missing.  Largely, this seems to be the product of uneven tracking between variables.  Homelessness due to natural disaster is measured on a yearly basis between 1990 and 2018.  By contrast, Homicide rate was recorded only in 1990, 1995, 2000, 2005, and yearly from 2010 to 2017.  As another example, suicide rate for both males and females were recorded only in the years 2000, 
-2010, 2015, and 2016.
+A significant proportion of data in the Human.Security dataframe is missing.  Largely, this seems to be a product of well-documented geographical complications in collecting political science data and uneven tracking between variables.
 
-
-```{r}
-Human.Security <- read.csv("./HumanSecurity/Human.Security.csv")
-Human.Security.2 <- read.csv("./HumanSecurity/Human.Security.2.csv")
-Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.tidy.csv")
-Homicide.rate <- read.csv("./HumanSecurity/Homicide.tidy.csv")
-rownames(Homicide.rate) <- Homicide.rate$Country
-Homicide.rate <- Homicide.rate[,3:14]
-Suicide.rate.F <- read.csv("./HumanSecurity/SR.F.tidy.csv")
-Suicide.rate.M <- read.csv("./HumanSecurity/SR.M.tidy.csv")
-```
-
-Below are the 
-
-```{r}
-
-```
-
-
-```{r}
-colnames(Homeless.natural.disaster)[3:31]
+```{r, echo=F}
+Human.Security <- read_csv("./HumanSecurity/Human.Security.csv")
+Human.Security <- Human.Security[,2:9]
+Human.Security.2 <- read_csv("./HumanSecurity/Human.Security.2.csv")
+Human.Security.2 <- Human.Security.2[,2:9]
+Homeless.natural.disaster <- read_csv("./HumanSecurity/Homeless.tidy.csv")
+Homeless.natural.disaster <- Homeless.natural.disaster[,2:31]
+Homicide.rate <- read_csv("./HumanSecurity/Homicide.tidy.csv")
+Homicide.rate <- Homicide.rate[,2:14]
+Homicide.rate.1 <- read.csv("./HumanSecurity/Homicide.tidy.csv")
+Homicide.rate.1 <- Homicide.rate.1[,2:14]
+names(Homicide.rate.1)[2:13] <- c("1990", "1995", "2000", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+Suicide.rate.F <- read_csv("./HumanSecurity/SR.F.tidy.csv")
+Suicide.rate.F <- Suicide.rate.F[,2:6]
+Suicide.rate.M <- read_csv("./HumanSecurity/SR.M.tidy.csv")
+Suicide.rate.M <- Suicide.rate.M[,2:6]
 ```
 
 
-```{r}
-colnames(Homicide.rate)[1:12]
+A number of unique problems are incurred in the collection of international political science data, as discussed previously in the Data chapter. Certain countries present unique challenges for data collection, particularly where collection processes rely on state institutions and infrastructure.
+
+The Homicide dataset is a particularly demonstrative example.  The final entries in the dataset show countries for which there is no recorded homicide data.
+
+These countries are:
+
+```{r, echo = F}
+print(Homicide.rate$Country[168:192])
 ```
 
-```{r}
-colnames(Suicide.rate.F)[3:6]
-colnames(Suicide.rate.M)[3:6]
-```
+Of these 24 countries, 20 (Cóte d'Ivoire, Congo, Djibouti, Ethiopia, Gabon, Gambia, Madagascar, Mali, Nigeria, Sudan, Chad, Congo [Dem. Republic], Comoros, Eritrea, Guinea, Equatorial Guinea, Libya, Mauritania, Senegal, and Togo) are in Africa.  The remaining four (Lao [People's Dem. Republic], Vanuatu, Micronesia [Fed. States], the Marshall Islands, and Palau) are small island countries in Oceania.
 
 
-```{r}
-prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security))), 
-            prop_missing = unname(colMeans(is.na(Human.Security)))) %>%
-          filter(prop_missing > 0)  
-
-prop_missing_features %>%
-    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
-    geom_col() +
-    coord_flip() 
-```
-```{r}
-prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security.2))), 
-            prop_missing = unname(colMeans(is.na(Human.Security.2)))) %>%
-          filter(prop_missing > 0)  
-
-prop_missing_features %>%
-    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
-    geom_col() +
-    coord_flip() 
-```
-
-
-
-
-Importantly, data also appears to be missing among outlying island countries and
-countries in the African continent.  For example, the chart below notes missing 
-Homicide data.
-
-A notable chunk of countries (obs. numbers 50-100) seem to be missing data
-between 1990 and 2005.  However, the largest amount of missing data seems to 
-be concentrated in observations 150 to 192, which includes Micronesia and many of
-the countries on and around the African continent (ie. Nigeria, Sudan, Senegal).
-
-
-```{r}
-x <- missing_data.frame(Homicide.rate)
-image(x)
-```
-
-This trend is not unknown in international data collection.  Lower 
-infrastructural development renders data collection difficult, and factors like 
-human rights and humanitarian crises, political violence, and political 
-instability can hinder data collection processes. 
-
-
-```{r fig.height = 16, fig.width = 8}
+```{r fig.height = 14, fig.width = 8}
 
 prop_missing_countries<- Human.Security.2 %>% 
   group_by(Country) %>% 
@@ -201,14 +153,108 @@ prop_missing_countries<- Human.Security.2 %>%
 
 prop_missing_countries <- data.frame(Country = prop_missing_countries$Country, 
                                      country_prop_missing =  rowMeans(prop_missing_countries[,2:8])) %>% 
-                          filter(country_prop_missing > .3)
+                          filter(country_prop_missing > .1)
 
 prop_missing_countries %>% 
     ggplot(aes(x = fct_reorder(Country, country_prop_missing, .desc =FALSE), y = country_prop_missing)) +
     geom_col() +
-    coord_flip()
+    coord_flip() + 
+    xlab(NULL) + 
+    ylab("Proportion of Data Missing") +
+    ggtitle("Missing Human Security Data by Country")
 ```
 
+The above graph shows the proportion of missing data in the compiled Human Security dataset.  The Marshall Islands (Oceania) is missing over 90%, with Palau (Oceania) missing over 65% and Somalia (Africa), Korea (Dem. People's Rep.) [North Korea] (Asia), and St. Kitts and Nevis (Oceania) each missing over 50% of data.
+
+The countries missing 40% or more data include the above, as well as Andorra (Europe), Eritrea (Africa), Iran [Islamic Rep.] (Asia), Mali (Africa), Micronesia [Fed. States] (Oceania), Palestine (Asia), Congo (Africa), Gambia (Africa), and Sudan (Africa).
+
+Of these states, four are within Oceania, six in Africa, three in Asia (Korea (Dem. People's Rep.) [North Korea], Iran (Islamic Rep.), and Palestine), and one is in Europe (Andorra).
+
+Due to the large volume of countries included in this data, and their alphabetical organizational scheme, a heatmap is not an appropriate visualization tool.  
+
+
+Further, the dataset shows uneven tracking between variables.  Homelessness due to natural disaster is measured on a yearly basis between 1990 and 2018.  By contrast, Homicide rate was recorded only in 1990, 1995, 2000, 2005, and yearly from 2010 to 2017.  As another example, suicide rate for both males and females were recorded only in the years 2000, 2010, 2015, and 2016.
+
+Below are the years in the Homeless.natural.disaster dataset for which data were collected:
+
+
+```{r, echo=F}
+colnames(Homeless.natural.disaster)[2:30]
+```
+
+By contrast, homicide data were only collected for the following years:
+
+```{r,echo=F}
+colnames(Homicide.rate)[2:13]
+```
+
+And suicide rate data for both male and females were only collected in the following years:
+
+```{r, echo=F}
+colnames(Suicide.rate.F)[2:5]
+```
+
+The large difference in frequency of data collection between these datasets results in a merged dataset with a great deal of missing values.  As the following graph demonstrates, as a result of the Homeless.natural.disaster data, remaining variables are each missing a minimum of about 75% of data values. 
+
+```{r, echo=F}
+prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security))), 
+            prop_missing = unname(colMeans(is.na(Human.Security)))) %>%
+          filter(prop_missing > 0)  
+
+prop_missing_features %>%
+    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
+    geom_col() +
+    coord_flip() +
+    xlab(NULL) + 
+    ylab("Proportion of Data Missing") +
+    ggtitle("Missing Data", subtitle = "Including all years") + 
+    ylim(c(0,.9))
+```
+
+Alternately, the graphic below gives a more accurate picture of missing data.
+
+
+```{r, echo=F}
+prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security.2))), 
+            prop_missing = unname(colMeans(is.na(Human.Security.2)))) %>%
+          filter(prop_missing > 0)  
+
+prop_missing_features %>%
+    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
+    geom_col() +
+    coord_flip() +
+    xlab(NULL) + 
+    ylab("Proportion of Data Missing") +
+    ggtitle("Missing Data", subtitle = "Including only matched years") +
+    ylim(c(0,.9))
+```
+
+The data reflected in this chart do not include the empty rows added to fit the years of recorded homelessness data.  The variables with the greatest proportion of missing data (Refugees and Prison population) are missing between 45% and 50% of their data.
+
+The following heatmap shows missing data split by variable.
+
+```{r}
+prop_missing_year<- Human.Security.2 %>% 
+  group_by(Year) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup() %>% 
+  select(-Country) %>% 
+  pivot_longer(-Year, names_to = 'features' , values_to = 'year_prop_missing') 
+
+prop_missing_year%>%
+  ggplot(aes(x = factor(Year), y = fct_reorder(features, -year_prop_missing, mean))) +
+  geom_tile(aes(fill = year_prop_missing)) +
+  scale_fill_continuous(high = "#132B43", low = "#56B1F7") +
+  xlab("Year") + 
+  ylab(NULL) +
+  ggtitle("Missing Human Security Data by Variable")
+```
+
+Homelessness due to natural disaster, suicide rate (both male and female), and homicide rate are missing the least amount of data, though both refugees by country of origin and prison population are missing relatively little data after the year 2000.
+
+Given that homelessness due to natural disaster seems to be the most thoroughly recorded variable, the low proportion of missing data makes sense.  Additionally, given that suicide rate (male and female) only provides data for four years (2000, 2010, 2015, 2016), its low proportion of missing data also follows logically.  
+
+Both refugees by country of origin and prison population show a high proportion of missing data around the year 2000, and appear to fluctuate together. Given both refugee emigration and prison population require strong infrastructure and organization to accurately compute, it seems possible that whatever institutions collect data on these factors may be impacted by similar influences.
 
 
 ## Education Missing Data
