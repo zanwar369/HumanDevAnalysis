@@ -264,10 +264,16 @@ Human.Security <- merge(Human.Security, PP, all.x = T, all.y = T)
 Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)  
 Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
 Human.Security <- Human.Security[30:5684,]
+
+Human.Security.Tidy.2 <- merge(HND, HR)
+Human.Security.Tidy.2 <- merge(Human.Security.Tidy.2, PP)
+Human.Security.Tidy.2 <- merge(Human.Security.Tidy.2, SRF)  
+Human.Security.Tidy.2 <- merge(Human.Security.Tidy.2, SRM)
 ```
 
-```{r}
+```{r, eval=F}
 Human.Security %>% write_csv('./HumanSecurity/HumanSecurity.Final.Tidy.csv')
+Human.Security.Tidy.2 %>% write_csv('./HumanSecurity/HumanSecurity.Final.Tidy.2.csv')
 ```
 
 
@@ -380,7 +386,7 @@ df_ed_td %>% write_csv('./Education/Education_Tidy.csv')
 
 ```{r}
 
-HS <-read.csv("./HumanSecurity/Human.Security.Final.Tidy.csv")
+#HS <-read.csv("./HumanSecurity/Human.Security.Final.Tidy.csv")
 
 full_join(inequality_df,
           full_join(df_ed_td,HS,by=c("Country"="Country","Year"="Year")),

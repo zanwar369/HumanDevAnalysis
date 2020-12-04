@@ -126,7 +126,7 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
 A significant proportion of data in the Human.Security dataframe is missing.  Largely, this seems to be a product of well-documented geographical complications in collecting political science data and uneven tracking between variables.
 
 ```{r, echo=F}
-Human.Security <- read_csv("./HumanSecurity/Human.Security.csv")
+Human.Security <- read_csv("./HumanSecurity/Human.Security.Fina.Tidy.csv")
 Human.Security <- Human.Security[,2:9]
 Human.Security.2 <- read_csv("./HumanSecurity/Human.Security.2.csv")
 Human.Security.2 <- Human.Security.2[,2:9]
