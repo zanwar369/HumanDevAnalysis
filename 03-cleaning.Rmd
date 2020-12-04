@@ -118,7 +118,7 @@ for(i in 2:length(inequality_list)){
   inequality_df <- inequality_df %>%
                       full_join(temp_df %>% select(-'HDI Rank (2018)'), 
                                 by = c('Country','Year'))
-}
+} 
 head(inequality_df)
 ```
 
