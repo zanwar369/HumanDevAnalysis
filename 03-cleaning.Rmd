@@ -268,8 +268,6 @@ Human.Security <- Human.Security[30:5684,]
 ```
 
 
-```
-
 
 
 ## Education Data Transformation
@@ -338,7 +336,8 @@ In order to read in, and transform the education data, the method is again simil
 dr="./Education/csv"
 file_list <- list.files(path=dr,pattern="*.csv")
 dttyp<-c("EdInd","ExpSch","ExpSchF","ExpSchM","GovMon","GERPP","GERP","GERS","GERT",
-         "LitR","MYSch","MYSchF","MYSchM","PerPSInt","PerSSInt","PopSS25U","PopSSF25U","PopSSM25U",
+         "LitR","MYSch","MYSchF","MYSchM","PerPSInt","PerSSInt",
+         "PopSS25U","PopSSF25U","PopSSM25U",
          "PSDrop","PSTchTrn","PISAMth","PISARead","PISAScn","PupTchRPS","SurvRSGE")
 
 for (i in 1:length(file_list)){
@@ -347,15 +346,17 @@ for (i in 1:length(file_list)){
                      fileEncoding = "UTF-8")
    df_temp<-subset(df_temp,!grepl("[a-z]:",df_temp$`HDI Rank (2018)`))
    df_temp$`HDI Rank (2018)`<-as.numeric(df_temp$`HDI Rank (2018)`)
-   df_temp<-subset(df_temp,!is.na(df_temp$`HDI Rank (2018)`))
+   df_temp<-df_temp[1:(nrow(df_temp)-17),]
    df_temp$var<-dttyp[i]
-   df_temp$Country[df_temp$Country=="Côte d'Ivoire"]<-"Ivory Coast"
    if (i==1) {
      df_ed<-df_temp[!sapply(df_temp, function(x) all(is.na(x)))]}
-   else {df_ed<-bind_rows(df_ed,df_temp[!sapply(df_temp, function(x) all(is.na(x)))])}
+   else {df_ed<-bind_rows(df_ed,df_temp[!sapply(
+     df_temp, function(x) all(is.na(x)))])}
    
 }
+
 df_ed<-df_ed[,!grepl("\\.[0-9]",colnames(df_ed))]
+
 ```
 
 Once the files are read in correctly we create two separate forms of the data. One with each variable as a column, and year as its own signular column, utilizing the pivot longer and wider functions. The other method leaves relevant education vartiables in a singular column, and another column coresponding to their values.  While the second format is not necessarily tidy-this will help look at missings across the data.
@@ -363,9 +364,26 @@ Once the files are read in correctly we create two separate forms of the data. O
 ```{r}
 df_ed_lg<-df_ed %>%
             pivot_longer(cols=!c("HDI Rank (2018)","Country","var"),names_to="Year",values_to="HDI") 
+df_ed_lg$Year<-as.numeric(df_ed_lg$Year)
 df_ed_td<-df_ed_lg %>%
             pivot_wider(names_from="var",values_from="HDI")
 
 df_ed_td %>% write_csv('./Education/Education_Tidy.csv')
-df_ed_lg %>% write_csv('./Education/Education_LG.csv')
+
+```
+ # df_temp<-subset(df_temp,!is.na(df_temp$`HDI Rank (2018)`))
+
+
+## Complete Data
+
+```{r}
+
+HS<-read.csv("./HumanSecurity/Human.Security.csv")
+
+full_join(inequality_df,
+          full_join(df_ed_td,HS,by=c("Country"="Country","Year"="Year")),
+          by=c("Country"="Country","Year"="Year")) %>%
+  write_csv('./FinalData/All.csv')
+
+
 ```
