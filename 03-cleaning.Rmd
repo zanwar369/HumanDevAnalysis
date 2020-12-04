@@ -152,8 +152,6 @@ tail(inequality_df)
 inequality_df %>% write_csv('./Inequality/inequality_tidy.csv')
 ```
 
-
-<<<<<<< HEAD
 ## Human Security Data Transformation
 
 
@@ -164,8 +162,6 @@ Below are the variables pulled from the Human Security dataset:
 * Homicide rate ()
 
 * Prison population ()
-
-* Refugees by country of origin ()
 
 * Suicide rate (Male) ()
 
@@ -384,7 +380,7 @@ df_ed_td %>% write_csv('./Education/Education_Tidy.csv')
 
 ```{r}
 
-HS<-read.csv("./HumanSecurity/Human.Security.Final.Tidy.csv")
+HS <-read.csv("./HumanSecurity/Human.Security.Final.Tidy.csv")
 
 full_join(inequality_df,
           full_join(df_ed_td,HS,by=c("Country"="Country","Year"="Year")),
