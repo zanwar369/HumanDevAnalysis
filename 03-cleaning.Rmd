@@ -386,7 +386,7 @@ df_ed_td %>% write_csv('./Education/Education_Tidy.csv')
 
 ```{r}
 
-#HS <-read.csv("./HumanSecurity/Human.Security.Final.Tidy.csv")
+HS <-read.csv("./HumanSecurity/HumanSecurity.Final.Tidy.csv")
 
 full_join(inequality_df,
           full_join(df_ed_td,HS,by=c("Country"="Country","Year"="Year")),
