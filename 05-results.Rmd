@@ -186,8 +186,28 @@ Some observations:
 * Countries in Cluster 1 has a visible right skew in "Inequality in Education (%)" and a slight left skew in "Education Index", while countries in Cluster 2 exhibit no significant skew for these two features compared to Cluster 1. 
 
 
+### Human Security Variable Selection
+
+As noted in section 4, the Suicide rate data are collected sporadically.  While these datasets show the lowest proportion of missing data, they only show data for four years, which are not consistently spaced across time.
+
+The other datasets in this section--Homicide rate, Prison population, Homelessness due to natural disaster, and Refugees by country of origin--show a higher proportion of missing data, but reflect a larger number of sampled years.
+
+Additionally, the amount of missing data introduced into the rest of the dataset by the thorough data collection in the Homelessness due to natural disasters data drastically distorts the number of missing data values in the Human security dataset.
 
 
+The following graph shows the pairwise correlation between all variables in the dataset.
+
+
+```{r,fig.height=10, fig.width = 10, warning = FALSE ,  message = FALSE}
+Human.Security.2 <- read_csv("./HumanSecurity/Human.Security.2.csv")
+Human.Security.2 <- Human.Security.2[,2:9]
+ggpairs(Human.Security.2[,c(3:8)], progress = FALSE,
+        upper = list(continuous = wrap("cor", size = 4)),
+        labeller = label_wrap_gen(10)) + 
+      theme(strip.text = element_text(size = 8)) + 
+      ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = "Human Security")
+
+```
 
 
 
