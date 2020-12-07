@@ -1,0 +1,1113 @@
+--- 
+title: "Human Development Analysis"
+author: "Zohaib Anwar, Lu Bin Liu, Michelle Strayer"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Introduction
+
+
+<!--chapter:end:index.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Data sources
+
+The data used for this project is downloaded from the [United Nations Development Programme - Human Development Reports website](http://hdr.undp.org/en/data). The United Nations Development Programme's (UNDP) Human Development Report Office (HDRO) compiles this data for the purpose of tracking human well being in countries around the world. This data is used extensively by the HDRO in its (near) annual Human Development Report (HDR). The report highlights human development in large part using various the human development indices (HDI), derived metrics for measuring human development which takes into account factors beyond economics. However for this project, HDI will not be a principal part of the investigation.       
+
+According to the [Human Development Report 2019: Reader's Guide](http://hdr.undp.org/en/content/human-development-report-2019-readers-guide), the data used, at least for the 2019 HDR, is collected "from international data agencies with the mandate, resources, and expertise to collect national data on specific indicators". Based on the "Statistical Acknowledgement" section of the guide, the HDR data was aggregated by the HDRO from a large number of organizations that are reputable and specializes in the field from which the data was collected. For the 2019 HDR, these included international agencies like [the World Health Organization, the World Bank, and many others](http://hdr.undp.org/sites/default/files/2019_statistical_references.pdf). The HDRO also provides [contact information](http://hdr.undp.org/en/statistics/understanding/sources), where available, for organizations it sourced HDR data from.           
+
+The data available for download from UNDP's website linked in the first paragraph consists of 12 different indicators of human development (plus HDI) and for each indicator, there are a number of descriptive features of that indicator for which data is available. For example, there are 9 features which fall under the `Demography` indicator, ranging from "Median age (years)" to "Young age (0-14) dependency ratio (per 100 people ages 15-64)". For each feature, a data table, if available, is provided where the columns include `HDI Rank (2018)`, `Country`, and one column for every year (i.e. `1990`) for which data is aggregated. Every column except `Country` contains numerical data. The years for which data is available falls in the range from 1990 to 2018.  
+
+For this project, we will be examining 3 of the 12 indicators: `Inequality`, `Human Security`, and `Education`, which has 15, 7, and 19 features respectively. These features will be investigated in further detail in subsequent sections.     
+
+Investigation showed that there are a number of issues with this data set as summarized below:
+
+* The [Human Development Report 2019: Reader's Guide](http://hdr.undp.org/en/content/human-development-report-2019-readers-guide) note that due to data accessibility and processing methodology, there may be discrepancies in data between national and international agencies.
+
+* While the data set contains data from 1990 to 2018, it does not consistently store data for this time frame for every feature for every indicator. For example, some features have data going back to 1990 but others only back to 2010.
+
+* Even within the same indicator, difference features have data for different time intervals. Some features have data for each year, others every 5 years. 
+
+* Data for some feature do not have data in even time intervals. For example, "Prison population (per 100,000 people)" has data for years 2003, 2005, 2010, 2011 etc.  
+
+* As will be detailed in subsequent sections, the proportion of missing data is high for some countries. 
+
+* For certain feature - country combinations, 2018 data was not available and was filled with the data from the most recent available year.
+
+* It was not explicitly stated in the source documentation, but given that the data is collected from 1990-2018 and aggregated from numerous sources, it is possible that there lacks consistency in data collection and computation of certain metrics over time. [For instance, method of calculating the HDI is continuously being adjusted.](http://hdr.undp.org/en/humandev)
+
+Additionally, 
+
+Variation in infrastructural development complicates data collection, and factors like terrain, geographical location, human rights and humanitarian crises, political violence, and political instability can hinder data collection.
+
+<!--chapter:end:02-data.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Data transformation
+
+In order to work with the amount of data we split the work into three separate buckets-- Human Security, education, and inequality.
+We all performed similar transformations detailed below.
+
+
+## Inequality Data Transformation
+
+The `Inequality` indicator has 15 features from years 2010 to 2018 (one column per year). However, the data table for 6 of these features were not available for download. The remaining 9 features for which data tables were available and was extracted were:
+
+* Coefficient of Human Inequality
+
+* Inequality-adjusted education index
+
+* Inequality-adjusted HDI (IHDI)
+
+* Inequality-adjusted income index
+
+* Inequality-adjusted life expectancy index
+
+* Inequality in education (%)^
+
+* Inequality in income (%)^
+
+* Inequality in life expectancy (%)
+
+* Overall loss in HDI due to inequality (%)
+
+^ Data for `2018` is either from 2018 or the latest year available. 
+
+Note that the column 'HDI Rank (2018)' is kept as a reference column and not for analysis. 
+
+First all of the files are read parsing through the inequality directory, and using read.csv to read in the relevant raw data files for each variable.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(readr)
+library(stringr)
+```
+
+```{r warning = FALSE,  message = FALSE}
+temp <- list.files(path = "./Inequality/inequality_rawdata", pattern="*.csv")
+ 
+inequality_list <- list()
+for(i in 1:length(temp)){
+  inequality_list[[i]] <- read_csv(paste0("./Inequality/inequality_rawdata/", temp[i]), skip = 1) %>%
+                    select("HDI Rank (2018)", Country, `2010`, `2011`, `2012`, `2013`, 
+                           `2014`, `2015`, `2016`, `2017`, `2018`) 
+}
+names(inequality_list) <- sub("\\..*", "", temp)
+```
+
+Now to take a high level look at the data itself, print the head and tail of one of the dataframes in the list `inequality_list`, in this case the dataframe containing data for the "Inequality in education (%)" as a sample:
+
+```{r}
+print(head(inequality_list[[6]]))
+print(tail(inequality_list[[6]]))
+```
+
+Inspection of the remaining data frame indicate that the last rows for every data frame in `inequality_list` are `NA`. In addition, some data frames have foot notes at the end of the table that was read in as a value in the first column. These rows are removed. 
+
+```{r}
+inequality_list[[1]] <- inequality_list[[1]] %>% 
+                            filter(row_number() <= n()-1)
+inequality_list[[2]] <- inequality_list[[2]] %>% 
+                            filter(row_number() <= n()-1)
+inequality_list[[3]] <- inequality_list[[3]] %>% 
+                            filter(row_number() <= n()-1)
+inequality_list[[4]] <- inequality_list[[4]] %>% 
+                            filter(row_number() <= n()-1)
+inequality_list[[5]] <- inequality_list[[5]] %>% 
+                            filter(row_number() <= n()-1)
+inequality_list[[6]] <- inequality_list[[6]] %>% 
+                            filter(row_number() <= n()-3)
+inequality_list[[7]] <- inequality_list[[7]] %>% 
+                            filter(row_number() <= n()-3)
+inequality_list[[8]] <- inequality_list[[8]] %>% 
+                            filter(row_number() <= n()-2)
+inequality_list[[9]] <- inequality_list[[9]] %>% 
+                            filter(row_number() <= n()-1)
+```
+
+The below shows that the number of rows in the data frame for each feature is different. This implies not every feature has the same list of countries. 
+
+```{r warning = FALSE,  message = FALSE}
+for(i in 1:length(inequality_list)){
+  row <- dim(inequality_list[[i]])[1]
+  column <- dim(inequality_list[[i]])[2]
+  print(paste0(sub("\\..*", "", temp[i])," feature has ", row, " rows and ", column, " columns."))
+}
+```
+To investigate this further:
+
+```{r, message = FALSE, warning = FALSE}
+differences <- c()
+for(i in 1:length(inequality_list)){
+  for(j in 1:length(inequality_list)){
+    differences <- c(differences,setdiff(inequality_list[[i]]$Country, inequality_list[[j]]$Country))
+  }
+}
+print(unique(differences))
+```
+It looks like these four countries shows up for some features and not others. We can expect a lot of missing data for at least these four countries. 
+
+The next step is to create a single tidy dataframe for `Inequality`. Each data frame in `inequality_list` has column headings 2010 to 2018 which are values not variables. In addition, each data frame in `inequality_list` is from the same observational unit (`Inequality`) and should be in one data frame. To convert the list of data frames `inequality_list` into a single tidy data frame, use `pivot_longer` and `full_join` to create the tidy data frame `inequality_df`.   
+
+```{r}
+inequality_df <- inequality_list[[1]] %>% 
+                    pivot_longer(!c('HDI Rank (2018)', 'Country'), 
+                                 names_to = "Year", 
+                                 values_to = names(inequality_list[1]))
+for(i in 2:length(inequality_list)){
+  temp_df <- inequality_list[[i]] %>% 
+                    pivot_longer(!c('HDI Rank (2018)', 'Country'), 
+                                 names_to = "Year", 
+                                 values_to = names(inequality_list[i]))
+  inequality_df <- inequality_df %>%
+                      full_join(temp_df %>% select(-'HDI Rank (2018)'), 
+                                by = c('Country','Year'))
+} 
+head(inequality_df)
+```
+
+Note that the columns of `inequality_df` are currently all of type `<chr>` when only `Country` should be of type `<chr>`, `Year` should be of type integer, and the remaining be of type numeric. This is because missing values are given as '..' instead of `NA`.  Convert the relevant columns to numeric which coerces '..' to `NA`'s in the process.  
+
+```{r warning = FALSE}
+inequality_df[,4:12] <- as.data.frame(sapply(inequality_df[,4:12], as.numeric))
+inequality_df$Year <- as.integer(inequality_df$Year)
+head(inequality_df)
+```
+
+To complete the data transformation, notice that under `Country`, the last 17 rows of each data frame contain aggregate data regional data, and are not countries: 
+
+```{r}
+tail(inequality_list[[1]]$Country,17)
+```
+Therefore, they will be removed from `inequality_df`.
+
+```{r}
+not_countries <- tail(inequality_list[[1]]$Country,17)
+ 
+inequality_df <- inequality_df %>% 
+  filter(!(Country %in% not_countries))
+```
+
+The head and tail of the tidy data frame is:
+
+```{r}
+head(inequality_df)
+tail(inequality_df)
+inequality_df %>% write_csv('./Inequality/inequality_tidy.csv')
+```
+
+## Human Security Data Transformation
+
+
+Below are the variables pulled from the Human Security dataset:
+
+* Homelessness due to natural disaster ()
+
+* Homicide rate ()
+
+* Prison population ()
+
+* Suicide rate (Male) ()
+
+* Suicide rate (Female) ()
+
+
+Transforming this data largely required reorganizing the dataframe into a tidy format.  This was done in a similar fashion to the inequality, and education data manipulations.  This required removing blank columns (which had been left in the .csv files for visual appeal) and renaming columns to prime them for the pivot_longer function. Then, to ensure that all missing data were coded appropriately, a for loop was introduced to convert all numeric data columns in the dataset into numeric type.  The result is a tidy dataset of all Human Security variables.
+
+
+```{r,echo=TRUE,include=TRUE}
+
+Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.natural.disaster.csv")
+Homicide.rate <- read.csv("./HumanSecurity/Homicide.rate.csv")
+Prison.popn <- read.csv("./HumanSecurity/Prison.population.csv")
+Refugees <- read.csv("./HumanSecurity/Refugees.CO.csv")
+Suicide.rate.M <- read.csv("./HumanSecurity/Suicide.rate.M.csv")
+Suicide.rate.F <- read.csv("./HumanSecurity/Suicide.rate.F.csv")
+```
+
+First the blank and extraneous rows are removed from each dataset, and the column names are converted to reflect the year each measurement was taken.
+
+```{r,echo=TRUE,include=TRUE}
+
+names(Homeless.natural.disaster)[2:30] <- c("1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018")
+
+Homicide.rate <- subset(Homicide.rate, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9, X.10))
+names(Homicide.rate)[2:13] <- c("1990", "1995", "2000", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+
+Refugees <- subset(Refugees, select = -c(1))
+names(Refugees)[2:30] <- c("1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018")
+
+Prison.popn <- subset(Prison.popn, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
+names(Prison.popn)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+
+Suicide.rate.F <- subset(Suicide.rate.F, select = -c(X, X.1, X.2))
+names(Suicide.rate.F)[2:5] <- c("2000", "2010", "2015", "2016")
+
+Suicide.rate.M <- subset(Suicide.rate.M, select = -c(X, X.1, X.2))
+names(Suicide.rate.M)[2:5] <- c("2000", "2010", "2015", "2016")
+```
+
+
+**Comment about Refugees data here**
+
+```{r}
+compare <- Refugees[1,1:9]
+compare[2,] <- merge(compare, Homeless.natural.disaster[1,1:9])
+compare
+```
+
+**Finish comment about excluding refugees from data**
+
+Then, the numeric data columns are converted to numeric type.  Note that all columns are originally in character type.  Converting to numeric type both eases analysis and allows the blank entries, denoted as ".." to be read as empty (NA).
+
+```{r}
+
+dcol <- 2
+for (i in 2:ncol(Homeless.natural.disaster)) {
+  Homeless.natural.disaster[,dcol] <- as.numeric(Homeless.natural.disaster[,dcol])
+  dcol <- dcol +1
+}
+
+dcol <- 2
+for (i in 2:ncol(Homicide.rate)) {
+  Homicide.rate[,dcol] <- as.numeric(Homicide.rate[,dcol])
+  dcol <- dcol +1
+}
+
+dcol <- 2
+for (i in 2:ncol(Prison.popn)) {
+  Prison.popn[,dcol] <- as.numeric(Prison.popn[,dcol])
+  dcol <- dcol +1
+}
+
+dcol <- 2
+for (i in 2:ncol(Suicide.rate.F)) {
+  Suicide.rate.F[,dcol] <- as.numeric(Suicide.rate.F[,dcol])
+  dcol <- dcol +1
+}
+
+dcol <- 2
+for (i in 2:ncol(Suicide.rate.M)) {
+  Suicide.rate.M[,dcol] <- as.numeric(Suicide.rate.M[,dcol])
+  dcol <- dcol +1
+}
+```
+
+Finally, the data are converted to a tidy format and merged.
+
+```{r}
+
+HND <- pivot_longer(Homeless.natural.disaster, cols = !Country, names_to = "Year", values_to = "Homeless.ND")
+HR <- pivot_longer(Homicide.rate, cols = !Country, names_to = "Year", values_to = "Homicide.rate")
+PP <- pivot_longer(Prison.popn, cols = !Country, names_to = "Year", values_to = "Prison.popn")
+SRF <- pivot_longer(Suicide.rate.F, cols = !Country, names_to = "Year", values_to = "Suicide.rate.F")
+SRM <- pivot_longer(Suicide.rate.M, cols = !Country, names_to = "Year", values_to = "Suicide.rate.M")
+
+Human.Security <- merge(HND, HR, all.x = T, all.y = T)
+Human.Security <- merge(Human.Security, PP, all.x = T, all.y = T)
+Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)  
+Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
+Human.Security <- Human.Security[30:5684,]
+
+Human.Security.Tidy.2 <- merge(HND, HR)
+Human.Security.Tidy.2 <- merge(Human.Security.Tidy.2, PP)
+Human.Security.Tidy.2 <- merge(Human.Security.Tidy.2, SRF)  
+Human.Security.Tidy.2 <- merge(Human.Security.Tidy.2, SRM)
+```
+
+```{r, eval=F}
+Human.Security %>% write_csv('./HumanSecurity/HumanSecurity.Final.Tidy.csv')
+Human.Security.Tidy.2 %>% write_csv('./HumanSecurity/HumanSecurity.Final.Tidy.2.csv')
+```
+
+
+
+## Education Data Transformation
+
+The following are the columns in the education dataset:
+
+* Education Index
+
+* Expected years of schooling (years)
+
+* Expected years of schooling, female (years)
+
+* Expected years of schooling, male (years)
+
+* Government expenditure on education (% of GDP)
+
+* Gross enrollment ratio, pre-primary (% of preschool-age children)
+
+* Gross enrollment ratio, primary (% of primary school-age children)
+
+* Gross enrollment ratio, secondary (% of secondary school-age children)
+
+* Gross enrollment ratio, tertiary (% of tertiary school-age children)
+
+* Literacy rate, adult (% ages 15 and older)
+
+* Mean years of schooling (years)
+
+* Mean years of schooling, female(years)
+
+* Mean years of schooling, male (years)
+
+* Percentage of primary schools with access to the internet
+
+* Percentage of secondary schools with access to the internet
+
+* Population with at least some secondary education (% ages 25 and older)
+
+* Population with at least some secondary education, female (% ages 25 and older)
+
+* Population with at least some secondary education, male (% ages 25 and older)
+
+* Primary school dropout rate (% of primary school cohort)
+
+* Primary School teachers trained to teach (%)
+
+* Programme for International Student Assessment (PISA) score in mathematics
+
+* Programme for International Student Assessment (PISA) score in reading
+
+* Programme for International Student Assessment (PISA) score in science
+
+* Pupil-teacher ratio, primary school (number of pupils per teacher)
+
+* Survival rate to the last grade of lower secondary general education (%)
+
+^ Data for `2018` is either from 2018 or the latest year available. 
+
+Note that the column 'HDI Rank (2018)' is kept as a reference column and not for analysis. 
+
+
+In order to read in, and transform the education data, the method is again similar to the previous two examples. Every file is found, and read from the relevant  Education directory. With this data wew determine the relevant NAs in the files, and code those as such. Similarly, we skip the first lines in the files which are blank. Then we remove any rows that are irrelevant-- specifically the rows with footnotes. Finally, we remove additional columns, and change data types if necessary, and are then ready to transform the data into tidy format.
+
+```{r}
+
+dr="./Education/csv"
+file_list <- list.files(path=dr,pattern="*.csv")
+dttyp<-c("EdInd","ExpSch","ExpSchF","ExpSchM","GovMon","GERPP","GERP","GERS","GERT",
+         "LitR","MYSch","MYSchF","MYSchM","PerPSInt","PerSSInt",
+         "PopSS25U","PopSSF25U","PopSSM25U",
+         "PSDrop","PSTchTrn","PISAMth","PISARead","PISAScn","PupTchRPS","SurvRSGE")
+
+for (i in 1:length(file_list)){
+   df_temp<-read.csv(paste(dr,"/",file_list[i],sep=""),skip=1,header=T, 
+                      check.names = F,na.strings=c("..",""," ","<NA>"),
+                     fileEncoding = "UTF-8")
+   df_temp<-subset(df_temp,!grepl("[a-z]:",df_temp$`HDI Rank (2018)`))
+   df_temp$`HDI Rank (2018)`<-as.numeric(df_temp$`HDI Rank (2018)`)
+   df_temp<-df_temp[1:(nrow(df_temp)-17),]
+   df_temp$var<-dttyp[i]
+   if (i==1) {
+     df_ed<-df_temp[!sapply(df_temp, function(x) all(is.na(x)))]}
+   else {df_ed<-bind_rows(df_ed,df_temp[!sapply(
+     df_temp, function(x) all(is.na(x)))])}
+   
+}
+
+df_ed<-df_ed[,!grepl("\\.[0-9]",colnames(df_ed))]
+
+```
+
+Once the files are read in correctly we create two separate forms of the data. One with each variable as a column, and year as its own signular column, utilizing the pivot longer and wider functions. The other method leaves relevant education vartiables in a singular column, and another column coresponding to their values.  While the second format is not necessarily tidy-this will help look at missings across the data.
+
+```{r}
+df_ed_lg<-df_ed %>%
+            pivot_longer(cols=!c("HDI Rank (2018)","Country","var"),names_to="Year",values_to="HDI") 
+df_ed_lg$Year<-as.numeric(df_ed_lg$Year)
+df_ed_td<-df_ed_lg %>%
+            pivot_wider(names_from="var",values_from="HDI")
+
+df_ed_td %>% write_csv('./Education/Education_Tidy.csv')
+
+```
+ # df_temp<-subset(df_temp,!is.na(df_temp$`HDI Rank (2018)`))
+
+
+## Complete Data
+
+```{r,eval=FALSE}
+
+#HS <-read.csv("./HumanSecurity/Human.Security.Final.Tidy.csv")
+
+full_join(inequality_df,
+          full_join(df_ed_td,HS,by=c("Country"="Country","Year"="Year")),
+          by=c("Country"="Country","Year"="Year")) %>%
+  write_csv('./FinalData/All.csv')
+
+
+```
+
+<!--chapter:end:03-cleaning.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Missing values
+
+```{r, warning=FALSE,message=FALSE}
+library(tidyverse)
+library(readxl)
+library(readr)
+library(stringr)
+library(ggplot2)
+library(GGally)
+library(mi)
+```
+
+## Inequality Missing Data
+
+
+```{r  warning = FALSE,  message = FALSE} 
+inequality_df <- read_csv("./Inequality/inequality_tidy.csv")
+```
+
+Below is a bar plot showing the count of missing data per feature.
+
+```{r fig.width = 8}
+prop_missing_features <- data.frame(var = names(colMeans(is.na(inequality_df))), 
+            prop_missing = unname(colMeans(is.na(inequality_df)))) %>%
+          filter(prop_missing > 0)  
+
+prop_missing_features %>%
+    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
+    geom_col() +
+    coord_flip()
+```
+
+
+The above shows that for 7 of the 9 features, 20-25% of its entries are missing.
+
+Since there is only 9 years and 9 features, a heat map is an appropriate to visualize combinations of missing data between `Year` and the different features to see if there's any relationship in proportion of missing data for a specific feature across years (and vice versa). 
+
+```{r fig.height = 6, fig.width = 8}
+
+prop_missing_year<- inequality_df %>% 
+  group_by(Year) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup() %>% 
+  select(-Country, -'HDI Rank (2018)') %>% 
+  pivot_longer(-Year, names_to = 'features' , values_to = 'year_prop_missing') 
+
+prop_missing_year%>%
+  ggplot(aes(x = factor(Year), y = fct_reorder(features, -year_prop_missing, mean))) +
+  geom_tile(aes(fill = year_prop_missing)) +
+  scale_fill_continuous(high = "#132B43", low = "#56B1F7")
+  
+```
+
+
+The above heat map is drawn such that the feature with the largest proportion of missing data is at the bottom. From the heat map, it looks like 2011 and 2012 have the highest rates of missing data for every features aside from "Inequality in life expectancy (%)" and "Inequality-adjusted life expectancy index". However, note that the proportion of missing data peaks at around 0.3 and most feature-year combinations have proportion of missing data that are below 0.2, which are manageable.  
+
+The below is the aggregate sum of number of missing entries over all features for each country, filtering only the countries with at least one missing entry.  
+
+```{r fig.height = 12, fig.width = 8}
+
+prop_missing_countries<- inequality_df %>% 
+  group_by(Country) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup()
+
+prop_missing_countries <- data.frame(Country = prop_missing_countries$Country, 
+                                     country_prop_missing =  rowMeans(prop_missing_countries[,4:12])) %>% 
+                          filter(country_prop_missing > 0) 
+
+prop_missing_countries %>% 
+    ggplot(aes(x = fct_reorder(Country, country_prop_missing, .desc =FALSE), y = country_prop_missing)) +
+    geom_col() +
+    coord_flip()
+```
+
+
+It looks like 100% of the data is missing for Saint Kitts and Nevis, Liechtenstein, and Dominica. In addition, >87.5% of the data is missing for Nauru, Marshall Islands, Andorra, and Tuvalu. All of these countries are extremely small (most are islands) and it is possible that `Inequality` data is not collected nationally and/or data collection is not prioritized by the relevant international organizations.  
+
+
+Due to the large volume of countries, a heat map is not an effective way to visualize the relationship in proportion of data missing between countries and features. A parallel coordinate plot was drawn instead to determine if there's any relationship between features and proportion of missing data for different countries.
+
+```{r, fig.height = 8, fig.width=10}
+
+inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>% 
+  group_by(Country) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup() %>% 
+  select(-Year, -'HDI Rank (2018)', -Country) %>%
+  rename("Coefficient of \nHuman Inequality" = "Coefficient of Human Inequality",
+        "Overall loss in \nHDI due to \ninequality (%)" = "Overall loss in HDI due to inequality (%)",
+        "Inequality\nadjusted \nHDI (IHDI)" = "Inequality-adjusted HDI (IHDI)",
+        "Inequality\nadjusted \nincome index" = "Inequality-adjusted income index",
+        "Inequality in \nincome (%)" = "Inequality in income (%)",
+        "Inequality\nadjusted \neducation index" = "Inequality-adjusted education index",
+        "Inequality in \neducation (%)" = "Inequality in education (%)",
+        "Inequality in \nlife expectancy (%)" = "Inequality in life expectancy (%)",
+        "Inequality\nadjusted \nlife expectancy \nindex" = "Inequality-adjusted life expectancy index"
+         ) %>%
+  ggparcoord(alpha = 0.2,
+             scale = 'globalminmax',
+             splineFactor = 0)  +
+  theme(axis.text.x = element_text(angle = 0)) +
+  xlab("") +
+  ylab("") + 
+  ggtitle("Inequality Proportion of Missing Data Parallel Coordinate Plot")
+
+```
+
+
+* Most countries appear to not be missing data for "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)" and when they do, both features are missing in similar proportions. 
+
+* For remaining features, at intervals of around 0.1 from 0 to 1, there are clusters of countries missing that proportion of data for each feature. 
+
+* There is a small number of countries missing data for most to all of the features (flat line at the top), these are likely the smaller countries found in the bar charts.
+
+* For "Coefficient of Human Inequality", "Overall loss in HDI due to inequality (%)", and "Inequality-adjusted HDI (IHDI)", countries generally miss the same proportion of the data for all 3 features, indicating that they may be related. 
+
+* For "Inequality-adjusted income index" and "Inequality in income (%)", countries generally miss the same proportion of the data for these two features; they are likely related. In addition, countries generally are missing an equal to or smaller proportion of data for these two features than the 3 features mentioned in the previous bullet. 
+
+* For "Inequality-adjusted education index" and "Inequality in education (%)" countries generally miss the same proportion of the data for these two features; they are likely related.
+
+
+
+## Human Security Missing Data
+
+A significant proportion of data in the Human.Security dataframe is missing.  Largely, this seems to be a product of well-documented geographical complications in collecting political science data and uneven tracking between variables.
+
+```{r, echo=F}
+Human.Security <- read_csv("./HumanSecurity/HumanSecurity.Final.Tidy.csv")
+Human.Security <- Human.Security[,2:9]
+Human.Security.2 <- read_csv("./HumanSecurity/Human.Security.2.csv")
+Human.Security.2 <- Human.Security.2[,2:9]
+Homeless.natural.disaster <- read_csv("./HumanSecurity/Homeless.tidy.csv")
+Homeless.natural.disaster <- Homeless.natural.disaster[,2:31]
+Homicide.rate <- read_csv("./HumanSecurity/Homicide.tidy.csv")
+Homicide.rate <- Homicide.rate[,2:14]
+Homicide.rate.1 <- read.csv("./HumanSecurity/Homicide.tidy.csv")
+Homicide.rate.1 <- Homicide.rate.1[,2:14]
+names(Homicide.rate.1)[2:13] <- c("1990", "1995", "2000", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+Suicide.rate.F <- read_csv("./HumanSecurity/SR.F.tidy.csv")
+Suicide.rate.F <- Suicide.rate.F[,2:6]
+Suicide.rate.M <- read_csv("./HumanSecurity/SR.M.tidy.csv")
+Suicide.rate.M <- Suicide.rate.M[,2:6]
+```
+
+A number of unique problems are incurred in the collection of international political science data, as discussed previously in the Data chapter. Certain countries present unique challenges for data collection, particularly where collection processes rely on state institutions and infrastructure.
+
+The Homicide dataset is a particularly demonstrative example.  The final entries in the dataset show countries for which there is no recorded homicide data.
+
+These countries are:
+
+```{r, echo = F}
+print(Homicide.rate$Country[168:192])
+```
+
+Of these 24 countries, 20 (Cóte d'Ivoire, Congo, Djibouti, Ethiopia, Gabon, Gambia, Madagascar, Mali, Nigeria, Sudan, Chad, Congo [Dem. Republic], Comoros, Eritrea, Guinea, Equatorial Guinea, Libya, Mauritania, Senegal, and Togo) are in Africa.  The remaining four (Lao [People's Dem. Republic], Vanuatu, Micronesia [Fed. States], the Marshall Islands, and Palau) are small island countries in Oceania.
+
+
+```{r fig.height = 14, fig.width = 8}
+
+prop_missing_countries<- Human.Security.2 %>% 
+  group_by(Country) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup()
+
+prop_missing_countries <- data.frame(Country = prop_missing_countries$Country, 
+                                     country_prop_missing =  rowMeans(prop_missing_countries[,2:8])) %>% 
+                          filter(country_prop_missing > .1)
+
+prop_missing_countries %>% 
+    ggplot(aes(x = fct_reorder(Country, country_prop_missing, .desc =FALSE), y = country_prop_missing)) +
+    geom_col() +
+    coord_flip() + 
+    xlab(NULL) + 
+    ylab("Proportion of Data Missing") +
+    ggtitle("Missing Human Security Data by Country")
+```
+
+The above graph shows the proportion of missing data in the compiled Human Security dataset.  The Marshall Islands (Oceania) is missing over 90%, with Palau (Oceania) missing over 65% and Somalia (Africa), Korea (Dem. People's Rep.) [North Korea] (Asia), and St. Kitts and Nevis (Oceania) each missing over 50% of data.
+
+The countries missing 40% or more data include the above, as well as Andorra (Europe), Eritrea (Africa), Iran [Islamic Rep.] (Asia), Mali (Africa), Micronesia [Fed. States] (Oceania), Palestine (Asia), Congo (Africa), Gambia (Africa), and Sudan (Africa).
+
+Of these states, four are within Oceania, six in Africa, three in Asia (Korea (Dem. People's Rep.) [North Korea], Iran (Islamic Rep.), and Palestine), and one is in Europe (Andorra).
+
+Due to the large volume of countries included in this data, and their alphabetical organizational scheme, a heatmap is not an appropriate visualization tool.  
+
+
+Further, the dataset shows uneven tracking between variables.  Homelessness due to natural disaster is measured on a yearly basis between 1990 and 2018.  By contrast, Homicide rate was recorded only in 1990, 1995, 2000, 2005, and yearly from 2010 to 2017.  As another example, suicide rate for both males and females were recorded only in the years 2000, 2010, 2015, and 2016.
+
+Below are the years in the Homeless.natural.disaster dataset for which data were collected:
+
+
+```{r, echo=F}
+colnames(Homeless.natural.disaster)[2:30]
+```
+
+By contrast, homicide data were only collected for the following years:
+
+```{r,echo=F}
+colnames(Homicide.rate)[2:13]
+```
+
+And suicide rate data for both male and females were only collected in the following years:
+
+```{r, echo=F}
+colnames(Suicide.rate.F)[2:5]
+```
+
+The large difference in frequency of data collection between these datasets results in a merged dataset with a great deal of missing values.  As the following graph demonstrates, as a result of the Homeless.natural.disaster data, remaining variables are each missing a minimum of about 75% of data values. 
+
+```{r, echo=F}
+prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security))), 
+            prop_missing = unname(colMeans(is.na(Human.Security)))) %>%
+          filter(prop_missing > 0)  
+
+prop_missing_features %>%
+    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
+    geom_col() +
+    coord_flip() +
+    xlab(NULL) + 
+    ylab("Proportion of Data Missing") +
+    ggtitle("Missing Data", subtitle = "Including all years") + 
+    ylim(c(0,.9))
+```
+
+Alternately, the graphic below gives a more accurate picture of missing data.
+
+
+```{r, echo=F}
+prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security.2))), 
+            prop_missing = unname(colMeans(is.na(Human.Security.2)))) %>%
+          filter(prop_missing > 0)  
+
+prop_missing_features %>%
+    ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
+    geom_col() +
+    coord_flip() +
+    xlab(NULL) + 
+    ylab("Proportion of Data Missing") +
+    ggtitle("Missing Data", subtitle = "Including only matched years") +
+    ylim(c(0,.9))
+```
+
+The data reflected in this chart do not include the empty rows added to fit the years of recorded homelessness data.  The variables with the greatest proportion of missing data (Refugees and Prison population) are missing between 45% and 50% of their data.
+
+The following heatmap shows missing data split by variable.
+
+```{r}
+prop_missing_year<- Human.Security.2 %>% 
+  group_by(Year) %>% 
+  summarise_all(~ sum(is.na(.))/n()) %>%
+  ungroup() %>% 
+  select(-Country) %>% 
+  pivot_longer(-Year, names_to = 'features' , values_to = 'year_prop_missing') 
+
+prop_missing_year%>%
+  ggplot(aes(x = factor(Year), y = fct_reorder(features, -year_prop_missing, mean))) +
+  geom_tile(aes(fill = year_prop_missing)) +
+  scale_fill_continuous(high = "#132B43", low = "#56B1F7") +
+  xlab("Year") + 
+  ylab(NULL) +
+  ggtitle("Missing Human Security Data by Variable")
+```
+
+Homelessness due to natural disaster, suicide rate (both male and female), and homicide rate are missing the least amount of data, though both refugees by country of origin and prison population are missing relatively little data after the year 2000.
+
+Given that homelessness due to natural disaster seems to be the most thoroughly recorded variable, the low proportion of missing data makes sense.  Additionally, given that suicide rate (male and female) only provides data for four years (2000, 2010, 2015, 2016), its low proportion of missing data also follows logically.  
+
+Both refugees by country of origin and prison population show a high proportion of missing data around the year 2000, and appear to fluctuate together. Given both refugee emigration and prison population require strong infrastructure and organization to accurately compute, it seems possible that whatever institutions collect data on these factors may be impacted by similar influences.
+
+
+## Education Missing Data
+
+
+```{r warning = FALSE,  message = FALSE}
+
+df_ed_td<-read_csv('./Education/Education_Tidy.csv')
+df_ed_lg<-read_csv('./Education/Education_LG.csv')
+df<-df_ed_td[c(2,4:28)] %>% group_by(Country) %>% select(everything()) %>%
+     summarise_all(funs(sum(is.na(.)))) 
+df$TotalMiss<-rowSums(df[,2:26])
+df$PerTot<-df$TotalMiss*100/sum(df$TotalMiss)
+
+```
+
+
+There are `r sum(df$TotalMiss)` missing observations across the variables, year and country. The following bar chart displays an interesting yet confusing pattern. It looks like all countries have between `r min(df$TotalMiss)` and  `r max(df$TotalMiss)`, corresponding to `r min(df$PerTot)` and `r max(df$PerTot)` percent of total missings. Keeping in mind the data spans 29 years, and 25 variables, this is sensible, though there doesn't seem to be much of a pttern to missing observations, though smaller countries seem partially more likely to have missing data.
+
+```{r,fig.height=25,fig.width=10}
+ggplot(df,aes(y=fct_reorder(Country,PerTot),x=PerTot)) +
+geom_col()+ylab("Country")+xlab("")+ggtitle("Total Missing") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+For this analysis we want the variables with the least missing values across Countries to have a complete analysis. Overall it looks like, we can already begin narrowing down some of our variables to the ones that have almost no missings across all countries such as education index, or mean years of schooling. Other interesting notes are that the formerYugoslav Republic of Macedonia seems to have all missing observations-- which is correct according to the original source data, and after a little digging is because it has been replaced by North Macedonia, and is likely a left over. Percent of students without access to internet seems to be reported by very few, and mostly developed countries. The percent of population with at least some secondary education also seems like a variable that is frequently reported.
+
+```{r,fig.height=25,fig.width=20}
+
+ggplot(df[,1:26] %>%
+     pivot_longer(cols=!c("Country"),names_to="Vari",values_to="Val") ,aes(y=Country,x=Vari,fill=Val))+
+  geom_tile()+xlab("Variable")+ggtitle("Missing by variable and Country")+theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+
+Breaking down the analysis a little further, it looks we should definitely focus on 2010 onwards gfiving the lack of data across countries on a consistent basis for singular years beforehand. It looks like the data was previously released in 5-year buckets.
+
+```{r,fig.height=25,fig.width=20}
+
+df<-df_ed_lg %>% pivot_wider(names_from="Year",values_from="HDI")
+df_n<-df[c(2,4:32)] %>% group_by(Country) %>% select(everything()) %>%
+     summarise_all(funs(sum(is.na(.)))) 
+ggplot(df_n %>%
+     pivot_longer(cols=!c("Country"),names_to="Year",values_to="Val") ,aes(y=Country,x=Year,fill=Val))+
+  geom_tile()+xlab("Year")+ggtitle("Missing by Year")+theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+Interestingly breakding down the missing variables by year confirms what was seen previously. The most reliable variables will be Education Index, Mean Years of Schooling, and Expected Years of Schooling, according to the lower number of missings throughout the years, as well as population with some secondary education.
+
+```{r,fig.height=25,fig.width=20}
+df<-df_ed_td[c(3:28)] %>% group_by(Year) %>% select(everything()) %>%
+     summarise_all(funs(sum(is.na(.)))) 
+df$Year<-factor(df$Year)
+ggplot(df %>%
+     pivot_longer(cols=!c("Year"),names_to="Variable",values_to="Val") ,aes(y=Year,x=Variable,fill=Val))+
+  geom_tile()+xlab("Variable")+ylab("Year")+ggtitle("Missing by Year and Variable")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+<!--chapter:end:04-missing.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Results
+
+## Variable Selection 
+
+
+```{r,warning=FALSE,message=FALSE}
+
+library(tidyverse)
+library(readxl)
+library(readr)
+library(stringr)
+library(ggplot2)
+library(GGally)
+
+```
+
+### Inequality Variable Selection
+
+From Section 4.0 Missing Data, it was noted from the parallel coordinate plot of the `Inequality` indicator that the following sets of features had the same proportion of missing data for nearly every country, indicating that they may be related: 
+
+* "Coefficient of Human Inequality", "Overall loss in HDI due to inequality (%)", and "Inequality-adjusted HDI (IHDI)"
+
+* "Inequality-adjusted income index" and "Inequality in income (%)"
+
+* "Inequality-adjusted education index" and "Inequality in education (%)"
+
+* "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)"
+
+A scatterplot matrix of all 9 features without the missing data is below and such that pairwise correlations between all features can be examined. The analysis will begin with the feature groups listed above with strong relationships in their missing data, then extend to the remaining feature variable pairs. 
+
+
+```{r,fig.height=12, fig.width = 12, warning = FALSE ,  message = FALSE}
+inequality_df <- read_csv("./Inequality/inequality_tidy.csv")
+#inequality_df <- read_csv("./inequality_tidy.csv")
+ggpairs(inequality_df[,c(4,12,6, 7,10, 5, 9, 11, 8)], progress = FALSE,
+        upper = list(continuous = wrap("cor", size = 4)),
+        labeller = label_wrap_gen(10)) + 
+      theme(strip.text = element_text(size = 8))
+
+```
+
+
+
+First, look at the feature groups where missing data appear to be in equal proportions for most countries:
+
+* "Coefficient of Human Inequality", "Overall loss in HDI due to inequality (%)", and "Inequality-adjusted HDI (IHDI)": The three pairwise correlation coefficients between these three features are 0.999, -0.954, and -0.950, showing that these three feature are highly correlated when the data is not missing.
+
+* "Inequality-adjusted income index" and "Inequality in income (%)": Correlation coefficient of -0.644. Despite countries missing data for both feature consistently, the two feature do not appear to have as strong of correlation as other cases discussed. 
+
+* "Inequality-adjusted education index" and "Inequality in education (%)": The correlation coefficient is -0.942, showing that these two feature are highly correlated when the data is not missing.
+
+* "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)": The correlation coefficient is -0.976, showing that these two feature are highly correlated when the data is not missing.
+
+On the basis of the results above, the following features can be dropped without significant loss of information:
+
+* "Overall loss in HDI due to inequality (%)" - due to strong correlation with "Coefficient of Human Inequality" and the fact both share similar missing patterns. 
+
+* "Inequality-adjusted HDI (IHDI)" - highly correlated with multiple features, especially "Coefficient of Human Inequality" and "Overall loss in HDI due to inequality (%)" (while also sharing the same missing pattern as the latter two).
+
+* "Inequality-adjusted education index" - highly correlated with "Inequality in education (%)" when data is present and in terms of missing pattern.  
+
+* "Inequality-adjusted life expectancy index" - highly correlated with "Inequality in life expectancy (%)" when data is present and in terms of missing pattern.  
+
+Looking at the pairplot of the 5 remaining variables, it is noted that even though they do not share the same missing patterns, "Coefficient of Human Inequality" is strongly correlated with 3 of the remaining features (absolute correlation coefficient of ~0.9). Therefore, this feature can also be dropped. As a result, the remaining 'Inequality' features to be kept for analysis with other indicators are:
+
+* "Inequality-adjusted income index"
+
+* "Inequality in income (%)"
+
+* "Inequality in education (%)"
+
+* "Inequality in life expectancy (%)"
+
+
+
+## Education Variable Selection
+
+Initially we pull only the variables that had the lest missings as per the missings analysis.I then run ggpairs across these variables to determine if there is further narrrowing we can do in regards to select. Given that the variables are all relatively, highly correlated, it is decided to just take Education Index as the variable of comparions in the analysis of correlations across human development topics.
+
+```{r warning = FALSE,  message = FALSE}
+
+df_ed<-read_csv('./Education/Education_Tidy.csv')
+df_ed<-df_ed[,c("HDI Rank (2018)","Country","Year",
+        "EdInd","ExpSch","MYSch","PopSS25U")]
+ggpairs(df_ed[,c("EdInd","ExpSch","MYSch","PopSS25U")])
+```
+
+
+
+Next to determine how to deal with the year variable we look at the yearly breakdown since 2010 (since the Inequality dataset only spans 2010-2018). From here we can see every single year is highly correlated (.985 to 1) hence suggesting we do not have to look at each year individually, and can aggregate across years instead.
+```{r warning = FALSE,  message = FALSE,fig.width=20}
+df<-df_ed[df_ed$Year>=2010,c('Country','Year','EdInd')] %>%
+  pivot_wider(names_from='Year',values_from="EdInd")
+ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])
+
+
+```
+
+## Education versus Human Security (2010 - 2018)
+
+For the actual analysis we compare the average across Education Index against the Human Security variables:
+
+*Homelessness due to natural disaster
+*Homicide rate
+*Prison population 
+
+```{r warning=FALSE, message=FALSE}
+All<-read_csv('./FinalData/All.csv')
+All<-All[All$Year>=2010,c("Country","EdInd",'Homeless.ND',  
+                          'Homicide.rate','Prison.popn')]
+EdHS<-All %>% group_by(Country) %>% select(everything()) %>%
+  summarise_all(~mean(., na.rm = TRUE)) 
+```
+
+Here it looks like a high Education Index, is associated with a low Homicide rate, and prison population. The association between Education Index and Homicide is the clearest. Educaiton and Prison population seems to show a similar relationb, though a high education index seems to be assocaited more-so with a median level of Prison population, though several countries with high education levels, still seem to jump to higher prison populations. Interestingly, countries with high education aare also closely associated with countries that have high homelessness due to natural disaster..
+
+```{r}
+ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
+    theme(axis.text.x = element_text(angle = 0)) +
+    xlab("") +
+    ylab("") +
+    ggtitle("Inequality versus Education Parallel Coordinate Plot")
+
+
+```
+
+
+
+
+
+## Inequality versus Education (2010 - 2018)
+
+This section will detail the analysis of `Inequality` versus `Education` indicators for features selected per the above:
+
+`Inequality`
+
+* Inequality-adjusted income index
+
+* Inequality in income (%)
+
+* Inequality in education (%)
+
+* Inequality in life expectancy (%)
+
+`Education`
+
+* Education Index
+
+* Mean Years of Schooling
+
+
+```{r, warning = FALSE, message = FALSE}
+education_df <- read_csv("./Education/Education_Tidy.csv") %>%
+                  filter(Year %in% c(2010:2018)) %>%
+                  select(Country, Year, EdInd, MYSch)
+# education_df$Country[education_df$Country == 'Ivory Coast'] = "Côte d'Ivoire"
+
+inequal_ed <- inequality_df %>% 
+  select(Country, Year, 
+         'Inequality-adjusted income index', 
+         'Inequality in income (%)', 
+         'Inequality in education (%)',
+         'Inequality in life expectancy (%)') %>%
+  full_join(education_df, by = c('Country', 'Year'))
+
+temp <- gsub(" ", "_", names(inequal_ed))
+temp <- gsub("-", "_", temp)
+temp <- gsub("\\(%\\)", "perc", temp)
+names(inequal_ed) <-  temp
+
+```
+
+
+First, all `Inequality` variables were compared with all `Education` variables in a scatterplot, faceted by "Year" from 2010 to 2018 since those were the only years where `Inequality` data was available. It was noted that "Year" did not seem to separate the data as illustrated in the a sample facet plot below for "Mean Year of Schooling" versus "Inequality in life expectancy (%)". This was the case for every combination of variables. 
+
+```{r}
+inequal_ed %>%
+  ggplot(aes(x = Inequality_in_life_expectancy_perc, y = MYSch)) +
+  geom_point() +
+  facet_wrap(~Year)
+```
+
+
+Since there are 6 features in total all of which are continuous, a parallel coordinate plot is the most appropriate visualization tool for this type of data. For each of the six features, group by Country and average the data over all Years from 2010 to 2018 ignoring NA's. The rationale is as follows:
+
+* It was shown from the facet plots previously that "Year" did not distinguish any trends.   
+
+* If every Country-Year combination is a line on the parallel coordinate plot, then it would require that none of the six features have NA's. This is too strong and may lead to under plotting given the amount of missing data in this dataset. This also ensures that every country also shows up only once or not at all. 
+
+
+```{r, fig.height = 7, fig.width=10}
+inequal_ed[, c(1,2,6,4,3,5,7,8)] %>%
+  group_by(Country) %>%
+  summarise_all(~mean(., na.rm = TRUE)) %>%
+  ungroup() %>%
+  rename('Inequality in Income (%)' = Inequality_in_income_perc, 
+         "Inequality in \nEducation (%)" = Inequality_in_education_perc,
+         "Inequality Adjusted \nIncome Index" = Inequality_adjusted_income_index,
+         "Inequality in \nLife Expectancy (%)" = Inequality_in_life_expectancy_perc,
+         'Education Index ' = EdInd,
+         'Mean Years of Schooling' = MYSch) %>% 
+  select(-Country, -Year) %>% 
+  ggparcoord(alpha = 0.25,
+               scale = 'uniminmax',
+               splineFactor = 0)  +
+    theme(axis.text.x = element_text(angle = 0)) +
+    xlab("") +
+    ylab("") +
+    ggtitle("Inequality versus Education Parallel Coordinate Plot")
+```
+
+
+Some observations:
+
+* The two `Education` variables, "Education Index" and "Mean Years of Schooling", is positively correlated. Therefore, analysis for this section will be made with "Education Index" and such analysis implicitly also applies to "Mean Years of Schooling"
+
+* There is a large cluster of countries (call Cluster 1) with low "Inequality in Income (%)", mid to high "Inequality Adjusted Income Index", low "Inequality in Education (%)", and mid to high "Education Index". 
+
+* For Cluster 1, there's a visible negative correlation between "Inequality in Education (%)" and "Education Index". 
+
+* Since for Cluster 1 "Inequality Adjusted Income Index" is visibly negatively correlated with "Inequality in Education (%)", it can be inferred that the former is positively correlated with "Education Index". 
+
+* There is another cluster of countries (call Cluster 2) exhibiting the opposite trend. This cluster of countries has low to mid "Inequality Adjusted Income Index", high "Inequality in Education (%)", and low-mid "Education Index".
+
+* For countries in Cluster 2, there is no obvious negative correlation between "Inequality Adjusted Income Index" - "Education Index" and  "Inequality in Education (%)" - "Education Index" like in Cluster 1.
+
+* Countries in Cluster 1 has a visible right skew in "Inequality in Education (%)" and a slight left skew in "Education Index", while countries in Cluster 2 exhibit no significant skew for these two features compared to Cluster 1. 
+
+
+### Human Security Variable Selection
+
+As noted in section 4, the Suicide rate data are collected sporadically.  While these datasets show the lowest proportion of missing data, they only show data for four years, which are not consistently spaced across time.
+
+The other datasets in this section--Homicide rate, Prison population, Homelessness due to natural disaster, and Refugees by country of origin--show a higher proportion of missing data, but reflect a larger number of sampled years.
+
+Additionally, the amount of missing data introduced into the rest of the dataset by the thorough data collection in the Homelessness due to natural disasters data drastically distorts the number of missing data values in the Human security dataset.
+
+
+The following graph shows the pairwise correlation between all variables in the dataset.
+
+
+```{r,fig.height=10, fig.width = 10, warning = FALSE ,  message = FALSE}
+Human.Security.2 <- read_csv("./HumanSecurity/Human.Security.2.csv")
+Human.Security.2 <- Human.Security.2[,2:9]
+ggpairs(Human.Security.2[,c(3:8)], progress = FALSE,
+        upper = list(continuous = wrap("cor", size = 4)),
+        labeller = label_wrap_gen(10)) + 
+      theme(strip.text = element_text(size = 8)) + 
+      ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = "Human Security")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--chapter:end:05-results.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Interactive component
+
+
+
+<!--chapter:end:06-interactive.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Conclusion
+
+
+<!--chapter:end:07-conclusion.Rmd-->
+
