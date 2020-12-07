@@ -384,7 +384,7 @@ df_ed_td %>% write_csv('./Education/Education_Tidy.csv')
 
 ## Complete Data
 
-```{r}
+```{r,eval=FALSE}
 
 #HS <-read.csv("./HumanSecurity/Human.Security.Final.Tidy.csv")
 

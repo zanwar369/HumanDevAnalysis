@@ -87,6 +87,47 @@ ggpairs(df_ed[,c("EdInd","ExpSch","MYSch","PopSS25U")])
 
 
 
+Next to determine how to deal with the year variable we look at the yearly breakdown since 2010 (since the Inequality dataset only spans 2010-2018). From here we can see every single year is highly correlated (.985 to 1) hence suggesting we do not have to look at each year individually, and can aggregate across years instead.
+```{r warning = FALSE,  message = FALSE,fig.width=20}
+df<-df_ed[df_ed$Year>=2010,c('Country','Year','EdInd')] %>%
+  pivot_wider(names_from='Year',values_from="EdInd")
+ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])
+
+
+```
+
+## Education versus Human Security (2010 - 2018)
+
+For the actual analysis we compare the average across Education Index against the Human Security variables:
+
+*Homelessness due to natural disaster
+*Homicide rate
+*Prison population 
+
+```{r warning=FALSE, message=FALSE}
+All<-read_csv('./FinalData/All.csv')
+All<-All[All$Year>=2010,c("Country","EdInd",'Homeless.ND',  
+                          'Homicide.rate','Prison.popn')]
+EdHS<-All %>% group_by(Country) %>% select(everything()) %>%
+  summarise_all(~mean(., na.rm = TRUE)) 
+```
+
+Here it looks like a high Education Index, is associated with a low Homicide rate, and prison population. The association between Education Index and Homicide is the clearest. Educaiton and Prison population seems to show a similar relationb, though a high education index seems to be assocaited more-so with a median level of Prison population, though several countries with high education levels, still seem to jump to higher prison populations. Interestingly, countries with high education aare also closely associated with countries that have high homelessness due to natural disaster..
+
+```{r}
+ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
+    theme(axis.text.x = element_text(angle = 0)) +
+    xlab("") +
+    ylab("") +
+    ggtitle("Inequality versus Education Parallel Coordinate Plot")
+
+
+```
+
+
+
+
+
 ## Inequality versus Education (2010 - 2018)
 
 This section will detail the analysis of `Inequality` versus `Education` indicators for features selected per the above:
