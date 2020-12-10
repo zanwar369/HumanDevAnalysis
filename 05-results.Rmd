@@ -171,7 +171,7 @@ inequal_ed[, c(1,2,6,4,3,5,7,8)] %>%
 
 Some observations:
 
-* The two `Education` variables, "Education Index" and "Mean Years of Schooling", is positively correlated. Therefore, analysis for this section will be made with "Education Index" and such analysis implicitly also applies to "Mean Years of Schooling"
+* The two `Education` variables, "Education Index" and "Mean Years of Schooling", are positively correlated. Therefore, analysis for this section will be made with "Education Index" and such analysis implicitly also applies to "Mean Years of Schooling"
 
 * There is a large cluster of countries (call Cluster 1) with low "Inequality in Income (%)", mid to high "Inequality Adjusted Income Index", low "Inequality in Education (%)", and mid to high "Education Index". 
 
@@ -190,18 +190,18 @@ Some observations:
 
 As noted in section 4, the Suicide rate data are collected sporadically.  While these datasets show the lowest proportion of missing data, they only show data for four years, which are not consistently spaced across time.
 
-The other datasets in this section--Homicide rate, Prison population, Homelessness due to natural disaster, and Refugees by country of origin--show a higher proportion of missing data, but reflect a larger number of sampled years.
+The other datasets in this section--Homicide rate, Prison populatio, and Homelessness due to natural disaster--show a higher proportion of missing data, but reflect a larger number of sampled years.
 
-Additionally, the amount of missing data introduced into the rest of the dataset by the thorough data collection in the Homelessness due to natural disasters data drastically distorts the number of missing data values in the Human security dataset.
+Additionally, while the Homelessness from natural disasters data appears to distort the proportion of missing values in the Human Security dataset, it remains a valueable factor in analysis.
+
+Finally, as the Refugees by country of origin data is unavailable, it cannot be included in this analysis.
+
+The following graph shows the pairwise correlation between all variables in the dataset, with the exception of Refugees by country of origin.
 
 
-The following graph shows the pairwise correlation between all variables in the dataset.
-
-
-```{r,fig.height=10, fig.width = 10, warning = FALSE ,  message = FALSE}
-Human.Security.2 <- read_csv("./HumanSecurity/Human.Security.2.csv")
-Human.Security.2 <- Human.Security.2[,2:9]
-ggpairs(Human.Security.2[,c(3:8)], progress = FALSE,
+```{r,fig.height=8, fig.width = 8, warning = FALSE ,  message = FALSE}
+Human.Security <- read_csv("./HumanSecurity/HumanSecurity.Final.Tidy.csv")
+ggpairs(Human.Security[,c(3:7)], progress = FALSE,
         upper = list(continuous = wrap("cor", size = 4)),
         labeller = label_wrap_gen(10)) + 
       theme(strip.text = element_text(size = 8)) + 
@@ -209,22 +209,109 @@ ggpairs(Human.Security.2[,c(3:8)], progress = FALSE,
 
 ```
 
+With the exception of male and female suicide rate (0.552), none of the data show correlation coefficients above 0.5 or below -0.5, indicating they are not highly correlated. 
+
+As a result, the Human Security variables selected for this study are the following: 
+* Homelessness from natural disaster
+* Homicide rate
+* Prison population
+
+
+## Inequaity versus Human Security (2010 - 2018)
+
+This section will detail the analysis of `Inequality` versus `Human Security` given the following variables:
+
+`Inequality`
+
+* Inequality-adjusted income index
+
+* Inequality in income (%)
+
+* Inequality in education (%)
+
+* Inequality in life expectancy (%)
+
+`Human Security`
+
+* Homelessness due to natural disaster
+
+* Homicide rate
+
+* Prison population
+
+
+```{r, warning = FALSE, message = FALSE}
+HSINEQ_df <- read_csv("./FinalData/All.csv") %>%
+                  filter(Year %in% c(2010:2018)) %>%
+                  select(Country, Year, 'Inequality-adjusted income index', 'Inequality in income (%)', 'Inequality in education (%)', 'Inequality in life expectancy (%)', 'Homeless.ND', 'Homicide.rate', 'Prison.popn')
+
+```
+
+
+First, `Inequality` variables were contrasted against `Human Security` variables in a scatterplot, faceted by "Year" from 2010 to 2018 (again, the only years `Inequality` data were collected).
+
+```{r, fig.height=8, fig.width=8}
+ggpairs(HSINEQ_df[,c(3:9)], progress = FALSE,
+        upper = list(continuous = wrap("cor", size = 4)),
+        labeller = label_wrap_gen(10)) + 
+      theme(strip.text = element_text(size = 8)) + 
+      ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = "Inequality versus Human Security")
+```
+
+**ANALYSIS**
 
 
 
 
+```{r, fig.height = 7, fig.width=10}
+HSINEQ_df %>%
+  group_by(Country) %>%
+  summarise_all(~mean(., na.rm = TRUE)) %>%
+  ungroup() %>%
+  rename("Inequality in \nEducation (%)" = `Inequality in education (%)`,
+         "Inequality Adjusted \nIncome Index" = `Inequality-adjusted income index`,
+         "Inequality in \nLife Expectancy (%)" = `Inequality in life expectancy (%)`,
+         "Homelessness from \nNatural Disaster" = Homeless.ND,
+         "Prison Population" = Prison.popn,
+         "Homicide Rate" = Homicide.rate) %>% 
+  select(-Country, -Year) %>% 
+  ggparcoord(alpha = 0.25,
+               scale = 'uniminmax',
+               splineFactor = 0)  +
+    theme(axis.text.x = element_text(angle = 0)) +
+    xlab("") +
+    ylab("") +
+    ggtitle("Inequality versus Human Security Parallel Coordinate Plot")
+```
+
+* Cluster 1: Inequality adjusted income index, negative corr with inequality in income (plus some opposite, some mid)
+* Cluster 2: Inequality in Life Expectancy with Homelessness from natural disaster
+* Cluster 3: Homelessness from Natural Disaster with homicide rate
+* Cluster 4: Homicide rate and Prison popn
 
 
 
 
-
-
-
-
-
-
-
-
+```{r, fig.height = 7, fig.width=10}
+HSINEQ_df[, c(1,2,5,8,3,9,6,7)] %>%
+  group_by(Country) %>%
+  summarise_all(~mean(., na.rm = TRUE)) %>%
+  ungroup() %>%
+  rename("Inequality in \nEducation (%)" = `Inequality in education (%)`,
+         "Homicide Rate" = Homicide.rate,
+         "Inequality Adjusted \nIncome Index" = `Inequality-adjusted income index`,
+         "Prison Population" = Prison.popn,
+         "Inequality in \nLife Expectancy (%)" = `Inequality in life expectancy (%)`,
+         "Homelessness from \nNatural Disaster" = Homeless.ND) %>% 
+  select(-Country, -Year) %>% 
+  ggparcoord(alpha = 0.25,
+               scale = 'uniminmax',
+               splineFactor = 0)  +
+    theme(axis.text.x = element_text(angle = 0)) +
+    xlab("") +
+    ylab("") +
+    ggtitle("Inequality versus Human Security Parallel Coordinate Plot")
+```
 
 
 
