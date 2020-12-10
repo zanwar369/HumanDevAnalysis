@@ -147,7 +147,7 @@ The Homicide dataset is a particularly demonstrative example.  The final entries
 
 These countries are:
 
-```{r, echo = F}
+```{r}
 print(Homicide.rate$Country[168:192])
 ```
 
@@ -188,25 +188,25 @@ Further, the dataset shows uneven tracking between variables.  Homelessness due 
 Below are the years in the Homeless.natural.disaster dataset for which data were collected:
 
 
-```{r, echo=F}
+```{r}
 colnames(Homeless.natural.disaster)[2:30]
 ```
 
 By contrast, homicide data were only collected for the following years:
 
-```{r,echo=F}
+```{r}
 colnames(Homicide.rate)[2:13]
 ```
 
 And suicide rate data for both male and females were only collected in the following years:
 
-```{r, echo=F}
+```{r}
 colnames(Suicide.rate.F)[2:5]
 ```
 
 The large difference in frequency of data collection between these datasets results in a merged dataset with a great deal of missing values.  As the following graph demonstrates, as a result of the Homeless.natural.disaster data, remaining variables are each missing a minimum of about 75% of data values. 
 
-```{r, echo=F}
+```{r}
 prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security))), 
             prop_missing = unname(colMeans(is.na(Human.Security)))) %>%
           filter(prop_missing > 0)  
@@ -224,7 +224,7 @@ prop_missing_features %>%
 Alternately, the graphic below gives a more accurate picture of missing data.
 
 
-```{r, echo=F}
+```{r}
 prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security.2))), 
             prop_missing = unname(colMeans(is.na(Human.Security.2)))) %>%
           filter(prop_missing > 0)  
@@ -277,14 +277,15 @@ df_ed_lg<-read_csv('./Education/Education_LG.csv')
 df<-df_ed_td[c(2,4:28)] %>% group_by(Country) %>% select(everything()) %>%
      summarise_all(funs(sum(is.na(.)))) 
 df$TotalMiss<-rowSums(df[,2:26])
+df$PerTot<-df$TotalMiss*100/sum(df$TotalMiss)
 
 ```
 
 
-There are `r sum(df$TotalMiss)` missing observations across the variables, year and country. The following bar chart displaying an interesting yet confusing pattern. It looks like all countries have between `r min(df$TotalMiss)` and  `r max(df$TotalMiss)`. Keeping in mind the data spans 29 years, and 25 variables, this is sensible, though there doesn't seem to be much of a pttern to missing observations, though smaller countries seem partially more likely to have missing data.
+There are `r sum(df$TotalMiss)` missing observations across the variables, year and country. The following bar chart displays an interesting yet confusing pattern. It looks like all countries have between `r min(df$TotalMiss)` and  `r max(df$TotalMiss)`, corresponding to `r min(df$PerTot)` and `r max(df$PerTot)` percent of total missings. Keeping in mind the data spans 29 years, and 25 variables, this is sensible, though there doesn't seem to be much of a pttern to missing observations, though smaller countries seem partially more likely to have missing data.
 
 ```{r,fig.height=25,fig.width=10}
-ggplot(df,aes(y=fct_reorder(Country,TotalMiss),x=TotalMiss)) +
+ggplot(df,aes(y=fct_reorder(Country,PerTot),x=PerTot)) +
 geom_col()+ylab("Country")+xlab("")+ggtitle("Total Missing") +
   theme(plot.title = element_text(hjust = 0.5))
 ```
