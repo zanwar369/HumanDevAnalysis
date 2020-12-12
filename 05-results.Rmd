@@ -206,7 +206,7 @@ names(inequal_ed) <-  temp
 
 First, all `Inequality` variables were compared with all `Education` variables in a scatterplot, faceted by "Year" from 2010 to 2018 since those were the only years where `Inequality` data was available. It was noted that "Year" did not seem to separate the data as illustrated in the a sample facet plot below for "Mean Year of Schooling" versus "Inequality in life expectancy (%)". This was the case for every combination of variables. 
 
-```{r}
+```{r, warning = FALSE}
 inequal_ed %>%
   ggplot(aes(x = Inequality_in_life_expectancy_perc, y = MYSch)) +
   geom_point() +
@@ -294,7 +294,7 @@ HSINEQ_df <- read_csv("./FinalData/All.csv") %>%
 
 First, `Inequality` variables were contrasted against `Human Security` variables in a scatterplot, faceted by "Year" from 2010 to 2018 (again, the only years `Inequality` data were collected).
 
-```{r, fig.height=8, fig.width=8}
+```{r, fig.height=8, fig.width=8, warning = FALSE}
 ggpairs(HSINEQ_df[,c(3:9)], progress = FALSE,
         upper = list(continuous = wrap("cor", size = 4)),
         labeller = label_wrap_gen(10)) + 
