@@ -204,7 +204,11 @@ names(Suicide.rate.M)[2:5] <- c("2000", "2010", "2015", "2016")
 ```
 
 
-**Comment about Refugees data here**
+At this point, a problem became apparent.
+
+Though the UN Data website lists a Refugees dataframe as within the available datasets, there seemed to be no actual data available.  When the Refugees by country of origin dataset was downloaded (per the option on the UN Data website), the file, though titled correctly, was a copy of the Homelessness from natural disaster dataset.
+
+Below, the initial row of each dataset is compared to show their similarity.
 
 ```{r}
 compare <- Refugees[1,1:9]
@@ -212,9 +216,11 @@ compare[2,] <- merge(compare, Homeless.natural.disaster[1,1:9])
 compare
 ```
 
-**Finish comment about excluding refugees from data**
+A note was sent to the administrators of the UN Data website to alert them to this issue.
 
-Then, the numeric data columns are converted to numeric type.  Note that all columns are originally in character type.  Converting to numeric type both eases analysis and allows the blank entries, denoted as ".." to be read as empty (NA).
+However, as a result, the 'Refugees by country of origin' dataset was excluded from this study.
+
+Next, the numeric data columns are converted to numeric type.  Note that all columns are originally in character type.  Converting to numeric type both eases analysis and allows the blank entries, denoted as ".." to be read as empty (NA).
 
 ```{r}
 
@@ -264,16 +270,10 @@ Human.Security <- merge(Human.Security, PP, all.x = T, all.y = T)
 Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)  
 Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
 Human.Security <- Human.Security[30:5684,]
-
-Human.Security.Tidy.2 <- merge(HND, HR)
-Human.Security.Tidy.2 <- merge(Human.Security.Tidy.2, PP)
-Human.Security.Tidy.2 <- merge(Human.Security.Tidy.2, SRF)  
-Human.Security.Tidy.2 <- merge(Human.Security.Tidy.2, SRM)
 ```
 
 ```{r, eval=F}
 Human.Security %>% write_csv('./HumanSecurity/HumanSecurity.Final.Tidy.csv')
-Human.Security.Tidy.2 %>% write_csv('./HumanSecurity/HumanSecurity.Final.Tidy.2.csv')
 ```
 
 
@@ -367,7 +367,7 @@ df_ed<-df_ed[,!grepl("\\.[0-9]",colnames(df_ed))]
 
 ```
 
-Once the files are read in correctly we create two separate forms of the data. One with each variable as a column, and year as its own signular column, utilizing the pivot longer and wider functions. The other method leaves relevant education vartiables in a singular column, and another column coresponding to their values.  While the second format is not necessarily tidy-this will help look at missings across the data.
+Once the files are read in correctly we create two separate forms of the data. One with each variable as a column, and year as its own singular column, utilizing the pivot longer and wider functions. The other method leaves relevant education variables in a singular column, and another column corresponding to their values.  While the second format is not necessarily tidy, this will help look at missings across the data.
 
 ```{r}
 df_ed_lg<-df_ed %>%
