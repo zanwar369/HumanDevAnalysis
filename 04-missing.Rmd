@@ -226,19 +226,11 @@ prop_missing_year%>%
   ggtitle("Missing Human Security Data by Variable")
 ```
 
-Clearly, Homelessness due to natural disaster is missing the least amount of data.
+Clearly, Homelessness due to natural disaster is missing the least amount of data.  The remaining variables (Homicide rate, Prison population, and Suicide rate [male and female]) are clearly intermittently reported. Male and Female Suicide rate appear to have the greatest amount of missing data, though there seems to be relatively little missing data in the reported years. Homicide rate and Prison population show more years of reported data, and show consistently reported data after the year 2010.
 
-
-
-
-suicide rate (both male and female), and homicide rate are missing the least amount of data, though both refugees by country of origin and prison population are missing relatively little data after the year 2000.
-
-Given that homelessness due to natural disaster seems to be the most thoroughly recorded variable, the low proportion of missing data makes sense.  Additionally, given that suicide rate (male and female) only provides data for four years (2000, 2010, 2015, 2016), its low proportion of missing data also follows logically.  
-
-Both refugees by country of origin and prison population show a high proportion of missing data around the year 2000, and appear to fluctuate together. Given both refugee emigration and prison population require strong infrastructure and organization to accurately compute, it seems possible that whatever institutions collect data on these factors may be impacted by similar influences.
 
 ```{r}
-prop_missing_year<- Human.Security[Human.Security$Year > 2000,] %>% 
+prop_missing_year<- Human.Security[Human.Security$Year > 2009,] %>% 
   group_by(Year) %>% 
   summarise_all(~ sum(is.na(.))/n()) %>%
   ungroup() %>% 
@@ -252,8 +244,10 @@ prop_missing_year%>%
   scale_fill_continuous(high = "#132B43", low = "#56B1F7") +
   xlab("Year") + 
   ylab(NULL) +
-  ggtitle("Missing Human Security Data by Variable")
+  ggtitle("Missing Human Security Data by Variable (2009-2018)")
 ```
+
+The more focused heatmap, above, shows these data from 2010 to 2018.
 
 
 A number of unique problems may be incurred in the collection of international data, as discussed briefly in the Data chapter. Certain countries or regions may have presented challenges for data collection, given that collection processes relied on state institutions and infrastructure.
@@ -271,7 +265,7 @@ Of these 24 countries, 20 (Cóte d'Ivoire, Congo, Djibouti, Ethiopia, Gabon, Gam
 
 ```{r fig.height = 14, fig.width = 8}
 
-prop_missing_countries<- Human.Security.2 %>% 
+prop_missing_countries <- Human.Security.2 %>% 
   group_by(Country) %>% 
   summarise_all(~ sum(is.na(.))/n()) %>%
   ungroup()
@@ -289,9 +283,9 @@ prop_missing_countries %>%
     ggtitle("Missing Human Security Data by Country")
 ```
 
-The above graph shows the proportion of missing data among the Human Security variables.  The Marshall Islands (Oceania) is missing over 90%, with Palau (Oceania) missing over 65% and Somalia, Korea (Dem. People's Rep.) [North Korea], and St. Kitts and Nevis each missing over 50% of data.
+The above graph shows the proportion of missing data among the Human Security variables by country.  To most accurately measure missing data by country, this data controls for uneven data collection frequency by including only years for which all variables report data. 
 
-The countries missing 40% or more data include the above, as well as Andorra, Eritrea, Iran [Islamic Rep.], Mali, Micronesia [Fed. States], Palestine, Congo, Gambia, and Sudan.
+The Marshall Islands is missing over 80%, with Palau missing over 60% and St. Kitts and Nevis missing over 50% of data.
 
 Due to the large volume of countries included in this data, and their alphabetical organizational scheme, a heatmap is not an appropriate visualization tool.  
 
@@ -320,7 +314,7 @@ geom_col()+ylab("Country")+xlab("")+ggtitle("Total Missing") +
 ```
 
 
-For this analysis we want the variables with the least missing values across Countries to have a complete analysis. Overall it looks like, we can already begin narrowing down some of our variables to the ones that have almost no missings across all countries such as education index, or mean years of schooling. Other interesting notes are that the formerYugoslav Republic of Macedonia seems to have all missing observations-- which is correct according to the original source data, and after a little digging is because it has been replaced by North Macedonia, and is likely a left over. Percent of students without access to internet seems to be reported by very few, and mostly developed countries. The percent of population with at least some secondary education also seems like a variable that is frequently reported.
+For this analysis we want the variables with the least missing values across Countries to have a complete analysis. Overall it looks like, we can already begin narrowing down some of our variables to the ones that have almost no missings across all countries such as education index, or mean years of schooling. Other interesting notes are that the former Yugoslav Republic of Macedonia seems to have all missing observations-- which is correct according to the original source data, and after a little digging is because it has been replaced by North Macedonia, and is likely a left over. Percent of students without access to internet seems to be reported by very few, and mostly developed countries. The percent of population with at least some secondary education also seems like a variable that is frequently reported.
 
 ```{r,fig.height=25,fig.width=20}
 
