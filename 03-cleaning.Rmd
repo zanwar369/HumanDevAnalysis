@@ -331,7 +331,7 @@ The following are the columns in the education dataset:
 Note that the column 'HDI Rank (2018)' is kept as a reference column and not for analysis. 
 
 
-In order to read in, and transform the education data, the method is again similar to the previous two examples. Every file is found, and read from the relevant  Education directory. With this data wew determine the relevant NAs in the files, and code those as such. Similarly, we skip the first lines in the files which are blank. Then we remove any rows that are irrelevant-- specifically the rows with footnotes. Finally, we remove additional columns, and change data types if necessary, and are then ready to transform the data into tidy format.
+In order to read in, and transform the education data, the method is again similar to the previous two examples. Every file is found, and read from the relevant Education directory. With this data we determine the relevant NAs in the files, and code those as such. Similarly, we skip the first lines in the files which are blank. Then we remove any rows that are irrelevant-- specifically the rows with footnotes. Finally, we remove additional columns, and change data types if necessary, and are then ready to transform the data into tidy format.
 
 ```{r}
 
@@ -361,7 +361,7 @@ df_ed<-df_ed[,!grepl("\\.[0-9]",colnames(df_ed))]
 
 ```
 
-Once the files are read in correctly we create two separate forms of the data. One with each variable as a column, and year as its own singular column, utilizing the pivot longer and wider functions. The other method leaves relevant education variables in a singular column, and another column corresponding to their values.  While the second format is not necessarily tidy, this will help look at missings across the data.
+Once the files are read in correctly we create two separate forms of the data. One with each variable as a column, and year as its own singular column, utilizing the pivot longer and wider functions. The other method leaves relevant education variables in a singular column, and another column corresponding to their values.  While the second format is not necessarily tidy, this format is kept for future use.
 
 ```{r}
 df_ed_lg<-df_ed %>%
@@ -373,11 +373,10 @@ df_ed_td<-df_ed_lg %>%
 df_ed_td %>% write_csv('./Education/Education_Tidy.csv')
 
 ```
- # df_temp<-subset(df_temp,!is.na(df_temp$`HDI Rank (2018)`))
 
 
 
-```{r,eval=FALSE}
+```{r}
 
 HS <-read.csv("./HumanSecurity/HumanSecurity.Final.Tidy.csv")
 

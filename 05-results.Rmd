@@ -76,7 +76,7 @@ Looking at the pairplot of the 5 remaining variables, it is noted that even thou
 
 ## Education Variable Selection
 
-Initially we pull only the variables that had the lest missings as per the missings analysis.I then run ggpairs across these variables to determine if there is further narrrowing we can do in regards to select. Given that the variables are all relatively, highly correlated, it is decided to just take Education Index as the variable of comparions in the analysis of correlations across human development topics.
+Initially we pull only the variables that had the least missings as per the missings analysis.I then run ggpairs across these variables to determine if there is further narrrowing we can do in regards to select. Given that the variables are all relatively, highly correlated, it is decided to just take Education Index as the variable of comparion in the analysis of correlations across human development topics.
 
 ```{r warning = FALSE,  message = FALSE}
 
@@ -88,7 +88,7 @@ ggpairs(df_ed[,c("EdInd","ExpSch","MYSch","PopSS25U")])
 
 
 
-Next to determine how to deal with the year variable we look at the yearly breakdown since 2010 (since the Inequality dataset only spans 2010-2018). From here we can see every single year is highly correlated (.985 to 1) hence suggesting we do not have to look at each year individually, and can aggregate across years instead.
+Next to determine how to deal with the year variable we look at the yearly breakdown since 2010 (since the Inequality dataset only spans 2010-2018). From here we can see every single year is highly correlated (.985 to 1) hence suggesting we do not have to look at each year individually, and can aggregate across years instead with a simple average.
 
 ```{r warning = FALSE,  message = FALSE,fig.width=20}
 df<-df_ed[df_ed$Year>=2010,c('Country','Year','EdInd')] %>%

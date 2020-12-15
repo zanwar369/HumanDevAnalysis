@@ -317,7 +317,7 @@ df$PerTot<-df$TotalMiss*100/sum(df$TotalMiss)
 ```
 
 
-There are `r sum(df$TotalMiss)` missing observations across the variables, year and country. The following bar chart displays an interesting yet confusing pattern. It looks like all countries have between `r min(df$TotalMiss)` and  `r max(df$TotalMiss)`, corresponding to `r min(df$PerTot)` and `r max(df$PerTot)` percent of total missings. Keeping in mind the data spans 29 years, and 25 variables, this is sensible, though there doesn't seem to be much of a pttern to missing observations, though smaller countries seem partially more likely to have missing data.
+There are `r sum(df$TotalMiss)` missing observations across the variables, year and country. The following bar chart displays an interesting yet confusing pattern. It looks like all countries have between `r min(df$TotalMiss)` and  `r max(df$TotalMiss)`, corresponding to `r min(df$PerTot)` and `r max(df$PerTot)` percent of total missings. Keeping in mind the data spans 29 years, and 25 variables, this is sensible, though there doesn't seem to be much of a pttern to missing observations. Some smaller countries do seem partially more likely to have missing data.
 
 ```{r,fig.height=25,fig.width=10}
 ggplot(df,aes(y=fct_reorder(Country,PerTot),x=PerTot)) +
@@ -326,9 +326,9 @@ geom_col()+ylab("Country")+xlab("")+ggtitle("Total Missing") +
 ```
 
 
-For this analysis we want the variables with the least missing values across Countries to have a complete analysis. Overall it looks like, we can already begin narrowing down some of our variables to the ones that have almost no missings across all countries such as education index, or mean years of schooling. Other interesting notes are that the former Yugoslav Republic of Macedonia seems to have all missing observations-- which is correct according to the original source data, and after a little digging is because it has been replaced by North Macedonia, and is likely a left over. Percent of students without access to internet seems to be reported by very few, and mostly developed countries. The percent of population with at least some secondary education also seems like a variable that is frequently reported.
+For this analysis we want the variables with the least missing values across Countries to have a complete analysis. The chart is too large, and messy to display,but some insights can be gleaaned from looking it over that the read is free to explore. Overall it looks like, we can already begin narrowing down some of our variables to the ones that have almost no missings across all countries such as education index, or mean years of schooling. Other interesting notes are that the former Yugoslav Republic of Macedonia seems to have all missing observations-- which is correct according to the original source data, and after a little digging is because it has been replaced by North Macedonia, and is likely a left over data point. Percent of students without access to internet seems to be reported by very few, and mostly developed countries. The percent of population with at least some secondary education also seems like a variable that is frequently reported.
 
-```{r,fig.height=25,fig.width=20}
+```{r,fig.height=25,fig.width=20,eval=FALSE}
 
 ggplot(df[,1:26] %>%
      pivot_longer(cols=!c("Country"),names_to="Vari",values_to="Val") ,aes(y=Country,x=Vari,fill=Val))+
@@ -337,7 +337,7 @@ ggplot(df[,1:26] %>%
 ```
 
 
-Breaking down the analysis a little further, it looks we should definitely focus on 2010 onwards gfiving the lack of data across countries on a consistent basis for singular years beforehand. It looks like the data was previously released in 5-year buckets.
+Breaking down the analysis a little further, it looks we should definitely focus on 2010 onwards given the lack of data across countries on a consistent basis for singular years beforehand. It looks like the data was previously released in 5-year buckets.
 
 ```{r,fig.height=25,fig.width=20}
 
@@ -350,7 +350,7 @@ ggplot(df_n %>%
 
 ```
 
-Interestingly breakding down the missing variables by year confirms what was seen previously. The most reliable variables will be Education Index, Mean Years of Schooling, and Expected Years of Schooling, according to the lower number of missings throughout the years, as well as population with some secondary education.
+Interestingly breakding down the missing variables by year confirms what was seen previously. The most reliable variables will be Education Index, Mean Years of Schooling, and Expected Years of Schooling, according to the lower number of missings throughout the years, as well as the variable for population with some secondary education.
 
 ```{r,fig.height=25,fig.width=20}
 df<-df_ed_td[c(3:28)] %>% group_by(Year) %>% select(everything()) %>%
