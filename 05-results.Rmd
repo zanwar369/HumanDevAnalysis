@@ -373,4 +373,19 @@ HSINEQ_df[, c(1,2,5,8,3,9,6,7)] %>%
 
 
 
+To look at our data more closely in our interactive component we create a finalized csv to be read into our plot.
+
+```{r, warning=FALSE, message=FALSE}
+
+All<-read_csv('./FinalData/All.csv')
+All<-All[All$Year>=2010,c("Country","EdInd",'Homeless.ND',  
+                          'Homicide.rate','Prison.popn',
+                          'Inequality-adjusted income index', 'Inequality in income (%)', 
+                          'Inequality in education (%)', 'Inequality in life expectancy (%)')]
+AvgAll<-All %>% group_by(Country) %>% select(everything()) %>%
+  summarise_all(~mean(., na.rm = TRUE))
+AvgAll %>% write_csv("./Interactive/HumDevAll.csv")
+
+
+```
 
