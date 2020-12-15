@@ -506,6 +506,15 @@ Some observations:
 
 
 
+```{r}
+temp <- inequal_ed[, c(1,2,6,4,3,5,7,8)] %>%
+  group_by(Country) %>%
+  summarise_all(~mean(., na.rm = TRUE)) %>%
+  ungroup() %>%
+  select(Country, Inequality_adjusted_income_index, Inequality_in_education_perc, EdInd) %>%
+  drop_na() %>%
+  write_csv('inequal_ed.csv')
+```
 
 
 
