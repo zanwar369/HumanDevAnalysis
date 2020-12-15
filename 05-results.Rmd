@@ -31,11 +31,12 @@ A scatterplot matrix of all 9 features without the missing data is below and suc
 
 ```{r,fig.height=12, fig.width = 12, warning = FALSE ,  message = FALSE}
 inequality_df <- read_csv("./Inequality/inequality_tidy.csv")
-#inequality_df <- read_csv("./inequality_tidy.csv")
 ggpairs(inequality_df[,c(4,12,6, 7,10, 5, 9, 11, 8)], progress = FALSE,
         upper = list(continuous = wrap("cor", size = 4)),
+        #lower = list(continuous = wrap('points', alpha = 0.3)),
         labeller = label_wrap_gen(10)) + 
-      theme(strip.text = element_text(size = 8))
+      theme(strip.text = element_text(size = 8)) +
+      ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = "Inequality")
 
 ```
 
@@ -145,7 +146,7 @@ EdHS<-All %>% group_by(Country) %>% select(everything()) %>%
   summarise_all(~mean(., na.rm = TRUE)) 
 ```
 
-Here it looks like a high Education Index, is associated with a low Homicide rate, and prison population. The association between Education Index and Homicide is the clearest. Education and Prison population seems to show a similar relation, though a high education index seems to be associated more-so with a median level of Prison population, though several countries with high education levels, still seem to jump to higher prison populations. Interestingly, countries with high education are also closely associated with countries that have high homelessness due to natural disaster..
+Here it looks like a high Education Index, is associated with a low Homicide rate, and prison population. The association between Education Index and Homicide is the clearest. Education and Prison population seems to show a similar relation, though a high education index seems to be associated more-so with a median level of Prison population, though several countries with high education levels, still seem to jump to higher prison populations. Interestingly, countries with high education are also closely associated with countries that have high homelessness due to natural disaster.
 
 ```{r}
 ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
@@ -179,7 +180,7 @@ This section will detail the analysis of `Inequality` versus `Education` indicat
 
 * Education Index
 
-* Mean Years of Schooling
+* Mean Years of Schooling (Years)
 
 
 ```{r, warning = FALSE, message = FALSE}
@@ -204,13 +205,16 @@ names(inequal_ed) <-  temp
 ```
 
 
-First, all `Inequality` variables were compared with all `Education` variables in a scatterplot, faceted by "Year" from 2010 to 2018 since those were the only years where `Inequality` data was available. It was noted that "Year" did not seem to separate the data as illustrated in the a sample facet plot below for "Mean Year of Schooling" versus "Inequality in life expectancy (%)". This was the case for every combination of variables. 
+First, all `Inequality` variables were compared with all `Education` variables in a scatter plot, faceted by "Year" from 2010 to 2018 since those were the only years where `Inequality` data was available. It was noted that "Year" did not separate the data, as illustrated in the a sample facet plot below for "Mean Year of Schooling" versus "Inequality in life expectancy (%)". This was the case for every combination of variables. 
 
 ```{r, warning = FALSE}
 inequal_ed %>%
   ggplot(aes(x = Inequality_in_life_expectancy_perc, y = MYSch)) +
   geom_point() +
-  facet_wrap(~Year)
+  facet_wrap(~Year) +
+  xlab('Inequality in Life Expectancy (%)') +
+  ylab('Mean Years of Schooling (Years)') +
+  ggtitle('Sample Plot of Inequality in Life Expectancy versus Mean Years of Schooling \nFaceted by Years') 
 ```
 
 
@@ -231,7 +235,7 @@ inequal_ed[, c(1,2,6,4,3,5,7,8)] %>%
          "Inequality Adjusted \nIncome Index" = Inequality_adjusted_income_index,
          "Inequality in \nLife Expectancy (%)" = Inequality_in_life_expectancy_perc,
          'Education Index ' = EdInd,
-         'Mean Years of Schooling' = MYSch) %>% 
+         'Mean Years of Schooling\n(Years)' = MYSch) %>% 
   select(-Country, -Year) %>% 
   ggparcoord(alpha = 0.25,
                scale = 'uniminmax',
@@ -242,10 +246,9 @@ inequal_ed[, c(1,2,6,4,3,5,7,8)] %>%
     ggtitle("Inequality versus Education Parallel Coordinate Plot")
 ```
 
+Observations:
 
-Some observations:
-
-* The two `Education` variables, "Education Index" and "Mean Years of Schooling", are positively correlated. Therefore, analysis for this section will be made with "Education Index" and such analysis implicitly also applies to "Mean Years of Schooling"
+* The two `Education` variables, "Education Index" and "Mean Years of Schooling", are positively correlated. Therefore, analysis for this section will be made with "Education Index" only because the same conclusions will apply to "Mean Years of Schooling".
 
 * There is a large cluster of countries (call Cluster 1) with low "Inequality in Income (%)", mid to high "Inequality Adjusted Income Index", low "Inequality in Education (%)", and mid to high "Education Index". 
 

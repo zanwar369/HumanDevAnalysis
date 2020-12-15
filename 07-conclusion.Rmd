@@ -1,2 +1,14 @@
 # Conclusion
 
+Inequality - found two distinct clusters that have relationships across several variables
+Cluster 1:
+
+* low "Inequality in Income (%)", mid to high "Inequality Adjusted Income Index", low "Inequality in Education (%)", and mid to high "Education Index". 
+
+* "Inequality in Education (%)" is negatively correlated with "Education Index" but "Inequality Adjusted Income Index" is positively correlated with "Education Index".
+
+Cluster 2:
+
+* low to mid "Inequality Adjusted Income Index", high "Inequality in Education (%)", and low-mid "Education Index".
+
+* no obvious negative correlation between "Inequality Adjusted Income Index" - "Education Index" and  "Inequality in Education (%)" - "Education Index" like in Cluster 1.

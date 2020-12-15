@@ -22,12 +22,16 @@ Below is a bar plot showing the count of missing data per feature.
 ```{r fig.width = 8}
 prop_missing_features <- data.frame(var = names(colMeans(is.na(inequality_df))), 
             prop_missing = unname(colMeans(is.na(inequality_df)))) %>%
-          filter(prop_missing > 0)  
+          filter(prop_missing > 0) %>%
+          filter(!var %in% c('Country', 'HDI Rank (2018)'))
 
 prop_missing_features %>%
     ggplot(aes(x = fct_reorder(var, prop_missing, .desc =FALSE), y = prop_missing)) +
     geom_col() +
-    coord_flip()
+    coord_flip() +
+    xlab("") +
+    ylab("Proportion of Data Missing") +
+    ggtitle("Proportion of Data Missing for Each Inequality Feature")
 ```
 
 
@@ -47,7 +51,11 @@ prop_missing_year<- inequality_df %>%
 prop_missing_year%>%
   ggplot(aes(x = factor(Year), y = fct_reorder(features, -year_prop_missing, mean))) +
   geom_tile(aes(fill = year_prop_missing)) +
-  scale_fill_continuous(high = "#132B43", low = "#56B1F7")
+  scale_fill_continuous(high = "#132B43", low = "#56B1F7") +
+  xlab("Year") +
+  ylab('') +
+  ggtitle('Heat Map of Missing Data for Inequality \nFeature - Year Combination') +
+  labs(fill='Proportion Missing') 
   
 ```
 
@@ -70,11 +78,15 @@ prop_missing_countries <- data.frame(Country = prop_missing_countries$Country,
 prop_missing_countries %>% 
     ggplot(aes(x = fct_reorder(Country, country_prop_missing, .desc =FALSE), y = country_prop_missing)) +
     geom_col() +
-    coord_flip()
+    coord_flip() + 
+    xlab('') +
+    ylab('Proportion Missing') +
+    ggtitle('Proportion of Missing Inequality Data for Each Country')
+    
 ```
 
 
-It looks like 100% of the data is missing for Saint Kitts and Nevis, Liechtenstein, and Dominica. In addition, >87.5% of the data is missing for Nauru, Marshall Islands, Andorra, and Tuvalu. All of these countries are extremely small (most are islands) and it is possible that `Inequality` data is not collected nationally and/or data collection is not prioritized by the relevant international organizations.  
+100% of the data is missing for Saint Kitts and Nevis, Liechtenstein, and Dominica. In addition, >87.5% of the data is missing for Nauru, Marshall Islands, Andorra, and Tuvalu. All of these countries are extremely small (most are islands) and it is possible that `Inequality` data is not collected nationally and/or data collection is not prioritized by the relevant international organizations.  
 
 
 Due to the large volume of countries, a heat map is not an effective way to visualize the relationship in proportion of data missing between countries and features. A parallel coordinate plot was drawn instead to determine if there's any relationship between features and proportion of missing data for different countries.
