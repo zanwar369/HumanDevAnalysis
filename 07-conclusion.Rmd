@@ -12,3 +12,12 @@ Cluster 2:
 * low to mid "Inequality Adjusted Income Index", high "Inequality in Education (%)", and low-mid "Education Index".
 
 * no obvious negative correlation between "Inequality Adjusted Income Index" - "Education Index" and  "Inequality in Education (%)" - "Education Index" like in Cluster 1.
+
+
+Education-
+
+In comparison to human security indices, the effect of higher education rankings is mixed. Higher education seems to be correlated with higher homeless populations due to natural disaster. There could be several reasons for this, including higher density in more-so developed countries could suggest that natural disasters would wreak more havoc. Other explanations can include a societal neglect in more-so education oriented countries. These would be interesting topics to further study.
+
+High education in countries also implies a higher prison population.This is to be expected as countries that have the ability to focus on education likely already have a well developed, (though likely more harmful) prison system that would potentially allow for the focus to shift towards self-betterment versus self-preservation.
+
+Homicide rates seem to stay lower for highly educated countries, and have bigger jumps for countries with average mean and below. Many of the high homicide rate outliers have relatively low education rates, but overall the pattern is does not imply a very strong relationship. 

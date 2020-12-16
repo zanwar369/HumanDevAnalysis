@@ -74,7 +74,7 @@ Looking at the pairplot of the 5 remaining variables, it is noted that even thou
 
 
 
-## Education Variable Selection
+### Education Variable Selection
 
 Initially we pull only the variables that had the least missings as per the missings analysis.I then run ggpairs across these variables to determine if there is further narrrowing we can do in regards to select. Given that the variables are all relatively, highly correlated, it is decided to just take Education Index as the variable of comparion in the analysis of correlations across human development topics.
 
@@ -99,7 +99,7 @@ ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])
 ```
 
 
-## Human Security Variable Selection
+### Human Security Variable Selection
 
 As noted in section 4, the Suicide rate data are collected sporadically.  While these datasets show the lowest proportion of missing data, they only show data for four years, which are not consistently spaced across time.
 
@@ -159,7 +159,16 @@ ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
 ```
 
 
+The following scatterplot matrix makes the relationship even clearer, and intersting. Ranking high on the education index is highly correlated with Homelessness due to natural disaster. While higher levels of Education are still associated with low Homicide rates, where as if you restrict the analsysis to lower levels of education there seems to be an associated jump in high homicide outliers. The relationship between Education and prison population is somewhat stronger and direct as seen in the matrix-- with a correlation of 0.3 higher levels of education seem to imply higher levels of imprisonment.
 
+```{r warning=FALSE, message=FALSE}
+
+EdHS %>%
+  ggpairs(columns = c("EdInd",'Homeless.ND',  
+                          "Homicide.rate","Prison.popn"))
+
+
+```
 
 
 ## Inequality versus Education (2010 - 2018)
