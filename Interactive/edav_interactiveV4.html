@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<script src="https://d3js.org/d3.v6.js"></script>
+
+<!-- <select id="selectButtonX"></select> 
+<select id="selectButtonY"></select> -->
+<h1>Human Development Index Comparisons</h1>
+<div id="human_dev"></div>
+<div id="dropdown"></div>
+<script type="text/javascript">
+
+</script>
+
+
+<script type="text/javascript">
+
+var h = 500
+var w = 800
+
+var margin = {top: 10, right: 100, bottom: 60, left: 60},
+    innerWidth = w - margin.left - margin.right,
+    innerHeight = h - margin.top - margin.bottom;
+
+var svg = d3.select("#human_dev")
+  .append("svg")
+    .attr("width", innerWidth + margin.left + margin.right)
+    .attr("height", innerHeight + margin.top + margin.bottom)
+
+////
+var rowConverter = function (d) {
+  return {
+      EdInd: +d.EdInd,
+      IneqIncInd: +d['Inequality-adjusted income index'],
+      IneqLE: +d['Inequality in life expectancy (%)'],
+      IneqEd: +d['Inequality in education (%)'],
+      Homicide: +d['Homicide.rate'],
+      Homlessness: +d['Homeless.ND'],
+      PrisonPop: +d['Prison.popn']
+    }
+};  
+
+
+d3.csv("https://gist.githubusercontent.com/zanwar369/e735c89f3bf6454bd0e38654896d3834/raw/a02428c6233b846d2f770be6caafe6b2dc0e5367/HumDevAll.csv", 
+	rowConverter).then(function(data) {
+
+////
+    var columns = data.columns.filter(d => d!="Country")
+
+    // var allGroup = [["Inequality_adjusted_income_index","Inequality Adjusted Income Index"], 
+    // ["Inequality_in_education_perc","Inequality in Education (%)"],
+    // ["EdInd","Education Index"]]
+    
+    d3.select("#dropdown")
+      .append("select")
+      .attr("id","selectButtonX")
+
+    d3.select("#dropdown")
+      .append("select")
+      .attr("id","selectButtonY")
+    
+
+
+    d3.select("#selectButtonX")
+      .selectAll('myOptions')
+     	.data(columns)
+      .enter()
+    	.append('option')
+      .text(function(d) {
+          if (d=="EdInd") {return "Education Index";}
+          else if (d=="Homicide.rate") {return "Homicide Rate";}
+          else if (d=="Homeless.ND") {return "Homelessness due to Natural Disasters";}
+          else if (d=="Prison.popn") {return "Prison Population";}
+          else {return d;}
+        }
+        ) 
+      .attr("value", d => d)
+
+
+
+    d3.select("#selectButtonY")
+      .selectAll('myOptions')
+     	.data(columns)
+      .enter()
+    	.append('option')
+      .text(function(d) {
+          if (d=="EdInd") {return "Education Index";}
+          else if (d=="Homicide.rate") {return "Homicide Rate";}
+          else if (d=="Homeless.ND") {return "Homelessness due to Natural Disasters";}
+          else if (d=="Prison.popn") {return "Prison Population";}
+          else {return d;}
+        }
+        )  
+      .attr("value", d => d) 
+
+
+////
+    var initial_min = d3.min(data, d => d.EdInd) 
+
+    var initial_max = d3.max(data, d => d.EdInd) 
+
+
+    var xScale = d3.scaleLinear()
+      .domain([0.8*initial_min,1.1*initial_max])
+      .range([ 0, innerWidth ]);
+    
+    svg.append("g")
+      .attr('class','xaxis')
+      .attr("transform", `translate(${margin.left},${h - margin.bottom})`)
+      .call(d3.axisBottom(xScale))
+ 
+    var yScale = d3.scaleLinear()
+      .domain([0.8*initial_min,1.1*initial_max])
+      .range([ innerHeight, 0 ]);
+
+    svg.append("g")
+      .attr('class','yaxis')
+      .attr("transform",
+            `translate(${margin.left},${margin.top})`)
+      .call(d3.axisLeft(yScale));
+
+
+////
+    var dot = svg.append('g') 
+      .attr('id','plot')   
+      .attr("transform",
+            `translate(${margin.left},${margin.top})`)
+      .selectAll('circle')
+      .data(data)
+      .enter()
+      .append('circle')
+        .attr("cx", d => xScale(+d.EdInd))
+        .attr("cy", d => yScale(+d.EdInd))
+        .attr("r", 4)
+        .style("fill", "#69b3a2")
+        .style('opacity',0.75)
+
+////
+    var xlabel = svg.append('text')
+                  .attr('class','xlabel')
+                  .attr("text-anchor", "middle")
+                  .text('Inequality Adjusted Income Index')
+                  .attr('font-size','20px')
+                  .attr('x',margin.left+innerWidth/2)
+                  .attr('y', h - margin.bottom/4)
+
+////
+    var ylabel = svg.append("text")
+                    .attr("class", "ylabel")
+                    .attr("text-anchor", "middle")
+                    .attr("y", margin.left/5)
+                    .attr('x', -1*innerHeight/2)
+                    .attr("dy", ".75em")
+                    .attr("transform", "rotate(-90)")
+                    .text('Inequality Adjusted Income Index')
+                    .attr('font-size','20px')
+
+    function updateX(textX, selectGroupX) {
+      console.log(data.columns)
+      var dataFilter = data.map(function(d){return {X: d[selectGroupX]} })
+
+        xlabel.text(textX)
+
+        var minimum = d3.min(dataFilter, d => d.X)
+        var maximum = d3.max(dataFilter, d => d.X)
+        xScale.domain([0.8*minimum, 1.1*maximum])
+
+        svg.selectAll("g.xaxis")
+           .call(d3.axisBottom(xScale));
+
+        dot.data(dataFilter)
+           .attr('cx', d => xScale(+d.X))
+
+      }
+
+    function updateY(textY, selectGroupY) {
+
+      var dataFilter = data.map(function(d){return {Y:d[selectGroupY]} })
+
+       ylabel.text(textY)
+
+       var minimum = d3.min(dataFilter, d => d.Y)
+       var maximum = d3.max(dataFilter, d => d.Y)
+       yScale.domain([0.8*minimum, 1.1*maximum])
+
+
+       svg.selectAll("g.yaxis")
+          .call(d3.axisLeft(yScale));       
+
+       dot.data(dataFilter)
+          .attr('cy', d => yScale(+d.Y))
+    }
+
+
+
+    d3.select("#selectButtonX").on("change", function(d) {
+        var selectedOptionX = d3.select(this).property("value")
+        var textX = d3.select("#selectButtonX option:checked").text()
+        updateX(textX, selectedOptionX)
+    })
+
+    d3.select("#selectButtonY").on("change", function(d) {
+
+        var selectedOptionY = d3.select(this).property("value")
+        var textY = d3.select("#selectButtonY option:checked").text()
+        updateY(textY, selectedOptionY)
+    })
+})
+
+
+</script>
