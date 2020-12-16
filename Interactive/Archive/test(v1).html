@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v6.js"></script>
+
+<!-- Initialize a select button -->
+<select id="selectButtonX"></select> 
+<p></p>
+<select id="selectButtonY"></select>
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+<!-- Color Scale -->
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+
+<script>
+
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 100, bottom: 60, left: 60},
+    width = 800 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+
+var rowConverter = function (d) {
+  return {
+    Inequality_adjusted_income_index: +d.Inequality_adjusted_income_index,
+    Inequality_in_education_perc: +d.Inequality_in_education_perc,
+    EdInd: +d.EdInd,
+    }
+};  
+
+//Read the data
+d3.csv("https://gist.githubusercontent.com/lubin-liu/402bf314affeb9480b17d38559b97451/raw/inequal_ed.csv", 
+	rowConverter).then(function(data) {
+
+    // List of groups (here I have one group per column)
+    var allGroup = ["Inequality_adjusted_income_index", "Inequality_in_education_perc","EdInd"]
+    
+    var variable_map = [{'Inequality_adjusted_income_index':'Inequality Adjusted Income Index'}, 
+                        {'Inequality_in_education_perc': 'Inequality in Education (%)'},
+                        {'EdInd': 'Education Index'}]
+
+
+    // add the options to the button
+    d3.select("#selectButtonX")
+      .selectAll('myOptions')
+     	.data(allGroup)
+      .enter()
+    	.append('option')
+      .text(function (d) { return d; }) // text showed in the menu
+      .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+
+
+
+    d3.select("#selectButtonY")
+      .selectAll('myOptions')
+     	.data(allGroup)
+      .enter()
+    	.append('option')
+      .text(function (d) { return d; }) // text showed in the menu
+      .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+
+    var initial_min = d3.min(data, d => d.Inequality_adjusted_income_index)
+
+    var initial_max = d3.max(data, d => d.Inequality_adjusted_income_index)
+
+    // Add X axis --> it is a date format
+    var x = d3.scaleLinear()
+      .domain([0.8*initial_min,1.1*initial_max])
+      .range([ 0, width ]);
+    
+    svg.append("g")
+      .attr('class','xaxis')
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+ 
+
+    // Add Y axis
+
+    var y = d3.scaleLinear()
+      .domain([0.8*initial_min,1.1*initial_max])
+      .range([ height, 0 ]);
+
+    svg.append("g")
+      .attr('class','yaxis')
+      .call(d3.axisLeft(y));
+
+    // Initialize dots with group a
+    var dot = svg
+      .selectAll('circle')
+      .data(data)
+      .enter()
+      .append('circle')
+        .attr("cx", d => x(+d.Inequality_adjusted_income_index))
+        .attr("cy", d => y(+d.Inequality_adjusted_income_index))
+        .attr("r", 4)
+        .style("fill", "#69b3a2")
+        .style('opacity',0.75)
+
+
+    var xlabel = svg
+                  .append('text')
+                  .text('Inequality Adjusted Income Index')
+                  .attr('x','250')
+                  .attr('y','475')
+
+    var ylabel = svg.append("text")
+                    .attr("class", "y label")
+                    .attr("text-anchor", "end")
+                    .attr("y", -50)
+                    .attr('x', -100)
+                    .attr("dy", ".75em")
+                    .attr("transform", "rotate(-90)")
+                    .text('Inequality Adjusted Income Index');
+
+    // A function that update the chart
+    function updateX(selectGroupX) {
+
+      // Create new data with the selection?
+		var dataFilter = data.map(function(d){return {X: d[selectGroupX]} })
+      // Give these new data to update line
+
+      xlabel.text(selectGroupX)
+
+      var minimum = d3.min(dataFilter, d => d.X)
+      var maximum = d3.max(dataFilter, d => d.X)
+      x.domain([0.8*minimum, 1.1*maximum])
+
+      svg.selectAll("g.xaxis")
+    	   .call(d3.axisBottom(x));
+
+      dot.data(dataFilter)
+         .attr('cx', d => x(+d.X))
+
+    }
+
+    function updateY(selectGroupY) {
+
+      // Create new data with the selection?
+
+      var dataFilter = data.map(function(d){return {Y:d[selectGroupY]} })
+
+      // Give these new data to update line
+       ylabel.text(selectGroupY)
+
+       var minimum = d3.min(dataFilter, d => d.Y)
+       var maximum = d3.max(dataFilter, d => d.Y)
+       y.domain([0.8*minimum, 1.1*maximum])
+
+
+       svg.selectAll("g.yaxis")
+          .call(d3.axisLeft(y));       
+
+       dot.data(dataFilter)
+          .attr('cy', d => y(+d.Y))
+
+
+    }
+
+
+    // When the button is changed, run the updateChart function
+    d3.select("#selectButtonX").on("change", function(d) {
+        // recover the option that has been chosen
+        var selectedOptionX = d3.select(this).property("value")
+        updateX(selectedOptionX)
+    })
+    d3.select("#selectButtonY").on("change", function(d) {
+        // recover the option that has been chosen
+        var selectedOptionY = d3.select(this).property("value")
+        updateY(selectedOptionY)
+    })
+    // run the updateChart function with this selected option
+ 
+
+
+})
+
+
+</script>
