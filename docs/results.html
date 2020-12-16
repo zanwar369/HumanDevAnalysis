@@ -154,12 +154,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#variable-selection"><i class="fa fa-check"></i><b>5.1</b> Variable Selection</a>
 <ul>
 <li class="chapter" data-level="5.1.1" data-path="results.html"><a href="results.html#inequality-variable-selection"><i class="fa fa-check"></i><b>5.1.1</b> Inequality Variable Selection</a></li>
+<li class="chapter" data-level="5.1.2" data-path="results.html"><a href="results.html#education-variable-selection"><i class="fa fa-check"></i><b>5.1.2</b> Education Variable Selection</a></li>
+<li class="chapter" data-level="5.1.3" data-path="results.html"><a href="results.html#human-security-variable-selection"><i class="fa fa-check"></i><b>5.1.3</b> Human Security Variable Selection</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#education-variable-selection"><i class="fa fa-check"></i><b>5.2</b> Education Variable Selection</a></li>
-<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#human-security-variable-selection"><i class="fa fa-check"></i><b>5.3</b> Human Security Variable Selection</a></li>
-<li class="chapter" data-level="5.4" data-path="results.html"><a href="results.html#education-versus-human-security-2010---2018"><i class="fa fa-check"></i><b>5.4</b> Education versus Human Security (2010 - 2018)</a></li>
-<li class="chapter" data-level="5.5" data-path="results.html"><a href="results.html#inequality-versus-education-2010---2018"><i class="fa fa-check"></i><b>5.5</b> Inequality versus Education (2010 - 2018)</a></li>
-<li class="chapter" data-level="5.6" data-path="results.html"><a href="results.html#inequaity-versus-human-security-2010---2018"><i class="fa fa-check"></i><b>5.6</b> Inequaity versus Human Security (2010 - 2018)</a></li>
+<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#education-versus-human-security-2010---2018"><i class="fa fa-check"></i><b>5.2</b> Education versus Human Security (2010 - 2018)</a></li>
+<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#inequality-versus-education-2010---2018"><i class="fa fa-check"></i><b>5.3</b> Inequality versus Education (2010 - 2018)</a></li>
+<li class="chapter" data-level="5.4" data-path="results.html"><a href="results.html#inequaity-versus-human-security-2010---2018"><i class="fa fa-check"></i><b>5.4</b> Inequaity versus Human Security (2010 - 2018)</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
@@ -196,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>“Inequality-adjusted life expectancy index” and “Inequality in life expectancy (%)”</p></li>
 </ul>
 <p>A scatterplot matrix of all 9 features without the missing data is below and such that pairwise correlations between all features can be examined. The analysis will begin with the feature groups listed above with strong relationships in their missing data, then extend to the remaining feature variable pairs.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-48-1.png" width="1152" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-60-1.png" width="1152" /></p>
 <p>First, look at the feature groups where missing data appear to be in equal proportions for most countries:</p>
 <ul>
 <li><p>“Coefficient of Human Inequality”, “Overall loss in HDI due to inequality (%)”, and “Inequality-adjusted HDI (IHDI)”: The three pairwise correlation coefficients between these three features are 0.999, -0.954, and -0.950, showing that these three feature are highly correlated when the data is not missing.</p></li>
@@ -219,39 +219,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>“Inequality in life expectancy (%)”</p></li>
 </ul>
 </div>
-</div>
-<div id="education-variable-selection" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Education Variable Selection</h2>
+<div id="education-variable-selection" class="section level3" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> Education Variable Selection</h3>
 <p>Initially we pull only the variables that had the least missings as per the missings analysis.I then run ggpairs across these variables to determine if there is further narrrowing we can do in regards to select. Given that the variables are all relatively, highly correlated, it is decided to just take Education Index as the variable of comparion in the analysis of correlations across human development topics.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
 <p>Next to determine how to deal with the year variable we look at the yearly breakdown since 2010 (since the Inequality dataset only spans 2010-2018). From here we can see every single year is highly correlated (.985 to 1) hence suggesting we do not have to look at each year individually, and can aggregate across years instead with a simple average.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-50-1.png" width="1920" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-62-1.png" width="1920" /></p>
 </div>
-<div id="human-security-variable-selection" class="section level2" number="5.3">
-<h2><span class="header-section-number">5.3</span> Human Security Variable Selection</h2>
+<div id="human-security-variable-selection" class="section level3" number="5.1.3">
+<h3><span class="header-section-number">5.1.3</span> Human Security Variable Selection</h3>
 <p>As noted in section 4, the Suicide rate data are collected sporadically. While these datasets show the lowest proportion of missing data, they only show data for four years, which are not consistently spaced across time.</p>
 <p>The other datasets in this section (Homicide rate, Prison population, and Homelessness due to natural disaster) show a higher proportion of missing data, but reflect a larger number of sampled years.</p>
 <p>Additionally, while the Homelessness from natural disasters data appears to distort the proportion of missing values in the Human Security dataset, it remains a valuable factor in analysis.</p>
 <p>Finally, as the Refugees by country of origin data is unavailable, it cannot be included in this analysis.</p>
 <p>The following graph shows the pairwise correlation between all variables in the dataset, with the exception of Refugees by country of origin.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-51-1.png" width="768" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-63-1.png" width="768" /></p>
 <p>With the exception of male and female suicide rate (0.552), none of the data show correlation coefficients above 0.5 or below -0.5, indicating they are not highly correlated.</p>
 <p>As a result, the Human Security variables selected for this study are the following:
 * Homelessness from natural disaster
 * Homicide rate
 * Prison population</p>
 </div>
-<div id="education-versus-human-security-2010---2018" class="section level2" number="5.4">
-<h2><span class="header-section-number">5.4</span> Education versus Human Security (2010 - 2018)</h2>
+</div>
+<div id="education-versus-human-security-2010---2018" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Education versus Human Security (2010 - 2018)</h2>
 <p>For the actual analysis we compare the average across Education Index against the Human Security variables:</p>
 <p><em>Homelessness due to natural disaster
 </em>Homicide rate
 *Prison population</p>
 <p>Here it looks like a high Education Index, is associated with a low Homicide rate, and prison population. The association between Education Index and Homicide is the clearest. Education and Prison population seems to show a similar relation, though a high education index seems to be associated more-so with a median level of Prison population, though several countries with high education levels, still seem to jump to higher prison populations. Interestingly, countries with high education are also closely associated with countries that have high homelessness due to natural disaster.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<p>The following scatterplot matrix makes the relationship even clearer, and intersting. Ranking high on the education index is highly correlated with Homelessness due to natural disaster. While higher levels of Education are still associated with low Homicide rates, where as if you restrict the analsysis to lower levels of education there seems to be an associated jump in high homicide outliers. The relationship between Education and prison population is somewhat stronger and direct as seen in the matrix– with a correlation of 0.3 higher levels of education seem to imply higher levels of imprisonment.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
 </div>
-<div id="inequality-versus-education-2010---2018" class="section level2" number="5.5">
-<h2><span class="header-section-number">5.5</span> Inequality versus Education (2010 - 2018)</h2>
+<div id="inequality-versus-education-2010---2018" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Inequality versus Education (2010 - 2018)</h2>
 <p>This section will detail the analysis of <code>Inequality</code> versus <code>Education</code> indicators for features selected per the above:</p>
 <p><code>Inequality</code></p>
 <ul>
@@ -266,13 +268,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Mean Years of Schooling (Years)</p></li>
 </ul>
 <p>First, all <code>Inequality</code> variables were compared with all <code>Education</code> variables in a scatter plot, faceted by “Year” from 2010 to 2018 since those were the only years where <code>Inequality</code> data was available. It was noted that “Year” did not separate the data, as illustrated in the a sample facet plot below for “Mean Year of Schooling” versus “Inequality in life expectancy (%)”. This was the case for every combination of variables.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
 <p>Since there are 6 features in total all of which are continuous, a parallel coordinate plot is the most appropriate visualization tool for this type of data. For each of the six features, group by Country and average the data over all Years from 2010 to 2018 ignoring NA’s. The rationale is as follows:</p>
 <ul>
 <li><p>It was shown from the facet plots previously that “Year” did not distinguish any trends.</p></li>
 <li><p>If every Country-Year combination is a line on the parallel coordinate plot, then it would require that none of the six features have NA’s. This is too strong and may lead to under plotting given the amount of missing data in this dataset. This also ensures that every country also shows up only once or not at all.</p></li>
 </ul>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-56-1.png" width="960" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-69-1.png" width="960" /></p>
 <p>Observations:</p>
 <ul>
 <li><p>The two <code>Education</code> variables, “Education Index” and “Mean Years of Schooling”, are positively correlated. Therefore, analysis for this section will be made with “Education Index” only because the same conclusions will apply to “Mean Years of Schooling”.</p></li>
@@ -284,8 +286,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Countries in Cluster 1 has a visible right skew in “Inequality in Education (%)” and a slight left skew in “Education Index”, while countries in Cluster 2 exhibit no significant skew for these two features compared to Cluster 1.</p></li>
 </ul>
 </div>
-<div id="inequaity-versus-human-security-2010---2018" class="section level2" number="5.6">
-<h2><span class="header-section-number">5.6</span> Inequaity versus Human Security (2010 - 2018)</h2>
+<div id="inequaity-versus-human-security-2010---2018" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Inequaity versus Human Security (2010 - 2018)</h2>
 <p>This section details the analysis of <code>Inequality</code> versus <code>Human Security</code> given the following variables:</p>
 <p><code>Inequality</code></p>
 <ul>
@@ -301,7 +303,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Prison population</p></li>
 </ul>
 <p>First, <code>Inequality</code> variables were contrasted against <code>Human Security</code> variables in a scatterplot, faceted by “Year” from 2010 to 2018 (again, the only years <code>Inequality</code> data were collected).</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-58-1.png" width="768" />
+<p><img src="finalproj_files/figure-html/unnamed-chunk-71-1.png" width="768" />
 * The association between the ‘Inequality’ variables (“Inequality-adjusted income index”, “Inequality in income”, “Inequality in education”, and “Inequality in life expectancy”) is discussed in the Inequality variable selection, above.</p>
 <ul>
 <li><p>Similarly, the association between the ‘Human Security’ variables (“Homelessness due to natural disaster”, “Homicide rate”, and “Prison population”) are discussed in the Human Security variable selection, above.</p></li>
@@ -311,14 +313,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Among the ‘Human security’ variables, “Homelessness due to natural disaster” shows the strongest correlations with ‘Inequality’ variables. “Homelessness due to natural disaster” demonstrates a strong positive correlation with “Inequality-adjusted income” (0.907), and strong negative correlations with “Inequality in education” and “Inequality in life expectancy” (-0.820 and -0.914, respectively). Finally, “Homelessness due to natural disaster” also shows a mid-strength negative correlation with “Inequality in income” (-0.339).</p></li>
 </ul>
 <p>The parallel coordinate plots, below, map some of these associations.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-59-1.png" width="960" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-72-1.png" width="960" /></p>
 <p>Some observations:</p>
 <ul>
 <li><p>A cluster of countries (Cluster 1) shows a negative correlation between “Inequality adjusted income” and “Inequality in income”, with high “Inequality adjusted income” and low “Inequality in income”.</p></li>
 <li><p>Another cluster (Cluster 2) shows low “Inequality in life expectancy”, high “Homelessness from natural disaster”, and low “Homicide rate”. Cluster 2 shows a visible positive correlation between “Inequality in life expectancy”</p></li>
 <li><p>Cluster 4: Homicide rate and Prison popn</p></li>
 </ul>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-60-1.png" width="960" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-73-1.png" width="960" /></p>
+<p>To look at our data more closely in our interactive component we create a finalized csv to be read into our plot.</p>
 
 </div>
 </div>
