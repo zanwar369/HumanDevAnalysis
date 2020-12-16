@@ -139,9 +139,8 @@ A significant proportion of data in the Human.Security dataframe is missing.  La
 
 ```{r, echo=F}
 Human.Security <- read_csv("./HumanSecurity/HumanSecurity.Final.Tidy.csv")
-Human.Security.2 <- read_csv("./HumanSecurity/HumanSecurity.Final.Tidy.2.csv")
-Homeless.natural.disaster <- read_csv("./HumanSecurity/Homeless.tidy.csv")
-Homeless.natural.disaster <- Homeless.natural.disaster[,2:31]
+Human.Security <- subset(Human.Security, select = -c(3))
+Human.Security <- Human.Security[rowSums(is.na(Human.Security[,3:6])) != ncol(Human.Security[,3:6]),]
 Homicide.rate <- read_csv("./HumanSecurity/Homicide.tidy.csv")
 Homicide.rate <- Homicide.rate[,2:14]
 Homicide.rate.1 <- read.csv("./HumanSecurity/Homicide.tidy.csv")
@@ -154,29 +153,30 @@ Suicide.rate.M <- Suicide.rate.M[,2:6]
 Prison.popn <- read.csv("./HumanSecurity/Prison.population.csv")
 Prison.popn <- subset(Prison.popn, select = -c(X, X.1, X.2, X.3, X.4, X.5, X.6, X.7, X.8, X.9))
 names(Prison.popn)[2:11] <- c("2003", "2005", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")
+dcol <- 2
+for (i in 2:ncol(Prison.popn)) {
+  Prison.popn[,dcol] <- as.numeric(Prison.popn[,dcol])
+  dcol <- dcol +1
+}
 ```
 
-The Human Security dataset shows uneven tracking between variables. Homelessness due to natural disaster is measured on a yearly basis between 1990 and 2018. By contrast, Homicide rate was recorded only in 1990, 1995, 2000, 2005, and yearly from 2010 to 2017. Suicide rate for both males and females were recorded only in the years 2000, 2010, 2015, and 2016.
+The 'Human Security' dataset shows uneven tracking between variables. 'Homicide rate' is recorded in 1990, 1995, 2000, 2005, and yearly from 2010 to 2017. 'Suicide rate' for both males and females, by contrast, were recorded only in the years 2000, 2010, 2015, and 2016.
 
-Below are the years in the Homelessness due to natural disaster dataset for which data were collected:
-
-```{r}
-colnames(Homeless.natural.disaster)[2:30]
-```
-
-By contrast, homicide data were only collected for the following years:
+Below are the years in the 'Homicide rate' dataset for which data were collected:
 
 ```{r}
 colnames(Homicide.rate)[2:13]
 ```
 
-And suicide rate data for both male and females were only collected in the following years:
+By contrast, 'Suicide rate' data for both males and females were only collected for the following years:
 
 ```{r}
 colnames(Suicide.rate.F)[2:5]
 ```
 
-The difference in frequency of data collection between these datasets results in a merged dataframe with a high proportion of missing values. Specifically, the consistency of the Homelessness due to natural disaster data introduces years into the dataframe for which no other variables show recorded data. These remaining variables (Suicide rate [M], Suicide rate [F], Prison population, and Homicide rate) each show missing values over about 75 to 85% of the dataframe, as shown in the graph below.
+The difference in frequency of data collection between these datasets results in a merged dataframe with a high proportion of missing values. 
+
+Specifically, the consistency of the 'Prison population' and 'Homicide rate' data introduces years into the dataframe for which 'Suicide rate' shows no recorded data. As a result, 'Suicide.rate.M' and 'Suicide.rate.F' each show missing values over more than 60% of the dataframe, as shown in the graph below.
 
 ```{r}
 prop_missing_features <- data.frame(var = names(colMeans(is.na(Human.Security))), 
@@ -197,14 +197,13 @@ Alternately, the graph below gives a more accurate picture of the proportion of 
 
 
 ```{r, echo=F}
-hs_missing <- as.data.frame(matrix(nrow = 5, ncol = 2))
+hs_missing <- as.data.frame(matrix(nrow = 4, ncol = 2))
 colnames(hs_missing) <- c("factor", "prop.missing")
-hs_missing[1,2] <- mean(as.matrix(is.na(Homeless.natural.disaster)))
-hs_missing[,1] <- c("Homeless.ND", "Homicide.rate", "Prison.popn", "Suicide.F", "Suicide.M")
-hs_missing[2,2] <- mean(as.matrix(is.na(Homicide.rate)))
-hs_missing[3,2] <- mean(as.matrix(is.na(Prison.popn)))
-hs_missing[4,2] <- mean(as.matrix(is.na(Suicide.rate.F)))
-hs_missing[5,2] <- mean(as.matrix(is.na(Suicide.rate.M)))
+hs_missing[,1] <- c("Homicide.rate", "Prison.popn", "Suicide.F", "Suicide.M")
+hs_missing[1,2] <- mean(as.matrix(is.na(Homicide.rate)))
+hs_missing[2,2] <- mean(as.matrix(is.na(Prison.popn)))
+hs_missing[3,2] <- mean(as.matrix(is.na(Suicide.rate.F)))
+hs_missing[4,2] <- mean(as.matrix(is.na(Suicide.rate.M)))
 
 hs_missing %>%
     ggplot(aes(x = fct_reorder(factor, prop.missing, .desc =FALSE), y = prop.missing)) +
@@ -212,13 +211,13 @@ hs_missing %>%
     coord_flip() +
     xlab(NULL) + 
     ylab("Proportion of Data Missing") +
-    ggtitle("Missing Data", subtitle = "Including only matched years") +
+    ggtitle("Missing Data", subtitle = "Including only collected years for each variable") +
     ylim(c(0,.9))
 ```
 
-This chart reflects the average proportion of missing data for each variable (across all recorded years and countries). Calculating these proportions separately excludes the empty values introduced by the Homelessness dataset. This graph thus accounts for unequal frequency of data collection between variables. The variables with the greatest proportion of missing data (Prison population and Homicide rate) show between 25% and 35% missing data, respectively.
+This chart reflects the average proportion of missing data for each variable (across all recorded years and countries). Calculating these proportions separately excludes the empty values introduced by the unequal frequency of data collection between variables. The variables with the greatest proportion of missing data (Prison population and Homicide rate) show between 25% and 35% missing data, respectively.
 
-The following heatmap shows missing data split by variable.  Importantly, the map reflects the entire Human Security dataset, thus highlighting trends in missing data due to uneven frequency of data collection.
+The following heatmap shows missing data split by variable.  Importantly, the map reflects the entire Human Security dataset, thus again highlighting trends in missing data due to uneven frequency of data collection.
 
 ```{r}
 prop_missing_year<- Human.Security %>% 
@@ -231,40 +230,18 @@ prop_missing_year<- Human.Security %>%
 prop_missing_year%>%
   ggplot(aes(x = factor(Year), y = fct_reorder(features, -year_prop_missing, mean))) +
   geom_tile(aes(fill = year_prop_missing)) +
-  scale_x_discrete(expand=c(0,0), breaks =c("1990","1995","2000","2005","2010", "2015")) +
+  scale_x_discrete(expand=c(0,0)) +
   scale_fill_continuous(high = "#132B43", low = "#56B1F7") +
   xlab("Year") + 
   ylab(NULL) +
   ggtitle("Missing Human Security Data by Variable")
 ```
 
-Clearly, Homelessness due to natural disaster is missing the least amount of data.  The remaining variables (Homicide rate, Prison population, and Suicide rate [male and female]) are clearly intermittently reported. Male and Female Suicide rate appear to have the greatest amount of missing data, though there seems to be relatively little missing data in the reported years. Homicide rate and Prison population show more years of reported data, and show consistently reported data after the year 2010.
-
-
-```{r}
-prop_missing_year<- Human.Security[Human.Security$Year > 2009,] %>% 
-  group_by(Year) %>% 
-  summarise_all(~ sum(is.na(.))/n()) %>%
-  ungroup() %>% 
-  select(-Country) %>% 
-  pivot_longer(-Year, names_to = 'features' , values_to = 'year_prop_missing') 
-
-prop_missing_year%>%
-  ggplot(aes(x = factor(Year), y = fct_reorder(features, -year_prop_missing, mean))) +
-  geom_tile(aes(fill = year_prop_missing)) +
-  scale_x_discrete(expand=c(0,0), breaks =c("2000","2002","2004","2006","2008","2010","2012","2014","2016","2018")) +
-  scale_fill_continuous(high = "#132B43", low = "#56B1F7") +
-  xlab("Year") + 
-  ylab(NULL) +
-  ggtitle("Missing Human Security Data by Variable (2009-2018)")
-```
-
-The more focused heatmap, above, shows these data from 2010 to 2018.
-
+Clearly, 'Suicide.rate.M' and 'Suicide.rate.F' are missing the greatest amount of data, though there seems to be relatively little missing data in the reported years.  Both 'Homicide.rate' and 'Prison.popn' are consistently reported between 2005 and 2017, with slight variations in missing data.  'Homicide.rate' shows no data reported for the year 2003, while 'Prison.popn' shows no data before 2003.
 
 A number of unique problems may be incurred in the collection of international data, as discussed briefly in the Data chapter. Certain countries or regions may have presented challenges for data collection, given that collection processes relied on state institutions and infrastructure.
 
-The Homicide dataset is a particularly demonstrative example.  The final entries in the dataset show countries for which there is no recorded homicide data.
+The 'Homicide.rate' dataset is a particularly demonstrative example.  The final entries in the dataset show countries for which there is no recorded homicide data.
 
 These countries are:
 
@@ -275,15 +252,15 @@ print(Homicide.rate$Country[168:192])
 Of these 24 countries, 20 (Cóte d'Ivoire, Congo, Djibouti, Ethiopia, Gabon, Gambia, Madagascar, Mali, Nigeria, Sudan, Chad, Congo [Dem. Republic], Comoros, Eritrea, Guinea, Equatorial Guinea, Libya, Mauritania, Senegal, and Togo) are in Africa.  The remaining four (Lao [People's Dem. Republic], Vanuatu, Micronesia [Fed. States], the Marshall Islands, and Palau) are small island countries in Oceania.  Potential association between geographical region and missing data represents an important direction for further research, and provides an example of possible trends in missing data.
 
 
-```{r fig.height = 14, fig.width = 8}
+```{r fig.height = 18, fig.width = 8}
 
-prop_missing_countries <- Human.Security.2 %>% 
+prop_missing_countries <- Human.Security %>% 
   group_by(Country) %>% 
   summarise_all(~ sum(is.na(.))/n()) %>%
   ungroup()
 
 prop_missing_countries <- data.frame(Country = prop_missing_countries$Country, 
-                                     country_prop_missing =  rowMeans(prop_missing_countries[,2:7])) %>% 
+                                     country_prop_missing =  rowMeans(prop_missing_countries[,3:6])) %>% 
                           filter(country_prop_missing > 0)
 
 prop_missing_countries %>% 
@@ -291,15 +268,16 @@ prop_missing_countries %>%
     geom_col() +
     coord_flip() + 
     xlab(NULL) + 
+    ylim(c(0,0.9)) +
     ylab("Proportion of Data Missing") +
     ggtitle("Missing Human Security Data by Country")
 ```
 
-The above graph shows the proportion of missing data among the Human Security variables by country.  To most accurately measure missing data by country, this data controls for uneven data collection frequency by including only years for which all variables report data. 
+The above graph shows the proportion of missing data among the Human Security variables by country. 
 
-The Marshall Islands is missing over 80%, with Palau missing over 60% and St. Kitts and Nevis missing over 50% of data.
+Note that San Marino, Palau, Nauru, and the Marshall Islands are each missing 75% of data.
 
-Due to the large volume of countries included in this data, and their alphabetical organizational scheme, a heatmap is not an appropriate visualization tool.  
+Due to the large volume of countries included in this data, and their alphabetical organizational scheme, a heatmap is not an appropriate visualization tool to examine patterns of missing data by country.  
 
 
 ## Education Missing Data

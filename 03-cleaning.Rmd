@@ -200,7 +200,7 @@ names(Suicide.rate.M)[2:5] <- c("2000", "2010", "2015", "2016")
 
 At this point, a problem became apparent.
 
-Though the UN Data website lists a Refugees dataframe as within the available datasets, there seemed to be no actual data available.  When the Refugees by country of origin dataset was downloaded (per the option on the UN Data website), the file, though titled correctly, was a copy of the Homelessness from natural disaster dataset.
+Though the UN Data website lists both a Refugees dataframe and a Homelessness due to natural disasters dataframe as within the available datasets, there seemed to be no actual data available for either.  When the Refugees by country of origin and Homelessness due to natural disasters datasets were downloaded (per the option on the UN Data website), the files, though titled correctly, were a copies of the HDI records.
 
 Below, the initial row of each dataset is compared to show their similarity.
 
@@ -212,17 +212,11 @@ compare
 
 A note was sent to the administrators of the UN Data website to alert them to this issue.
 
-However, as a result, the 'Refugees by country of origin' dataset was excluded from this study.
+However, as a result, the 'Refugees by country of origin' and 'Homelessness from natural disaster' datasets were excluded from this study.
 
 Next, the numeric data columns are converted to numeric type.  Note that all columns are originally in character type.  Converting to numeric type both eases analysis and allows the blank entries, denoted as ".." to be read as empty (NA).
 
 ```{r, warning = FALSE}
-
-dcol <- 2
-for (i in 2:ncol(Homeless.natural.disaster)) {
-  Homeless.natural.disaster[,dcol] <- as.numeric(Homeless.natural.disaster[,dcol])
-  dcol <- dcol +1
-}
 
 dcol <- 2
 for (i in 2:ncol(Homicide.rate)) {
@@ -252,15 +246,12 @@ for (i in 2:ncol(Suicide.rate.M)) {
 Finally, the data are converted to a tidy format and merged.
 
 ```{r}
-
-HND <- pivot_longer(Homeless.natural.disaster, cols = !Country, names_to = "Year", values_to = "Homeless.ND")
 HR <- pivot_longer(Homicide.rate, cols = !Country, names_to = "Year", values_to = "Homicide.rate")
 PP <- pivot_longer(Prison.popn, cols = !Country, names_to = "Year", values_to = "Prison.popn")
 SRF <- pivot_longer(Suicide.rate.F, cols = !Country, names_to = "Year", values_to = "Suicide.rate.F")
 SRM <- pivot_longer(Suicide.rate.M, cols = !Country, names_to = "Year", values_to = "Suicide.rate.M")
 
-Human.Security <- merge(HND, HR, all.x = T, all.y = T)
-Human.Security <- merge(Human.Security, PP, all.x = T, all.y = T)
+Human.Security <- merge(HR, PP, all.x = T, all.y = T)
 Human.Security <- merge(Human.Security, SRF, all.x = T, all.y = T)  
 Human.Security <- merge(Human.Security, SRM, all.x = T, all.y = T)
 Human.Security <- Human.Security[30:5684,]

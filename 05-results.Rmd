@@ -101,19 +101,19 @@ ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])
 
 ### Human Security Variable Selection
 
-As noted in section 4, the Suicide rate data are collected sporadically.  While these datasets show the lowest proportion of missing data, they only show data for four years, which are not consistently spaced across time.
+As noted in section 4, the Suicide rate data are collected sporadically.  While these datasets internally show the lowest proportion of missing data, they only reflect data collected for four years, (2000, 2010, 2015, and 2016) which are not consistently spaced across time.
 
-The other datasets in this section (Homicide rate, Prison population, and Homelessness due to natural disaster) show a higher proportion of missing data, but reflect a larger number of sampled years.
+The other datasets in this section (Homicide rate and Prison population) show a higher proportion of missing data, but reflect a larger number of consistently sampled years.
 
-Additionally, while the Homelessness from natural disasters data appears to distort the proportion of missing values in the Human Security dataset, it remains a valuable factor in analysis.
+Finally, as the Refugees by country of origin and Homelessness due to natural disasters data are unavailable, they cannot be included in this analysis.
 
-Finally, as the Refugees by country of origin data is unavailable, it cannot be included in this analysis.
-
-The following graph shows the pairwise correlation between all variables in the dataset, with the exception of Refugees by country of origin.
+The following graph shows the pairwise correlation between all variables in the dataset, with the exception of Refugees by country of origin and Homelessness due to natural disaster.
 
 
 ```{r,fig.height=8, fig.width = 8, warning = FALSE ,  message = FALSE}
 Human.Security <- read_csv("./HumanSecurity/HumanSecurity.Final.Tidy.csv")
+Human.Security <- subset(Human.Security, select = -c(3))
+Human.Security <- Human.Security[rowSums(is.na(Human.Security[,3:6])) != ncol(Human.Security[,3:6]),]
 ggpairs(Human.Security[,c(3:7)], progress = FALSE,
         upper = list(continuous = wrap("cor", size = 4)),
         labeller = label_wrap_gen(10)) + 
@@ -124,17 +124,15 @@ ggpairs(Human.Security[,c(3:7)], progress = FALSE,
 
 With the exception of male and female suicide rate (0.552), none of the data show correlation coefficients above 0.5 or below -0.5, indicating they are not highly correlated. 
 
-As a result, the Human Security variables selected for this study are the following: 
-* Homelessness from natural disaster
+As a result, the 'Human Security' variables selected for this study are the following: 
 * Homicide rate
 * Prison population
 
 
 ## Education versus Human Security (2010 - 2018)
 
-For the actual analysis we compare the average across Education Index against the Human Security variables:
+For the actual analysis we compare the average across 'Education Index' against the 'Human Security' variables:
 
-*Homelessness due to natural disaster
 *Homicide rate
 *Prison population 
 
@@ -146,7 +144,7 @@ EdHS<-All %>% group_by(Country) %>% select(everything()) %>%
   summarise_all(~mean(., na.rm = TRUE)) 
 ```
 
-Here it looks like a high Education Index, is associated with a low Homicide rate, and prison population. The association between Education Index and Homicide is the clearest. Education and Prison population seems to show a similar relation, though a high education index seems to be associated more-so with a median level of Prison population, though several countries with high education levels, still seem to jump to higher prison populations. Interestingly, countries with high education are also closely associated with countries that have high homelessness due to natural disaster.
+Here it appears that high Education Index is associated with low Homicide rate and Prison population. The association between Education Index and Homicide is the clearest. Education and Prison population seems to show a similar relation, though a high education index seems to be associated more with a median level of Prison population, though several countries with high education levels still show higher prison populations.
 
 ```{r}
 ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
