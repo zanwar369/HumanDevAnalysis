@@ -139,7 +139,7 @@ For the actual analysis we compare the average across 'Education Index' against 
 
 ```{r warning=FALSE, message=FALSE}
 All<-read_csv('./FinalData/All.csv')
-All<-All[All$Year>=2010,c("Country","EdInd",'Homeless.ND',  
+All<-All[All$Year>=2010,c("Country","EdInd",  
                           'Homicide.rate','Prison.popn')]
 EdHS<-All %>% group_by(Country) %>% select(everything()) %>%
   summarise_all(~mean(., na.rm = TRUE)) 
@@ -158,12 +158,12 @@ ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
 ```
 
 
-The following scatterplot matrix makes the relationship even clearer, and intersting. Ranking high on the education index is highly correlated with Homelessness due to natural disaster. While higher levels of Education are still associated with low Homicide rates, where as if you restrict the analsysis to lower levels of education there seems to be an associated jump in high homicide outliers. The relationship between Education and prison population is somewhat stronger and direct as seen in the matrix-- with a correlation of 0.3 higher levels of education seem to imply higher levels of imprisonment.
+The following scatterplot matrix makes the relationship even clearer Ranking high on the education index is highly correlated with Homelessness due to natural disaster. While higher levels of Education are still associated with low Homicide rates, where as if you restrict the analsysis to lower levels of education there seems to be an associated jump in high homicide outliers. The relationship between Education and prison population is somewhat stronger and direct as seen in the matrix--with a correlation of 0.3 higher levels of education seem to imply higher levels of imprisonment.
 
 ```{r warning=FALSE, message=FALSE}
 
 EdHS %>%
-  ggpairs(columns = c("EdInd",'Homeless.ND',  
+  ggpairs(columns = c("EdInd",  
                           "Homicide.rate","Prison.popn"))
 
 
@@ -299,7 +299,7 @@ This section details the analysis of `Inequality` versus `Human Security` given 
 ```{r, warning = FALSE, message = FALSE}
 HSINEQ_df <- read_csv("./FinalData/All.csv") %>%
                   filter(Year %in% c(2010:2018)) %>%
-                  select(Country, Year, 'Inequality-adjusted income index', 'Inequality in income (%)', 'Inequality in education (%)', 'Inequality in life expectancy (%)', 'Homeless.ND', 'Homicide.rate', 'Prison.popn')
+                  select(Country, Year, 'Inequality-adjusted income index', 'Inequality in income (%)', 'Inequality in education (%)', 'Inequality in life expectancy (%)', 'Homicide.rate', 'Prison.popn')
 
 ```
 
@@ -307,6 +307,7 @@ HSINEQ_df <- read_csv("./FinalData/All.csv") %>%
 First, `Inequality` variables were contrasted against `Human Security` variables in a scatterplot, faceted by "Year" from 2010 to 2018 (again, the only years `Inequality` data were collected).
 
 ```{r, fig.height=8, fig.width=8, warning = FALSE}
+
 hs.pairs <- HSINEQ_df %>%
   group_by(Country) %>%
   summarise_all(~mean(., na.rm = TRUE)) %>%
@@ -314,7 +315,6 @@ hs.pairs <- HSINEQ_df %>%
   rename("Inequality in \nEducation (%)" = `Inequality in education (%)`,
          "Inequality Adjusted \nIncome Index" = `Inequality-adjusted income index`,
          "Inequality in \nLife Expectancy (%)" = `Inequality in life expectancy (%)`,
-         "Homelessness from \nNatural Disaster" = Homeless.ND,
          "Prison Population" = Prison.popn,
          "Homicide Rate" = Homicide.rate) %>% 
   select(-Country, -Year)
@@ -370,7 +370,7 @@ Some observations:
 
 
 ```{r, fig.height = 7, fig.width=10}
-HSINEQ_df[, c(1,2,5,8,3,9,6,7)] %>%
+HSINEQ_df[, c(1,2,5,8,3,6,7)] %>%
   group_by(Country) %>%
   summarise_all(~mean(., na.rm = TRUE)) %>%
   ungroup() %>%
@@ -378,8 +378,7 @@ HSINEQ_df[, c(1,2,5,8,3,9,6,7)] %>%
          "Homicide Rate" = Homicide.rate,
          "Inequality Adjusted \nIncome Index" = `Inequality-adjusted income index`,
          "Prison Population" = Prison.popn,
-         "Inequality in \nLife Expectancy (%)" = `Inequality in life expectancy (%)`,
-         "Homelessness from \nNatural Disaster" = Homeless.ND) %>% 
+         "Inequality in \nLife Expectancy (%)" = `Inequality in life expectancy (%)`) %>% 
   select(-Country, -Year) %>% 
   ggparcoord(alpha = 0.25,
                scale = 'uniminmax',
@@ -402,7 +401,7 @@ To look at our data more closely in our interactive component we create a finali
 ```{r, warning=FALSE, message=FALSE}
 
 All<-read_csv('./FinalData/All.csv')
-All<-All[All$Year>=2010,c("Country","EdInd",'Homeless.ND',  
+All<-All[All$Year>=2010,c("Country","EdInd",  
                           'Homicide.rate','Prison.popn',
                           'Inequality-adjusted income index', 'Inequality in income (%)', 
                           'Inequality in education (%)', 'Inequality in life expectancy (%)')]
