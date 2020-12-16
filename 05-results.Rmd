@@ -48,39 +48,39 @@ ggpairs(inequality_df_copy[,c(4,12,6, 7,10, 5, 9, 11, 8)], progress = FALSE,
 
 First, look at the feature groups where missing data appear to be in equal proportions for most countries:
 
-* "Coefficient of Human Inequality", "Overall loss in HDI due to inequality (%)", and "Inequality-adjusted HDI (IHDI)": The three pairwise correlation coefficients between these three features are 0.999, -0.954, and -0.950, showing that these three feature are highly correlated when the data is not missing.
+* Coefficient of Human Inequality, Overall loss in HDI due to inequality (%), and Inequality-adjusted HDI (IHDI): The three pairwise correlation coefficients between these three features are 0.999, -0.954, and -0.950, showing that these three feature are highly correlated when the data is not missing.
 
-* "Inequality-adjusted income index" and "Inequality in income (%)": Correlation coefficient of -0.644. Despite countries missing data for both feature consistently, the two feature do not appear to have as strong of correlation as other cases discussed. 
+* Inequality-adjusted income index and Inequality in income (%): Correlation coefficient of -0.644. Despite countries missing data for both feature consistently, the two feature do not appear to have as strong of correlation as other cases discussed. 
 
-* "Inequality-adjusted education index" and "Inequality in education (%)": The correlation coefficient is -0.942, showing that these two feature are highly correlated when the data is not missing.
+* Inequality-adjusted education index and Inequality in education (%): The correlation coefficient is -0.942, showing that these two feature are highly correlated when the data is not missing.
 
-* "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)": The correlation coefficient is -0.976, showing that these two feature are highly correlated when the data is not missing.
+* Inequality-adjusted life expectancy index and Inequality in life expectancy (%): The correlation coefficient is -0.976, showing that these two features are highly correlated when the data is not missing.
 
 On the basis of the results above, the following features can be dropped without significant loss of information:
 
-* "Overall loss in HDI due to inequality (%)" - due to strong correlation with "Coefficient of Human Inequality" and the fact both share similar missing patterns. 
+* Overall loss in HDI due to inequality (%) - due to strong correlation with Coefficient of Human Inequality and the fact both share similar missing patterns. 
 
-* "Inequality-adjusted HDI (IHDI)" - highly correlated with multiple features, especially "Coefficient of Human Inequality" and "Overall loss in HDI due to inequality (%)" (while also sharing the same missing pattern as the latter two).
+* Inequality-adjusted HDI (IHDI) - highly correlated with multiple features, especially Coefficient of Human Inequality and Overall loss in HDI due to inequality (%) (while also sharing the same missing pattern as the latter two).
 
-* "Inequality-adjusted education index" - highly correlated with "Inequality in education (%)" when data is present and in terms of missing pattern.  
+* Inequality-adjusted education index - highly correlated with Inequality in education (%) when data is present and in terms of missing pattern.  
 
-* "Inequality-adjusted life expectancy index" - highly correlated with "Inequality in life expectancy (%)" when data is present and in terms of missing pattern.  
+* Inequality-adjusted life expectancy index - highly correlated with Inequality in life expectancy (%) when data is present and in terms of missing pattern.  
 
-Looking at the pairplot of the 5 remaining variables, it is noted that even though they do not share the same missing patterns, "Coefficient of Human Inequality" is strongly correlated with 3 of the remaining features (absolute correlation coefficient of ~0.9). Therefore, this feature can also be dropped. As a result, the remaining 'Inequality' features to be kept for analysis with other indicators are:
+Looking at the pairplot of the 5 remaining variables, it is noted that even though they do not share the same missing patterns, Coefficient of Human Inequality is strongly correlated with 3 of the remaining features (absolute correlation coefficient of ~0.9). Therefore, this feature can also be dropped. As a result, the remaining 'Inequality' features to be kept for analysis with other indicators are:
 
-* "Inequality-adjusted income index"
+* Inequality-adjusted income index
 
-* "Inequality in income (%)"
+* Inequality in income (%)
 
-* "Inequality in education (%)"
+* Inequality in education (%)
 
-* "Inequality in life expectancy (%)"
+* Inequality in life expectancy (%)
 
 
 
 ### Education Variable Selection
 
-Initially we pull only the variables that had the least missings as per the missings analysis.I then run ggpairs across these variables to determine if there is further narrrowing we can do in regards to select. Given that the variables are all relatively, highly correlated, it is decided to just take Education Index as the variable of comparion in the analysis of correlations across human development topics.
+Initially we pulled only the variables that have the least missing data as per Chapter 4. I then ran ggpairs across these variables to determine if they could be narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index provides the clearest comparison in analysis of correlations across human development topics.
 
 ```{r warning = FALSE,  message = FALSE}
 
@@ -90,15 +90,12 @@ df_ed<-df_ed[,c("HDI Rank (2018)","Country","Year",
 ggpairs(df_ed[,c("EdInd","ExpSch","MYSch","PopSS25U")])
 ```
 
-
-
-Next to determine how to deal with the year variable we look at the yearly breakdown since 2010 (since the Inequality dataset only spans 2010-2018). From here we can see every single year is highly correlated (.985 to 1) hence suggesting we do not have to look at each year individually, and can aggregate across years instead with a simple average.
+Next, in determining how to handle the year variable, we examine the yearly breakdown after 2010 (as the Inequality dataset only spans 2010-2018). From here, each year appears highly correlated (.985 to 1), suggesting years do not need to be examined individually, and can be aggregated with a simple average.
 
 ```{r warning = FALSE,  message = FALSE,fig.width=20}
 df<-df_ed[df_ed$Year>=2010,c('Country','Year','EdInd')] %>%
   pivot_wider(names_from='Year',values_from="EdInd")
 ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])
-
 
 ```
 
@@ -146,6 +143,7 @@ All<-All[All$Year>=2010,c("Country","EdInd",'Homeless.ND',
                           'Homicide.rate','Prison.popn')]
 EdHS<-All %>% group_by(Country) %>% select(everything()) %>%
   summarise_all(~mean(., na.rm = TRUE)) 
+
 ```
 
 Here it appears that high Education Index is associated with low Homicide rate and Prison population. The association between Education Index and Homicide is the clearest. Education and Prison population seems to show a similar relation, though a high education index seems to be associated more with a median level of Prison population, though several countries with high education levels still show higher prison populations.
@@ -156,7 +154,6 @@ ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
     xlab("") +
     ylab("") +
     ggtitle("Inequality versus Education Parallel Coordinate Plot")
-
 
 ```
 
@@ -293,8 +290,6 @@ This section details the analysis of `Inequality` versus `Human Security` given 
 * Inequality in life expectancy (%)
 
 `Human Security`
-
-* Homelessness due to natural disaster (annual average per million)
 
 * Homicide rate (per 100,000 people)
 
