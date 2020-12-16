@@ -14,6 +14,9 @@ Directions for further research: things in these countries that might inspire th
 In regard to the Inequality variables, this study found two distinct clusters with relationships across several variables.  The first cluster (Cluster 1) demonstrates low "Inequality in Income (%)", mid to high "Inequality Adjusted Income Index", low "Inequality in Education (%)", and mid to high "Education Index". Within this cluster, "Inequality in Education (%)" is negatively correlated with "Education Index", but "Inequality Adjusted Income Index" is positively correlated with "Education Index".  The second cluster (Cluster 2) shows low to mid "Inequality Adjusted Income Index", high "Inequality in Education (%)", and low-mid "Education Index". Within Cluster 2, there is no obvious negative correlation between "Inequality Adjusted Income Index" and "Education Index" or between "Inequality in Education (%)" and "Education Index", as seen in Cluster 1.
 
 
+Future works - Find any correlations (i.e. regional) for countries that lie in clusters 1 and 2. Investigate why countries cluster 1 and cluster 2, between the same variables, exhibit almost opposite correlation behaviour.
+
+
 Education-
 
 In comparison to human security indices, the effect of higher education rankings is mixed. Higher education seems to be correlated with higher homeless populations due to natural disaster. There could be several reasons for this, including higher population density in more developed countries, where natural disasters would wreak more havoc. Other explanations can include a societal neglect in more-so education oriented countries. These would be interesting topics to further study.

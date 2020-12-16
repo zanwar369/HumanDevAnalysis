@@ -1,8 +1,13 @@
 # Interactive component
 
 
-```{r}
-
+```{r, warning=FALSE, message = FALSE}
+library(tidyverse)
+library(readr)
+read_csv('./Interactive/HumDevAll.csv') %>%
+  select(-Homeless.ND) %>%
+  na.omit() %>%
+  write_csv('./Interactive/HumDevAll_narm.csv')
 ```
 
 
@@ -17,7 +22,7 @@
   }
 </style>
 
-<h1>TITLE</h1>
+<h3>Education - Inequality - Human Security Feature Relationships</h3>
 <select id="selectButtonX"></select> 
 <p>X</p>
 <select id="selectButtonY"></select>
@@ -26,4 +31,5 @@
 
 <script src="Interactive/human_development.js"></script>
 
-Our interactive component was built upon [a basic plot from the D3.js Graph Gallery](https://www.d3-graph-gallery.com/graph/connectedscatter_select.html).
+<p></p>
+Our interactive component was built upon [a basic plot from the D3.js Graph Gallery](https://www.d3-graph-gallery.com/graph/connectedscatter_select.html). From an aesthetics and usability standpoint, it can be argued that having both drop down menu positioned at the center of the page may be better. However, due to technical issues with HTML, we were unable to implement this.  
