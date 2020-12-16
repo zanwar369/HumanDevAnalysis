@@ -1,2 +1,13 @@
 # Conclusion
 
+
+
+ Human security vs. inequality:
+ * "Homicide rate" has some association with "Inequality-adjusted income index" (negative correlation of -0.324), and "Inequality in income", with a positive correlation of 0.488.
+* Among the 'Human security' variables, "Homelessness due to natural disaster" shows the strongest correlations with 'Inequality' variables.  "Homelessness due to natural disaster" demonstrates a strong positive correlation with "Inequality-adjusted income" (0.911), and strong negative correlations with "Inequality in education" and "Inequality in life expectancy" (-0.821 and -0.929, respectively).  Finally, "Homelessness due to natural disaster" also shows a mid-strength negative correlation with "Inequality in income" (-0.337).
+* Certain clusters of countries show visual trends between variables: 
+Another cluster (Cluster 2) shows low "Inequality in life expectancy", high "Homelessness from natural disaster", and low "Homicide rate".  Cluster 2 shows a visible positive correlation between "Inequality in life expectancy" and "Homelessness from natural disaster", as well as a visible negative correlation between "Homelessness from natural disaster" and "Homicide rate".  
+* There is a cluster of countries (Cluster 3) marked by a negative relationship between "Inequality in education" and "Homicide rate".  Cluster 3 further shows a positive relationship between "Homicide rate" and "Inequality adjusted income index", and a negative relationship between "Inequality adjusted income index" and "Prison population".
+INTERPRET
+
+Directions for further research: things in these countries that might inspire these trends, what associates these variables?
