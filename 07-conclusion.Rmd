@@ -14,6 +14,9 @@ Cluster 2:
 * no obvious negative correlation between "Inequality Adjusted Income Index" - "Education Index" and  "Inequality in Education (%)" - "Education Index" like in Cluster 1.
 
 
+Future works - Find any correlations (i.e. regional) for countries that lie in clusters 1 and 2. Investigate why countries cluster 1 and cluster 2, between the same variables, exhibit almost opposite correlation behaviour.
+
+
 Education-
 
 In comparison to human security indices, the effect of higher education rankings is mixed. Higher education seems to be correlated with higher homeless populations due to natural disaster. There could be several reasons for this, including higher density in more-so developed countries could suggest that natural disasters would wreak more havoc. Other explanations can include a societal neglect in more-so education oriented countries. These would be interesting topics to further study.

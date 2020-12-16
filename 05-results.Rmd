@@ -31,12 +31,16 @@ A scatterplot matrix of all 9 features without the missing data is below and suc
 
 ```{r,fig.height=12, fig.width = 12, warning = FALSE ,  message = FALSE}
 inequality_df <- read_csv("./Inequality/inequality_tidy.csv")
-ggpairs(inequality_df[,c(4,12,6, 7,10, 5, 9, 11, 8)], progress = FALSE,
+inequality_df_copy <- inequality_df
+names(inequality_df_copy) <- gsub("-", " ", names(inequality_df_copy))
+ggpairs(inequality_df_copy[,c(4,12,6, 7,10, 5, 9, 11, 8)], progress = FALSE,
         upper = list(continuous = wrap("cor", size = 4)),
         #lower = list(continuous = wrap('points', alpha = 0.3)),
-        labeller = label_wrap_gen(10)) + 
-      theme(strip.text = element_text(size = 8)) +
-      ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = "Inequality")
+        labeller = label_wrap_gen(10))+
+      ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = 'Inequality') + 
+      theme(plot.title = element_text(size = 24),
+            plot.subtitle = element_text(size = 20),
+            strip.text = element_text(size = 12)) 
 
 ```
 
@@ -216,14 +220,15 @@ names(inequal_ed) <-  temp
 
 First, all `Inequality` variables were compared with all `Education` variables in a scatter plot, faceted by "Year" from 2010 to 2018 since those were the only years where `Inequality` data was available. It was noted that "Year" did not separate the data, as illustrated in the a sample facet plot below for "Mean Year of Schooling" versus "Inequality in life expectancy (%)". This was the case for every combination of variables. 
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, fig.height= 8, fig.width= 8}
 inequal_ed %>%
   ggplot(aes(x = Inequality_in_life_expectancy_perc, y = MYSch)) +
   geom_point() +
   facet_wrap(~Year) +
   xlab('Inequality in Life Expectancy (%)') +
   ylab('Mean Years of Schooling (Years)') +
-  ggtitle('Sample Plot of Inequality in Life Expectancy versus Mean Years of Schooling \nFaceted by Years') 
+  ggtitle('Sample Plot of Inequality in Life Expectancy versus Mean Years of \nSchooling Faceted by Years') +
+        theme(plot.title = element_text(size = 18))
 ```
 
 
@@ -239,12 +244,12 @@ inequal_ed[, c(1,2,6,4,3,5,7,8)] %>%
   group_by(Country) %>%
   summarise_all(~mean(., na.rm = TRUE)) %>%
   ungroup() %>%
-  rename('Inequality in Income (%)' = Inequality_in_income_perc, 
+  rename('Inequality in\nIncome (%)' = Inequality_in_income_perc, 
          "Inequality in \nEducation (%)" = Inequality_in_education_perc,
-         "Inequality Adjusted \nIncome Index" = Inequality_adjusted_income_index,
-         "Inequality in \nLife Expectancy (%)" = Inequality_in_life_expectancy_perc,
+         "Inequality\nAdjusted \nIncome Index" = Inequality_adjusted_income_index,
+         "Inequality in \nLife Expectancy\n(%)" = Inequality_in_life_expectancy_perc,
          'Education Index ' = EdInd,
-         'Mean Years of Schooling\n(Years)' = MYSch) %>% 
+         'Mean Years\nof Schooling\n(Years)' = MYSch) %>% 
   select(-Country, -Year) %>% 
   ggparcoord(alpha = 0.25,
                scale = 'uniminmax',
@@ -252,7 +257,9 @@ inequal_ed[, c(1,2,6,4,3,5,7,8)] %>%
     theme(axis.text.x = element_text(angle = 0)) +
     xlab("") +
     ylab("") +
-    ggtitle("Inequality versus Education Parallel Coordinate Plot")
+    ggtitle("Inequality versus Education Parallel Coordinate Plot") +
+        theme(plot.title = element_text(size = 18),
+              axis.text.x = element_text(size = 12)) 
 ```
 
 Observations:
