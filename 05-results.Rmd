@@ -147,11 +147,11 @@ As a result, the 'Human Security' variables selected for this study are the foll
 
 ## Education versus Human Security (2010 - 2018)
 
-For the actual analysis, we compare the average across 'Education Index' against the 'Human Security' variables:
+For the actual analysis, we compare the average across 'Education Index' (EdInd) against the 'Human Security' variables:
 
-* Homicide Rate (per 100,000 people)
+* Homicide Rate (per 100,000 people) (Homicide.rate)
 
-* Prison Population (per 100,000 people)
+* Prison Population (per 100,000 people) (Prison.popn)
 
 ```{r warning=FALSE, message=FALSE}
 All<-read_csv('./FinalData/All.csv')
