@@ -1,11 +1,11 @@
 # Data transformation
 
-In order to work with the amount of data we split the work into three separate buckets, one for each indicator: `Inequality`, `Human Security`, and `Education`. Data transformation for every indicator was similar to the process shown in detail for `Inequality`, which is not fully reproduced for the other two indicators for conciseness.
+In order to work with the amount of data we split the work into three separate buckets, one for each indicator: Inequality, Human Security, and Education. Data transformation for every indicator was similar to the process shown in detail for Inequality, which is not fully reproduced for the other two indicators for conciseness.
 
 
 ## Inequality Data Transformation
 
-The `Inequality` indicator has 15 features from years 2010 to 2018 (one column per year). However, the data table for 6 of these features were not available for download. The remaining 9 features for which data tables were available and was extracted were:
+The Inequality indicator has 15 features from years 2010 to 2018 (one column per year). However, the data table for 6 of these features were not available for download. The remaining 9 features for which data tables were available and was extracted were:
 
 * Coefficient of Human Inequality
 
@@ -25,9 +25,9 @@ The `Inequality` indicator has 15 features from years 2010 to 2018 (one column p
 
 * Overall loss in HDI due to inequality (%)
 
-^ Data for `2018` is either from 2018 or the latest year available. 
+^ Data for 2018 is either from 2018 or the latest year available. 
 
-Note that the column 'HDI Rank (2018)' is kept as a reference column and not for analysis. First all of the files are read parsing through the inequality directory, and using read.csv to read in the relevant raw data files for each variable. The files are read in iteratively such that the data frame for every feature is stored in a R list, creating a list of data frames. 
+Note that the column HDI Rank (2018) is kept as a reference column and not for analysis. First all of the files are read parsing through the inequality directory, and using read.csv to read in the relevant raw data files for each variable. The files are read in iteratively such that the data frame for every feature is stored in a R list, creating a list of data frames. 
 
 ```{r}
 library(tidyverse)
@@ -55,7 +55,7 @@ print(head(inequality_list[[6]]))
 print(tail(inequality_list[[6]]))
 ```
 
-Inspection of the remaining data frame indicate that the last rows for the data frames are every feature are `NA`. In addition, some data frames have foot notes at the end of the table that was read in as a value in the first column. These rows are removed. 
+Inspection of the remaining data frame indicate that the last rows for the data frames are every feature are NA. In addition, some data frames have foot notes at the end of the table that was read in as a value in the first column. These rows are removed. 
 
 ```{r}
 inequality_list[[1]] <- inequality_list[[1]] %>% 
@@ -100,7 +100,7 @@ print(unique(differences))
 ```
 It looks like these four countries shows up for some features and not others. We can expect a lot of missing data for at least these four countries. 
 
-The next step is to create a single tidy data frame for `Inequality`. The data frame for each feature has column headings of 2010 to 2018, which are values not variables. In addition, each data frame is from the same observational unit (`Inequality`) and should be in one data frame. To convert the list of data frames created from the initial import from the .csv files into a single tidy data frame, use `pivot_longer` and `full_join` to create a tidy data frame.   
+The next step is to create a single tidy data frame for Inequality. The data frame for each feature has column headings of 2010 to 2018, which are values not variables. In addition, each data frame is from the same observational unit (Inequality) and should be in one data frame. To convert the list of data frames created from the initial import from the .csv files into a single tidy data frame, use `pivot_longer` and `full_join` to create a tidy data frame.   
 
 ```{r}
 inequality_df <- inequality_list[[1]] %>% 
@@ -165,7 +165,7 @@ Below are the variables pulled from the Human Security dataset:
 Transforming this data largely required reorganizing the dataframe into a tidy format.  This was done in a similar fashion to the inequality, and education data manipulations.  This required removing blank columns (which had been left in the .csv files for visual appeal) and renaming columns to prime them for the pivot_longer function. Then, to ensure that all missing data were coded appropriately, a for loop was introduced to convert all numeric data columns in the dataset into numeric type.  The result is a tidy dataset of all Human Security variables.
 
 
-```{r,echo=TRUE,include=TRUE}
+```{r}
 
 Homeless.natural.disaster <- read.csv("./HumanSecurity/Homeless.natural.disaster.csv", fileEncoding = "UTF-8")
 Homicide.rate <- read.csv("./HumanSecurity/Homicide.rate.csv", fileEncoding = "UTF-8")
@@ -177,7 +177,7 @@ Suicide.rate.F <- read.csv("./HumanSecurity/Suicide.rate.F.csv", fileEncoding = 
 
 First the blank and extraneous rows are removed from each dataset, and the column names are converted to reflect the year each measurement was taken.
 
-```{r,echo=TRUE,include=TRUE}
+```{r}
 
 names(Homeless.natural.disaster)[2:30] <- c("1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018")
 
@@ -200,7 +200,7 @@ names(Suicide.rate.M)[2:5] <- c("2000", "2010", "2015", "2016")
 
 At this point, a problem became apparent.
 
-Though the UN Data website lists both a Refugees dataframe and a Homelessness due to natural disasters dataframe as within the available datasets, there seemed to be no actual data available for either.  When the Refugees by country of origin and Homelessness due to natural disasters datasets were downloaded (per the option on the UN Data website), the files, though titled correctly, were a copies of the HDI records.
+Though the UN Data website lists both a Refugees dataframe and a Homelessness due to natural disasters dataframe as within the available datasets, there seemed to be no actual data available for either.  When the Refugees by country of origin and Homelessness due to natural disasters datasets were downloaded (per the option on the UN Data website), the files, though titled correctly, were copies of the HDI records.
 
 Below, the initial row of each dataset is compared to show their similarity.
 
@@ -212,7 +212,7 @@ compare
 
 A note was sent to the administrators of the UN Data website to alert them to this issue.
 
-However, as a result, the 'Refugees by country of origin' and 'Homelessness from natural disaster' datasets were excluded from this study.
+However, as a result, the Refugees by country of origin and Homelessness from natural disaster datasets were excluded from this study.
 
 Next, the numeric data columns are converted to numeric type.  Note that all columns are originally in character type.  Converting to numeric type both eases analysis and allows the blank entries, denoted as ".." to be read as empty (NA).
 

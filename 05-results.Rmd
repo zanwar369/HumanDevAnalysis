@@ -326,48 +326,17 @@ ggpairs(hs.pairs, progress = FALSE,
       ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = "Inequality versus Human Security")
 ```
 
-* The association between the 'Inequality' variables ("Inequality-adjusted income index", "Inequality in income", "Inequality in education", and "Inequality in life expectancy") is discussed in the Inequality variable selection, above.
+* The association between the Inequality variables (Inequality-adjusted income index, Inequality in income, Inequality in education, and Inequality in life expectancy) is discussed in the Inequality variable selection, above.
 
-* Similarly, the association between the 'Human Security' variables ("Homelessness due to natural disaster", "Homicide rate", and "Prison population") are discussed in the Human Security variable selection, above.
+* Similarly, the association between the Human Security variables (Homelessness due to natural disaster, Homicide rate, and Prison population) are discussed in the Human Security variable selection, above.
 
-* "Prison population" low positive correlations with two 'Inequality' variables: "Inequality-adjusted income index" and "Inequality in income" (with correlation coefficients of .156 and .171, respectively).  Interestingly, "Prison population" shows negative correlations with both "Inequality in education" and "Inequality in life expectancy"(-0.349 and -0.334, respectively).
+* Prison population low positive correlations with two Inequality variables: Inequality-adjusted income index and Inequality in income (with correlation coefficients of .156 and .171, respectively).  Interestingly, Prison population shows negative correlations with both Inequality in education and Inequality in life expectancy (-0.349 and -0.334, respectively).
 
-* "Homicide rate" shows low positive correlations with "Inequality in education" and "Inequality in life expectancy" (with correlation coefficients of 0.127 and 0.142).
+* Homicide rate shows low positive correlations with Inequality in education and Inequality in life expectancy (with correlation coefficients of 0.127 and 0.142).
 
-* "Homicide rate" additionally shows correlations with "Inequality-adjusted income index", with a negative correlation of -0.324, and "Inequality in income", with a positive correlation of 0.488.
+* Homicide rate additionally shows correlations with Inequality-adjusted income index, with a negative correlation of -0.324, and Inequality in income, with a positive correlation of 0.488.
 
-* Among the 'Human security' variables, "Homelessness due to natural disaster" shows the strongest correlations with 'Inequality' variables.  "Homelessness due to natural disaster" demonstrates a strong positive correlation with "Inequality-adjusted income" (0.911), and strong negative correlations with "Inequality in education" and "Inequality in life expectancy" (-0.821 and -0.929, respectively).  Finally, "Homelessness due to natural disaster" also shows a mid-strength negative correlation with "Inequality in income" (-0.337).
-
-The parallel coordinate plots, below, map some of these associations.
-
-```{r, fig.height = 7, fig.width=10}
-HSINEQ_df %>%
-  group_by(Country) %>%
-  summarise_all(~mean(., na.rm = TRUE)) %>%
-  ungroup() %>%
-  rename("Inequality in \nEducation (%)" = `Inequality in education (%)`,
-         "Inequality Adjusted \nIncome Index" = `Inequality-adjusted income index`,
-         "Inequality in \nLife Expectancy (%)" = `Inequality in life expectancy (%)`,
-         "Homelessness from \nNatural Disaster" = Homeless.ND,
-         "Prison Population" = Prison.popn,
-         "Homicide Rate" = Homicide.rate) %>% 
-  select(-Country, -Year) %>% 
-  ggparcoord(alpha = 0.25,
-               scale = 'uniminmax',
-               splineFactor = 0)  +
-    theme(axis.text.x = element_text(angle = 0)) +
-    xlab("") +
-    ylab("") +
-    ggtitle("Inequality versus Human Security Parallel Coordinate Plot")
-```
-
-Some observations:
-
-* A cluster of countries (Cluster 1) shows a negative correlation between "Inequality adjusted income" and "Inequality in income", with high "Inequality adjusted income" and low "Inequality in income".
-
-* Another cluster (Cluster 2) shows low "Inequality in life expectancy", high "Homelessness from natural disaster", and low "Homicide rate".  Cluster 2 shows a visible positive correlation between "Inequality in life expectancy" and "Homelessness from natural disaster", as well as a visible negative correlation between "Homelessness from natural disaster" and "Homicide rate".  These countries additionally show a positive relationship between "Homicide rate" and "Prison population".
-
-
+The parallel coordinate plot, below, maps some of these associations.
 
 ```{r, fig.height = 7, fig.width=10}
 HSINEQ_df[, c(1,2,5,8,3,6,7)] %>%
@@ -392,7 +361,7 @@ The above graph reorders variables to visualize new trends.
 
 Some observations: 
 
-* There is a cluster of countries (Cluster 3) marked by a negative relationship between "Inequality in education" and "Homicide rate".  Cluster 3 further shows a positive relationship between "Homicide rate" and "Inequality adjusted income index", and a negative relationship between "Inequality adjusted income index" and "Prison population".
+* There is a visual cluster of countries marked by a negative relationship between Inequality in education and Homicide rate.  Cluster 3 further shows a positive relationship between Homicide Rate and Inequality adjusted income index, and a negative relationship between Inequality adjusted income index and Prison population.
 
 * As remarked in the preceding parallel coordinate plot, a cluster of countries (Cluster 4) visually shows a positive relationship between "Inequality in life expectancy" and "Homelessness from natural disaster".
 

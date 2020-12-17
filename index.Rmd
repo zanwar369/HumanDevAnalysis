@@ -7,4 +7,11 @@ site: bookdown::bookdown_site
 
 # Introduction
 
-The dataset, a bit of background on HDI and the importance of investigating the relationships between variables to promote safety, equality, and human development.
+The United Nations Human Development Index releases yearly reports on international human development indicators, which have been used to examine progress and setbacks in human development around the world.
+
+In 2019 alone, the index was used...
+
+Among the many tests and analyses completed with these data...
+
+
+, a bit of background on HDI and the importance of investigating the relationships between variables to promote safety, equality, and human development.
