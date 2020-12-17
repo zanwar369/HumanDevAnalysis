@@ -140,23 +140,23 @@
 <p>Note that the column “HDI Rank (2018)” is kept as a reference column and not for analysis. First, all of the files are read by parsing through the Inequality/inequality_rawdata directory, and using read_csv to read in the relevant raw data files for each variable. The files are read in iteratively such that the data frame for every feature is stored in a R list, creating a list of data frames.</p>
 <p>After reading in the files, a high level look at the data itself was done. The head and tail of one of the feature data frames, containing data for “Inequality in education (%)”, was printed as a representative sample:</p>
 <pre><code>## # A tibble: 6 x 11
-##   `HDI Rank (2018)` Country     `2010` `2011` `2012` `2013` `2014` `2015` `2016` `2017` `2018`
-##   &lt;chr&gt;             &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; 
-## 1 170               Afghanistan 39.3   39.3   39.3   45.0   44.8   44.8   45.4   45.4   45.4  
-## 2 69                Albania     12.7   11.9   11.9   11.9   11.9   11.9   9.1    8.5    12.3  
-## 3 82                Algeria     ..     ..     ..     ..     ..     ..     33.7   33.7   33.7  
-## 4 36                Andorra     ..     ..     ..     ..     ..     ..     ..     9.4    10.0  
-## 5 149               Angola      26.2   ..     34.6   34.6   34.6   34.6   34.3   34.3   34.3  
-## 6 48                Argentina   12.1   12.1   12.1   8.6    8.1    8.1    6.1    6.2    6.2</code></pre>
+##   `HDI Rank (2018~ Country `2010` `2011` `2012` `2013` `2014` `2015` `2016` `2017` `2018`
+##   &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; 
+## 1 170              Afghan~ 39.3   39.3   39.3   45.0   44.8   44.8   45.4   45.4   45.4  
+## 2 69               Albania 12.7   11.9   11.9   11.9   11.9   11.9   9.1    8.5    12.3  
+## 3 82               Algeria ..     ..     ..     ..     ..     ..     33.7   33.7   33.7  
+## 4 36               Andorra ..     ..     ..     ..     ..     ..     ..     9.4    10.0  
+## 5 149              Angola  26.2   ..     34.6   34.6   34.6   34.6   34.3   34.3   34.3  
+## 6 48               Argent~ 12.1   12.1   12.1   8.6    8.1    8.1    6.1    6.2    6.2</code></pre>
 <pre><code>## # A tibble: 6 x 11
-##   `HDI Rank (2018)`                                                             Country                                   `2010` `2011` `2012` `2013` `2014` `2015` `2016` `2017` `2018`
-##   &lt;chr&gt;                                                                         &lt;chr&gt;                                     &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; 
-## 1 &lt;NA&gt;                                                                          Small Island Developing States            27.6   29.6   30.1   22.0   21.1   20.5   19.9   19.6   19.7  
-## 2 &lt;NA&gt;                                                                          Organization for Economic Co-operation a~ 8.4    9.0    9.6    10.2   9.5    9.5    10.0   8.3    8.2   
-## 3 &lt;NA&gt;                                                                          World                                     26.2   26.3   27.0   27.2   26.9   25.9   25.7   22.3   17.4  
-## 4 a: See http://hdr.undp.org/en/composite/IHDI for the list of surveys used to~ &lt;NA&gt;                                      &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;  
-## 5 b: Data refer to 2018 or the most recent year available.                      &lt;NA&gt;                                      &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;  
-## 6 &lt;NA&gt;                                                                          &lt;NA&gt;                                      &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;</code></pre>
+##   `HDI Rank (2018~ Country `2010` `2011` `2012` `2013` `2014` `2015` `2016` `2017` `2018`
+##   &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; 
+## 1 &lt;NA&gt;             Small ~ 27.6   29.6   30.1   22.0   21.1   20.5   19.9   19.6   19.7  
+## 2 &lt;NA&gt;             Organi~ 8.4    9.0    9.6    10.2   9.5    9.5    10.0   8.3    8.2   
+## 3 &lt;NA&gt;             World   26.2   26.3   27.0   27.2   26.9   25.9   25.7   22.3   17.4  
+## 4 a: See http://h~ &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;  
+## 5 b: Data refer t~ &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;  
+## 6 &lt;NA&gt;             &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;</code></pre>
 <p>Inspection of the remaining data frame indicate that the last rows for the data frames are every feature are NA. In addition, some data frames have foot notes at the end of the table that was read in as a value in the first column. These rows are removed.</p>
 <p>The output below shows that the number of rows in the data frame for each feature is different. This implies not every feature has the same list of countries.</p>
 <pre><code>## [1] &quot;Coefficient of Human Inequality feature has 206 rows and 11 columns.&quot;
@@ -169,59 +169,83 @@
 ## [1] &quot;Inequality in life expectancy (%) feature has 208 rows and 11 columns.&quot;
 ## [1] &quot;Overall loss in HDI due to inequality (%) feature has 206 rows and 11 columns.&quot;</code></pre>
 <p>To investigate this further:</p>
-<pre><code>## [1] &quot;Nauru&quot;                               &quot;Tuvalu&quot;                              &quot;Korea (Democratic People&#39;s Rep. of)&quot; &quot;Somalia&quot;</code></pre>
+<pre><code>## [1] &quot;Nauru&quot;                               &quot;Tuvalu&quot;                             
+## [3] &quot;Korea (Democratic People&#39;s Rep. of)&quot; &quot;Somalia&quot;</code></pre>
 <p>It looks like these four countries shows up for some features and not others. We can expect a lot of missing data for at least these four countries.</p>
 <p>The next step is to create a single tidy data frame for Inequality. The data frame for each feature has column headings of 2010 to 2018, which are values, not variables. In addition, each data frame is from the same observational unit (Inequality) and should be in one data frame. To convert the list of data frames created from the initial import from the .csv files into a single tidy data frame, use <code>pivot_longer</code> and <code>full_join</code> to create a tidy data frame.<br />
 &gt;&gt;&gt;&gt;&gt;&gt;&gt; 72f7e4f1a771a64a8a225ae5eb18f50dc29a7ec0</p>
 <pre><code>## # A tibble: 6 x 12
-##   `HDI Rank (2018~ Country Year  `Coefficient of~ `Inequality-adj~ `Inequality-adj~ `Inequality-adj~ `Inequality-adj~ `Inequality in ~ `Inequality in ~ `Inequality in ~
-##              &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           
-## 1              170 Afghan~ 2010  ..               0.226            ..               ..               0.260            39.3             ..               58.8            
-## 2              170 Afghan~ 2011  ..               0.227            ..               ..               0.314            39.3             ..               50.9            
-## 3              170 Afghan~ 2012  ..               0.237            ..               ..               0.318            39.3             ..               50.9            
-## 4              170 Afghan~ 2013  30.0             0.219            0.333            0.391            0.430            45.0             10.8             34.3            
-## 5              170 Afghan~ 2014  30.0             0.223            0.335            0.389            0.434            44.8             10.8             34.3            
-## 6              170 Afghan~ 2015  30.4             0.224            0.334            0.388            0.429            44.8             10.8             35.7            
-## # ... with 1 more variable: `Overall loss in HDI due to inequality (%)` &lt;chr&gt;</code></pre>
+##   `HDI Rank (2018~ Country Year  `Coefficient of~ `Inequality-adj~ `Inequality-adj~
+##              &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           
+## 1              170 Afghan~ 2010  ..               0.226            ..              
+## 2              170 Afghan~ 2011  ..               0.227            ..              
+## 3              170 Afghan~ 2012  ..               0.237            ..              
+## 4              170 Afghan~ 2013  30.0             0.219            0.333           
+## 5              170 Afghan~ 2014  30.0             0.223            0.335           
+## 6              170 Afghan~ 2015  30.4             0.224            0.334           
+## # ... with 6 more variables: `Inequality-adjusted income index` &lt;chr&gt;,
+## #   `Inequality-adjusted life expectancy index` &lt;chr&gt;, `Inequality in education
+## #   (%)` &lt;chr&gt;, `Inequality in income (%)` &lt;chr&gt;, `Inequality in life expectancy
+## #   (%)` &lt;chr&gt;, `Overall loss in HDI due to inequality (%)` &lt;chr&gt;</code></pre>
 <p>Note that the columns of tidy data frame are currently all of type <code>&lt;chr&gt;</code> when only “Country” should be of type <code>&lt;chr&gt;</code>, “Year” should be of type integer, and the remaining be of type numeric. This is because missing values are given as ‘..’ instead of <code>NA</code>. Convert the relevant columns to numeric which coerces ‘..’ to <code>NA</code>’s in the process.</p>
 <pre><code>## # A tibble: 6 x 12
-##   `HDI Rank (2018~ Country  Year `Coefficient of~ `Inequality-adj~ `Inequality-adj~ `Inequality-adj~ `Inequality-adj~ `Inequality in ~ `Inequality in ~ `Inequality in ~
-##              &lt;dbl&gt; &lt;chr&gt;   &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
-## 1              170 Afghan~  2010             NA              0.226           NA               NA                0.26              39.3             NA               58.8
-## 2              170 Afghan~  2011             NA              0.227           NA               NA                0.314             39.3             NA               50.9
-## 3              170 Afghan~  2012             NA              0.237           NA               NA                0.318             39.3             NA               50.9
-## 4              170 Afghan~  2013             30              0.219            0.333            0.391            0.43              45               10.8             34.3
-## 5              170 Afghan~  2014             30              0.223            0.335            0.389            0.434             44.8             10.8             34.3
-## 6              170 Afghan~  2015             30.4            0.224            0.334            0.388            0.429             44.8             10.8             35.7
-## # ... with 1 more variable: `Overall loss in HDI due to inequality (%)` &lt;dbl&gt;</code></pre>
+##   `HDI Rank (2018~ Country  Year `Coefficient of~ `Inequality-adj~ `Inequality-adj~
+##              &lt;dbl&gt; &lt;chr&gt;   &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1              170 Afghan~  2010             NA              0.226           NA    
+## 2              170 Afghan~  2011             NA              0.227           NA    
+## 3              170 Afghan~  2012             NA              0.237           NA    
+## 4              170 Afghan~  2013             30              0.219            0.333
+## 5              170 Afghan~  2014             30              0.223            0.335
+## 6              170 Afghan~  2015             30.4            0.224            0.334
+## # ... with 6 more variables: `Inequality-adjusted income index` &lt;dbl&gt;,
+## #   `Inequality-adjusted life expectancy index` &lt;dbl&gt;, `Inequality in education
+## #   (%)` &lt;dbl&gt;, `Inequality in income (%)` &lt;dbl&gt;, `Inequality in life expectancy
+## #   (%)` &lt;dbl&gt;, `Overall loss in HDI due to inequality (%)` &lt;dbl&gt;</code></pre>
 <p>To complete the data transformation, notice that under “Country”, the last 17 rows of each data frame contain aggregate regional data, and are not countries:</p>
-<pre><code>##  [1] &quot;Human Development&quot;                                      &quot;Very high human development&quot;                            &quot;High human development&quot;                                
-##  [4] &quot;Medium human development&quot;                               &quot;Low human development&quot;                                  &quot;Developing Countries&quot;                                  
-##  [7] &quot;Regions&quot;                                                &quot;Arab States&quot;                                            &quot;East Asia and the Pacific&quot;                             
-## [10] &quot;Europe and Central Asia&quot;                                &quot;Latin America and the Caribbean&quot;                        &quot;South Asia&quot;                                            
-## [13] &quot;Sub-Saharan Africa&quot;                                     &quot;Least Developed Countries&quot;                              &quot;Small Island Developing States&quot;                        
-## [16] &quot;Organization for Economic Co-operation and Development&quot; &quot;World&quot;</code></pre>
+<pre><code>##  [1] &quot;Human Development&quot;                                     
+##  [2] &quot;Very high human development&quot;                           
+##  [3] &quot;High human development&quot;                                
+##  [4] &quot;Medium human development&quot;                              
+##  [5] &quot;Low human development&quot;                                 
+##  [6] &quot;Developing Countries&quot;                                  
+##  [7] &quot;Regions&quot;                                               
+##  [8] &quot;Arab States&quot;                                           
+##  [9] &quot;East Asia and the Pacific&quot;                             
+## [10] &quot;Europe and Central Asia&quot;                               
+## [11] &quot;Latin America and the Caribbean&quot;                       
+## [12] &quot;South Asia&quot;                                            
+## [13] &quot;Sub-Saharan Africa&quot;                                    
+## [14] &quot;Least Developed Countries&quot;                             
+## [15] &quot;Small Island Developing States&quot;                        
+## [16] &quot;Organization for Economic Co-operation and Development&quot;
+## [17] &quot;World&quot;</code></pre>
 <p>Therefore, they will be removed from the tidy data frame. The head and tail of the tidy data frame is:</p>
 <pre><code>## # A tibble: 6 x 12
-##   `HDI Rank (2018~ Country  Year `Coefficient of~ `Inequality-adj~ `Inequality-adj~ `Inequality-adj~ `Inequality-adj~ `Inequality in ~ `Inequality in ~ `Inequality in ~
-##              &lt;dbl&gt; &lt;chr&gt;   &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
-## 1              170 Afghan~  2010             NA              0.226           NA               NA                0.26              39.3             NA               58.8
-## 2              170 Afghan~  2011             NA              0.227           NA               NA                0.314             39.3             NA               50.9
-## 3              170 Afghan~  2012             NA              0.237           NA               NA                0.318             39.3             NA               50.9
-## 4              170 Afghan~  2013             30              0.219            0.333            0.391            0.43              45               10.8             34.3
-## 5              170 Afghan~  2014             30              0.223            0.335            0.389            0.434             44.8             10.8             34.3
-## 6              170 Afghan~  2015             30.4            0.224            0.334            0.388            0.429             44.8             10.8             35.7
-## # ... with 1 more variable: `Overall loss in HDI due to inequality (%)` &lt;dbl&gt;</code></pre>
+##   `HDI Rank (2018~ Country  Year `Coefficient of~ `Inequality-adj~ `Inequality-adj~
+##              &lt;dbl&gt; &lt;chr&gt;   &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1              170 Afghan~  2010             NA              0.226           NA    
+## 2              170 Afghan~  2011             NA              0.227           NA    
+## 3              170 Afghan~  2012             NA              0.237           NA    
+## 4              170 Afghan~  2013             30              0.219            0.333
+## 5              170 Afghan~  2014             30              0.223            0.335
+## 6              170 Afghan~  2015             30.4            0.224            0.334
+## # ... with 6 more variables: `Inequality-adjusted income index` &lt;dbl&gt;,
+## #   `Inequality-adjusted life expectancy index` &lt;dbl&gt;, `Inequality in education
+## #   (%)` &lt;dbl&gt;, `Inequality in income (%)` &lt;dbl&gt;, `Inequality in life expectancy
+## #   (%)` &lt;dbl&gt;, `Overall loss in HDI due to inequality (%)` &lt;dbl&gt;</code></pre>
 <pre><code>## # A tibble: 6 x 12
-##   `HDI Rank (2018~ Country  Year `Coefficient of~ `Inequality-adj~ `Inequality-adj~ `Inequality-adj~ `Inequality-adj~ `Inequality in ~ `Inequality in ~ `Inequality in ~
-##              &lt;dbl&gt; &lt;chr&gt;   &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
-## 1               NA Somalia  2013               NA               NA               NA               NA            0.313             NA                 NA             42.1
-## 2               NA Somalia  2014               NA               NA               NA               NA            0.316             43.5               NA             42.1
-## 3               NA Somalia  2015               NA               NA               NA               NA            0.32              43.5               NA             42.1
-## 4               NA Somalia  2016               NA               NA               NA               NA            0.341             NA                 NA             38.9
-## 5               NA Somalia  2017               NA               NA               NA               NA            0.345             NA                 NA             38.9
-## 6               NA Somalia  2018               NA               NA               NA               NA            0.348             NA                 NA             38.9
-## # ... with 1 more variable: `Overall loss in HDI due to inequality (%)` &lt;dbl&gt;</code></pre>
+##   `HDI Rank (2018~ Country  Year `Coefficient of~ `Inequality-adj~ `Inequality-adj~
+##              &lt;dbl&gt; &lt;chr&gt;   &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1               NA Somalia  2013               NA               NA               NA
+## 2               NA Somalia  2014               NA               NA               NA
+## 3               NA Somalia  2015               NA               NA               NA
+## 4               NA Somalia  2016               NA               NA               NA
+## 5               NA Somalia  2017               NA               NA               NA
+## 6               NA Somalia  2018               NA               NA               NA
+## # ... with 6 more variables: `Inequality-adjusted income index` &lt;dbl&gt;,
+## #   `Inequality-adjusted life expectancy index` &lt;dbl&gt;, `Inequality in education
+## #   (%)` &lt;dbl&gt;, `Inequality in income (%)` &lt;dbl&gt;, `Inequality in life expectancy
+## #   (%)` &lt;dbl&gt;, `Overall loss in HDI due to inequality (%)` &lt;dbl&gt;</code></pre>
 </div>
 <div id="human-security-data-transformation" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Human Security Data Transformation</h2>

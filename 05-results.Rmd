@@ -82,7 +82,7 @@ Looking at the pairplot of the 5 remaining variables, note that even though the 
 
 Initially we pulled only the variables with the least missing data. We then ran ggpairs across these variables to determine if they could be further narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index (EdInd) provides the clearest comparison in analysis of correlations across human development topics.
 
-```{r warning = FALSE,  message = FALSE,fig.height=15}
+```{r warning = FALSE,  message = FALSE,fig.height=10}
 
 df_ed<-read_csv('./Education/Education_Tidy.csv')
 df_ed<-df_ed[,c("HDI Rank (2018)","Country","Year",
@@ -94,7 +94,7 @@ theme(text = element_text(size=17))
 
 Next, in determining how to handle the 'Year' variable, we examine the yearly breakdown after 2010 (as the Inequality dataset only spans 2010-2018). From here, each year appears highly correlated (.985 to .999), suggesting years do not need to be examined individually, and can be aggregated with a simple average.
 
-```{r warning = FALSE,  message = FALSE,fig.height=15}
+```{r warning = FALSE,  message = FALSE,fig.height=15,fig.width=15}
 df<-df_ed[df_ed$Year>=2010,c('Country','Year','EdInd')] %>%
   pivot_wider(names_from='Year',values_from="EdInd")
 ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])+
