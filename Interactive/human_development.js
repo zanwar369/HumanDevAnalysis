@@ -7,8 +7,8 @@ var margin = {top: 10, right: 100, bottom: 60, left: 60},
 
 var svg = d3.select("#human_dev")
   .append("svg")
-///    .attr("width", innerWidth + margin.left + margin.right)
-    .attr("height", innerHeight + margin.top + margin.bottom)
+  .attr("width", innerWidth + margin.left + margin.right)
+  .attr("height", innerHeight + margin.top + margin.bottom)
 
 ////
 var rowConverter = function (d) {

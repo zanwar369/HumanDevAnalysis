@@ -7,36 +7,39 @@
   .ylabel{
     font-size: 16px
   }
-  
-  
+
   #Buttons{
-    float:left;
+    float:right;
     width:50%;
     margin-top:150px;
   }
 
   svg{
-    float:left;
-    width:50%;
+
+    float:right;
+/*    width:50%;*/
   }
 
   h3{
-    margin-left:100px;
+    margin-left:300px;
+
   }
+
 
 </style>
 
 <h3>Education - Inequality - Human Security Feature Relationships</h3>
-<div id="human_dev"></div>
-  <div id="Buttons">
-    <select id="selectButtonX"></select> 
-    <p>X</p>
-    <select id="selectButtonY"></select>
-    <p>Y</p>
-  </div>
+<div id="human_dev">
+<div id="Buttons">
+  <select id="selectButtonX"></select> 
+  <p>X-axis Variable</p>
+  <select id="selectButtonY"></select>
+  <p>Y-axis Variable</p>  
+</div>
 
 
 
+</div>
 <script type="text/javascript">
 var h = 500
 var w = 800
@@ -47,7 +50,7 @@ var margin = {top: 10, right: 100, bottom: 60, left: 60},
 
 var svg = d3.select("#human_dev")
   .append("svg")
-///    .attr("width", innerWidth + margin.left + margin.right)
+    .attr("width", innerWidth + margin.left + margin.right)
     .attr("height", innerHeight + margin.top + margin.bottom)
 
 ////
