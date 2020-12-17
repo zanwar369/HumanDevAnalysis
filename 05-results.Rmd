@@ -80,14 +80,15 @@ Looking at the pairplot of the 5 remaining variables, note that even though the 
 
 ### Education Variable Selection
 
-Initially we pulled only the variables with the least missing data. We then ran ggpairs across these variables to determine if they could be further narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index provides the clearest comparison in analysis of correlations across human development topics.
+Initially we pulled only the variables with the least missing data. We then ran ggpairs across these variables to determine if they could be further narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index (EdInd) provides the clearest comparison in analysis of correlations across human development topics.
 
-```{r warning = FALSE,  message = FALSE}
+```{r warning = FALSE,  message = FALSE,fig.height=20}
 
 df_ed<-read_csv('./Education/Education_Tidy.csv')
 df_ed<-df_ed[,c("HDI Rank (2018)","Country","Year",
         "EdInd","ExpSch","MYSch","PopSS25U")]
-ggpairs(df_ed[,c("EdInd","ExpSch","MYSch","PopSS25U")])
+ggpairs(df_ed[,c("EdInd","ExpSch","MYSch","PopSS25U")])+
+ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = "Education")
 ```
 
 Next, in determining how to handle the 'Year' variable, we examine the yearly breakdown after 2010 (as the Inequality dataset only spans 2010-2018). From here, each year appears highly correlated (.985 to .999), suggesting years do not need to be examined individually, and can be aggregated with a simple average.
@@ -96,7 +97,8 @@ Next, in determining how to handle the 'Year' variable, we examine the yearly br
 df<-df_ed[df_ed$Year>=2010,c('Country','Year','EdInd')] %>%
   pivot_wider(names_from='Year',values_from="EdInd")
 ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])+
-theme(text = element_text(size=17))
+theme(text = element_text(size=17))+
+ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = "Education Index by Year")
 
 ```
 
@@ -145,11 +147,11 @@ As a result, the 'Human Security' variables selected for this study are the foll
 
 ## Education versus Human Security (2010 - 2018)
 
-For the actual analysis, we compare the average across 'Education Index' against the 'Human Security' variables:
+For the actual analysis, we compare the average across 'Education Index' (EdInd) against the 'Human Security' variables:
 
-* Homicide Rate (per 100,000 people)
+* Homicide Rate (per 100,000 people) (Homicide.rate)
 
-* Prison Population (per 100,000 people)
+* Prison Population (per 100,000 people) (Prison.popn)
 
 ```{r warning=FALSE, message=FALSE}
 All<-read_csv('./FinalData/All.csv')
@@ -160,14 +162,14 @@ EdHS<-All %>% group_by(Country) %>% select(everything()) %>%
 
 ```
 
-Here it appears that a high Education Index is associated with low Homicide Rate and Prison Population.Education and Homicides seem to have a direct relation with higher education implying lower homicide rates. Education and Prison Population seem to show a similar relation, though a high Education Index seems to be associated more with a median level of Prison Population. Notably, several countries with high education levels still show higher prison populations.
+Here it appears that a high Education Index is associated with low Homicide Rate and Prison Population. Education and Homicides seem to have a direct relation with higher education implying lower homicide rates. Education and Prison Population seem to show a similar relation, though a high Education Index seems to be associated more with a median level of Prison Population. Notably, several countries with high education levels still show higher prison populations.
 
 ```{r}
 ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
     theme(axis.text.x = element_text(angle = 0)) +
     xlab("") +
     ylab("") +
-    ggtitle("Inequality versus Education Parallel Coordinate Plot")
+    ggtitle("Human Security versus Education Parallel Coordinate Plot")
 
 ```
 
