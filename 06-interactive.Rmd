@@ -39,13 +39,14 @@ read_csv('./Interactive/HumDevAll.csv') %>%
 </style>
 
 <h3>Education - Inequality - Human Security Feature Relationships</h3>
-<div id="human_dev"></div>
-  <div id="Buttons">
-    <select id="selectButtonX"></select> 
-    <p>X</p>
-    <select id="selectButtonY"></select>
-    <p>Y</p>
-  </div>
+<div id="human_dev">
+<div id="Buttons">
+  <select id="selectButtonX"></select> 
+  <p>X</p>
+  <select id="selectButtonY"></select>
+  <p>Y</p>
+</div>
+</div>
 
 
 <script src="Interactive/human_development.js"></script>
