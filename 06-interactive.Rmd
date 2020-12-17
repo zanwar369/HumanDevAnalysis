@@ -23,17 +23,19 @@ read_csv('./Interactive/HumDevAll.csv') %>%
   
   #Buttons{
     float:right;
-    width:40%;
-    margin-top:150px;
+
+ //   width:10%;
+ //   margin-top:150px;
   }
 
   svg{
-    float:right;
-    width: 600%;
+  //  float:right;
+  //  width: 50%;
+
   }
 
   h3{
-    margin-left:300px;
+  //  margin-left:300px;
   }
 
 </style>

@@ -80,7 +80,7 @@ prop_missing_countries %>%
     geom_col() +
     coord_flip() + 
     xlab('') +
-    ylab('Proportion Missing') +
+    ylab('Proportion of Data Missing') +
     ggtitle('Proportion of Missing Inequality Data for Each Country')
     
 ```
@@ -245,7 +245,8 @@ prop_missing_year%>%
   scale_fill_continuous(high = "#132B43", low = "#56B1F7") +
   xlab("Year") + 
   ylab(NULL) +
-  ggtitle("Missing Human Security Data by Variable")
+  ggtitle("Missing Human Security Data by Variable") +
+  labs(fill = 'Proportion Missing')
 ```
 
 Clearly, Suicide Rate (M) and Suicide Rate (F) are missing the greatest amount of data, though there seems to be relatively little missing data in the reported years.  Both Homicide Rate and Prison Population are consistently reported between 2005 and 2017, with slight variations in missing data. Homicide Rate shows no data reported for the year 2003, while Prison Population shows no data before 2003.
@@ -263,7 +264,7 @@ print(Homicide.rate$Country[168:192])
 Of these 24 countries, 20 (Cóte d'Ivoire, Congo, Djibouti, Ethiopia, Gabon, Gambia, Madagascar, Mali, Nigeria, Sudan, Chad, Congo [Dem. Republic], Comoros, Eritrea, Guinea, Equatorial Guinea, Libya, Mauritania, Senegal, and Togo) are in Africa. The remaining four (Lao [People's Dem. Republic], Vanuatu, Micronesia [Fed. States], the Marshall Islands, and Palau) are small island countries in Oceania.  Potential association between geographical region and missing data represents an important direction for further research, and provides an example of possible trends in missing data.
 
 
-```{r fig.height = 18, fig.width = 8}
+```{r fig.height = 30, fig.width = 8}
 
 prop_missing_countries <- Human.Security %>% 
   group_by(Country) %>% 
