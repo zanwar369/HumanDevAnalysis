@@ -169,7 +169,7 @@ ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
     theme(axis.text.x = element_text(angle = 0)) +
     xlab("") +
     ylab("") +
-    ggtitle("Inequality versus Education Parallel Coordinate Plot")
+    ggtitle("Human Security versus Education Parallel Coordinate Plot")
 
 ```
 
