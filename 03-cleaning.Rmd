@@ -101,7 +101,6 @@ print(unique(differences))
 It looks like these four countries shows up for some features and not others. We can expect a lot of missing data for at least these four countries. 
 
 The next step is to create a single tidy data frame for Inequality. The data frame for each feature has column headings of 2010 to 2018, which are values, not variables. In addition, each data frame is from the same observational unit (Inequality) and should be in one data frame. To convert the list of data frames created from the initial import from the .csv files into a single tidy data frame, use `pivot_longer` and `full_join` to create a tidy data frame.   
->>>>>>> 72f7e4f1a771a64a8a225ae5eb18f50dc29a7ec0
 
 ```{r}
 inequality_df <- inequality_list[[1]] %>% 

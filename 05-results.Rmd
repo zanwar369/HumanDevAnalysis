@@ -248,7 +248,7 @@ inequal_ed %>%
 
 As there are 6 features in total, all of which are continuous, a parallel coordinate plot is the most appropriate visualization tool for this type of data. Each of the six features was grouped by country and averaged over all years from 2010 to 2018, ignoring NA's. The rationale is as follows:
 
-* It was shown from the facet plots previously that "Year" did not distinguish any trends.   
+* It was shown from the facet plots previously that "Year" did not distinguish any trends, consistent with the trend discovered in "Education Variable Selection" and extends to all other feature pairs between indicators in subsequent analysis.   
 
 * If every Country-Year combination is a line on the parallel coordinate plot, then it would require that none of the six features have NA's. This is too strong and may lead to underplotting given the amount of missing data in this dataset. This also ensures that every country also shows up only once or not at all. 
 
@@ -384,7 +384,7 @@ There is a visual cluster of countries marked by a negative relationship between
 Within this cluster, countries demonstrate low Prison Population, high Inequality-Adjusted Income, and low Inequality in Life Expectancy. Some additionally demonstrate low Homicide Rate.
 
 
-To look at our data more closely, in our interactive component we create a finalized csv to be read into our plot.
+For our interactive component, we created a .csv file containing the relevant variables from the above analysis, which was uploaded into Github gist and read into our interactive plot in the following section. For countries were data was available, we had one observation per country, averaged over years 2010 - 2018 (ignoring NAs), for each relevant feature.
 
 ```{r, warning=FALSE, message=FALSE}
 
