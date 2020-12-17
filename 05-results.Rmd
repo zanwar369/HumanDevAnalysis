@@ -162,7 +162,7 @@ EdHS<-All %>% group_by(Country) %>% select(everything()) %>%
 
 ```
 
-Here it appears that a high Education Index is associated with low Homicide Rate and Prison Population.Education and Homicides seem to have a direct relation with higher education implying lower homicide rates. Education and Prison Population seem to show a similar relation, though a high Education Index seems to be associated more with a median level of Prison Population. Notably, several countries with high education levels still show higher prison populations.
+Here it appears that a high Education Index is associated with low Homicide Rate and Prison Population. Education and Homicides seem to have a direct relation with higher education implying lower homicide rates. Education and Prison Population seem to show a similar relation, though a high Education Index seems to be associated more with a median level of Prison Population. Notably, several countries with high education levels still show higher prison populations.
 
 ```{r}
 ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
