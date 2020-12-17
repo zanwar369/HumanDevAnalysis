@@ -316,7 +316,6 @@ The following are the columns in the education dataset:
 
 * Survival rate to the last grade of lower secondary general education (%)
 
-^ Data for 2018 is either from 2018 or the latest year available. 
 
 Note that the column 'HDI Rank (2018)' is kept as a reference column and not for analysis. 
 
