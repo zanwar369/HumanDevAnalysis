@@ -306,7 +306,7 @@ df$PerTot<-df$TotalMiss*100/sum(df$TotalMiss)
 ```
 
 
-There are `r format(sum(df$TotalMiss),scientific=F)` missing observations across all Education variables, years, and countries. The following bar chart displays an interesting yet confusing pattern. All countries appear to have between `r min(df$TotalMiss)` and  `r max(df$TotalMiss)`, corresponding to `r min(df$PerTot)` and `r max(df$PerTot)` percent  total missing entries. Keeping in mind the data spans 29 years and 22 variables, these measurements seem reasonable, though interestingly there seems to be no apparent overarching pattern between missing observations. Some smaller countries, however, do seem more likely to have missing data.
+There are `r format(sum(df$TotalMiss),scientific=F)` missing observations across all Education variables, years, and countries. The following bar chart displays an interesting yet confusing pattern. All countries appear to have between `r min(df$TotalMiss)` and  `r round(max(df$TotalMiss),2)`, corresponding to `r round(min(df$PerTot),2)` and `r max(df$PerTot)` percent  total missing entries. Keeping in mind the data spans 29 years and 22 variables, these measurements seem reasonable, though interestingly there seems to be no apparent overarching pattern between missing observations. Some smaller countries, however, do seem more likely to have missing data.
 
 ```{r,fig.height=25,fig.width=10}
 ggplot(df,aes(y=fct_reorder(Country,PerTot),x=PerTot)) +
