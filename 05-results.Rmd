@@ -80,7 +80,7 @@ Looking at the pairplot of the 5 remaining variables, note that even though the 
 
 ### Education Variable Selection
 
-Initially we pulled only the variables with the least missing data. We then ran ggpairs across these variables to determine if they could be further narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index provides the clearest comparison in analysis of correlations across human development topics.
+Initially we pulled only the variables with the least missing data. We then ran ggpairs across these variables to determine if they could be further narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index (EdInd) provides the clearest comparison in analysis of correlations across human development topics.
 
 ```{r warning = FALSE,  message = FALSE,fig.height=20}
 
