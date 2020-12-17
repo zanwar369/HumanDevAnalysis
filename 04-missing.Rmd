@@ -17,7 +17,7 @@ library(mi)
 inequality_df <- read_csv("./Inequality/inequality_tidy.csv")
 ```
 
-Below is a bar plot showing the count of missing data per feature.
+Below is a bar chart showing the proportion of missing data for every Inequality feature.
 
 ```{r fig.width = 8}
 prop_missing_features <- data.frame(var = names(colMeans(is.na(inequality_df))), 
@@ -60,7 +60,7 @@ prop_missing_year%>%
 ```
 
 
-The above heatmap is drawn such that the feature with the largest proportion of missing data is at the bottom. From the heatmap, it seems 2011 and 2012 show the highest rates of missing data for every feature except Inequality in life expectancy (%) and Inequality-adjusted life expectancy index. However, note that the proportion of missing data peaks at around 0.3 and most feature-year combinations show a proportion of missing data below 0.2, which is manageable.  
+The above heatmap is drawn such that the feature with the largest proportion of missing data is at the bottom. From the heatmap, it seems 2011 and 2012 show the highest rates of missing data for every feature except "Inequality in life expectancy (%)" and "Inequality-adjusted life expectancy index". However, note that the proportion of missing data peaks at around 0.3 and most feature-year combinations show a proportion of missing data below 0.2, which is manageable.  
 
 Below is the aggregate sum of number of missing entries over all features for each country, filtering only the countries with at least one missing entry.  
 
@@ -88,7 +88,7 @@ prop_missing_countries %>%
 
 100% of the data is missing for Saint Kitts and Nevis, Liechtenstein, and Dominica. In addition, more than 87.5% of the data is missing for Nauru, Marshall Islands, Andorra, and Tuvalu. All of these countries are extremely small (most are islands); it is possible that Inequality data is not collected nationally and/or data collection is not prioritized by the relevant international organizations.  
 
-Due to the large volume of countries, a heat map is not an effective way to visualize the relationships between proportion of missing data, countries, and features. Instead, a parallel coordinate plot was drawn to assess the presence of a relationship between features and proportion of missing data for different countries.
+A parallel coordinate plot was drawn to assess the presence of a relationship between the proportion of missing data and each Inequality feature, with each country represented by one line.
 
 ```{r, fig.height = 8, fig.width=10}
 
@@ -307,7 +307,7 @@ df$PerTot<-df$TotalMiss*100/sum(df$TotalMiss)
 ```
 
 
-There are `r format(sum(df$TotalMiss),scientific=F)` missing observations across all Education variables, years, and countries. The following bar chart displays an interesting yet confusing pattern. All countries appear to have between `r min(df$TotalMiss)` and  `r round(max(df$TotalMiss),2)`, corresponding to `r round(min(df$PerTot),2)` and `r max(df$PerTot)` percent  total missing entries. Keeping in mind the data spans 29 years and 22 variables, these measurements seem reasonable, though interestingly there seems to be no apparent overarching pattern between missing observations. Some smaller countries, however, do seem more likely to have missing data.
+There are `r format(sum(df$TotalMiss),scientific=F)` missing observations across all Education variables, years, and countries. The following bar chart displays an interesting yet confusing pattern. All countries appear to have between `r min(df$TotalMiss)` and  `r round(max(df$TotalMiss),2)`, corresponding to `r round(min(df$PerTot),2)` and `r round(max(df$PerTot),2)` percent  total missing entries. Keeping in mind the data spans 29 years and 22 variables, these measurements seem reasonable, though interestingly there seems to be no apparent overarching pattern between missing observations. Some smaller countries, however, do seem more likely to have missing data.
 
 ```{r,fig.height=25,fig.width=10}
 ggplot(df,aes(y=fct_reorder(Country,PerTot),x=PerTot)) +
