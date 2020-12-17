@@ -29,6 +29,7 @@ read_csv('./Interactive/HumDevAll.csv') %>%
 
   svg{
     float:right;
+    width: 50%;
   }
 
   h3{
