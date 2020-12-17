@@ -127,7 +127,7 @@ inequality_df$Year <- as.integer(inequality_df$Year)
 head(inequality_df)
 ```
 
-To complete the data transformation, notice that under "Country:, the last 17 rows of each data frame contain aggregate  regional data, and are not countries: 
+To complete the data transformation, notice that under "Country", the last 17 rows of each data frame contain aggregate  regional data, and are not countries: 
 
 ```{r}
 tail(inequality_list[[1]]$Country,17)
