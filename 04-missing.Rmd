@@ -136,6 +136,16 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
 
 ## Human Security Missing Data
 
+The following abbreviations will be used for variables examined in this section: 
+
+* Homicide Rate (per 100,000 people) - Homicide.Rate
+
+* Prison Population (per 100,000 people) - Prison.popn
+
+* Suicide Rate (Male) (per 100,000 people) - Suicide.rate.M
+
+* Suicide Rate (Female) (per 100,000 people) - Suicide.rate.F
+
 A significant proportion of data in the Human Security dataset is missing.  Largely, this seems to be a product of uneven tracking between variables and geographic complications.
 
 ```{r, echo=F, warning=FALSE,message=FALSE}
