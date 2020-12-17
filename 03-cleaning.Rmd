@@ -152,15 +152,19 @@ inequality_df %>% write_csv('./Inequality/inequality_tidy.csv')
 
 Below are the variables pulled from the Human Security dataset:
 
-* Homelessness due to natural disaster (average annual per million people)
+* Homicide Rate (per 100,000 people)
 
-* Homicide rate (per 100,000 people)
+* Prison Population (per 100,000 people)
 
-* Prison population (per 100,000 people)
+* Suicide Rate (Male) (per 100,000 people)
 
-* Suicide rate (Male) (per 100,000 people)
+* Suicide Rate (Female) (per 100,000 people)
 
-* Suicide rate (Female) (per 100,000 people)
+And, as addressed below:
+
+* Homelessness due to Natural Disaster (average annual per million people)
+
+* Refugees by Country of Origin
 
 
 Transforming this data largely required reorganizing the dataframe into a tidy format.  This was done in a similar fashion to the inequality, and education data manipulations.  This required removing blank columns (which had been left in the .csv files for visual appeal) and renaming columns to prime them for the pivot_longer function. Then, to ensure that all missing data were coded appropriately, a for loop was introduced to convert all numeric data columns in the dataset into numeric type.  The result is a tidy dataset of all Human Security variables.
