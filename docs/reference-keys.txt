@@ -15,6 +15,6 @@ education-variable-selection
 human-security-variable-selection
 education-versus-human-security-2010---2018
 inequality-versus-education-2010---2018
-inequaity-versus-human-security-2010---2018
+inequality-versus-human-security-2010---2018
 interactive-component
 conclusion

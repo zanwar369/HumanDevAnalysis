@@ -90,12 +90,13 @@ df_ed<-df_ed[,c("HDI Rank (2018)","Country","Year",
 ggpairs(df_ed[,c("EdInd","ExpSch","MYSch","PopSS25U")])
 ```
 
-Next, in determining how to handle the 'Year' variable, we examine the yearly breakdown after 2010 (as the Inequality dataset only spans 2010-2018). From here, each year appears highly correlated (.985 to 1), suggesting years do not need to be examined individually, and can be aggregated with a simple average.
+Next, in determining how to handle the 'Year' variable, we examine the yearly breakdown after 2010 (as the Inequality dataset only spans 2010-2018). From here, each year appears highly correlated (.985 to .999), suggesting years do not need to be examined individually, and can be aggregated with a simple average.
 
 ```{r warning = FALSE,  message = FALSE,fig.width=20}
 df<-df_ed[df_ed$Year>=2010,c('Country','Year','EdInd')] %>%
   pivot_wider(names_from='Year',values_from="EdInd")
-ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])
+ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])+
+theme(text = element_text(size=17))
 
 ```
 
@@ -159,7 +160,7 @@ EdHS<-All %>% group_by(Country) %>% select(everything()) %>%
 
 ```
 
-Here it appears that high Education Index is associated with low Homicide Rate and Prison Population. The association between Education Index and Homicide is the clearest. Education and Prison Population seem to show a similar relation, though high Education Index seems to be associated more with a median level of Prison Population. Notably, several countries with high education levels still show higher prison populations.
+Here it appears that a high Education Index is associated with low Homicide Rate and Prison Population.Education and Homicides seem to have a direct relation with higher education implying lower homicide rates. Education and Prison Population seem to show a similar relation, though a high Education Index seems to be associated more with a median level of Prison Population. Notably, several countries with high education levels still show higher prison populations.
 
 ```{r}
 ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
@@ -171,9 +172,9 @@ ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
 ```
 
 
-The following scatterplot matrix seems to show the relationship clearly. While higher levels of education are still associated with low Homicide Rates, restricting the analysis to lower levels of education shows an associated jump in high Homicide outliers. 
+The following scatterplot matrix seems to show the relationship clearly. While higher levels of education are still associated with low Homicide Rates, restricting the analysis to lower levels of education shows an associated jump in high Homicide outliers. As expected the sign here is negative, confirming the likelihood of a negative relation between the variables.
 
-The relationship between Education and Prison Population is somewhat stronger and more direct, as seen in the matrix, with a correlation of 0.3. Thus, higher levels of education seem to imply higher levels of imprisonment.
+The relationship between Education and Prison Population, though is somewhat stronger and more direct, as seen in the matrix, with a correlation of 0.3. Thus, higher levels of education seem to imply higher levels of imprisonment.
 
 ```{r warning=FALSE, message=FALSE}
 

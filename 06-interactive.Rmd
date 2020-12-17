@@ -19,16 +19,36 @@ read_csv('./Interactive/HumDevAll.csv') %>%
   .ylabel{
     font-size: 16px
   }
+  
+  
+  #Buttons{
+    float:right;
+    width:50%;
+    margin-top:150px;
+  }
+
+  svg{
+    float:right;
+    width:50%;
+  }
+
+  h3{
+    margin-left:100px;
+  }
+
 </style>
 
 <h3>Education - Inequality - Human Security Feature Relationships</h3>
-<select id="selectButtonX"></select> 
-<p>X</p>
-<select id="selectButtonY"></select>
-<p>Y</p>
 <div id="human_dev"></div>
+  <div id="Buttons">
+    <select id="selectButtonX"></select> 
+    <p>X</p>
+    <select id="selectButtonY"></select>
+    <p>Y</p>
+  </div>
+
 
 <script src="Interactive/human_development.js"></script>
 
 <p></p>
-Our interactive component was built upon [a basic plot from the D3.js Graph Gallery](https://www.d3-graph-gallery.com/graph/connectedscatter_select.html). From an aesthetics and usability standpoint, it can be argued that having both drop down menu positioned at the center of the page may be better. However, due to technical issues with HTML, we were unable to implement this.  
+Our interactive component was built upon [a basic plot from the D3.js Graph Gallery](https://www.d3-graph-gallery.com/graph/connectedscatter_select.html). 

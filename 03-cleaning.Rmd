@@ -330,7 +330,7 @@ file_list <- list.files(path=dr,pattern="*.csv")
 dttyp<-c("EdInd","ExpSch","ExpSchF","ExpSchM","GovMon","GERPP","GERP","GERS","GERT",
          "LitR","MYSch","MYSchF","MYSchM","PerPSInt","PerSSInt",
          "PopSS25U","PopSSF25U","PopSSM25U",
-         "PSDrop","PSTchTrn","PISAMth","PISARead","PISAScn","PupTchRPS","SurvRSGE")
+         "PSDrop","PSTchTrn","PupTchRPS","SurvRSGE")
 
 for (i in 1:length(file_list)){
    df_temp<-read.csv(paste(dr,"/",file_list[i],sep=""),skip=1,header=T, 

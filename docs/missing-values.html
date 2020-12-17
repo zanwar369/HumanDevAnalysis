@@ -24,7 +24,7 @@
 <meta name="author" content="Zohaib Anwar, Lu Bin Liu, Michelle Strayer" />
 
 
-<meta name="date" content="2020-12-15" />
+<meta name="date" content="2020-12-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,69 +55,6 @@
 <script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -159,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#education-versus-human-security-2010---2018"><i class="fa fa-check"></i><b>5.2</b> Education versus Human Security (2010 - 2018)</a></li>
 <li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#inequality-versus-education-2010---2018"><i class="fa fa-check"></i><b>5.3</b> Inequality versus Education (2010 - 2018)</a></li>
-<li class="chapter" data-level="5.4" data-path="results.html"><a href="results.html#inequaity-versus-human-security-2010---2018"><i class="fa fa-check"></i><b>5.4</b> Inequaity versus Human Security (2010 - 2018)</a></li>
+<li class="chapter" data-level="5.4" data-path="results.html"><a href="results.html#inequality-versus-human-security-2010---2018"><i class="fa fa-check"></i><b>5.4</b> Inequality versus Human Security (2010 - 2018)</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
@@ -187,71 +124,81 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="inequality-missing-data" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Inequality Missing Data</h2>
 <p>Below is a bar plot showing the count of missing data per feature.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-39-1.png" width="768" /></p>
-<p>The above shows that for 7 of the 9 features, 20-25% of its entries are missing.</p>
-<p>Since there is only 9 years and 9 features, a heat map is an appropriate to visualize combinations of missing data between <code>Year</code> and the different features to see if there’s any relationship in proportion of missing data for a specific feature across years (and vice versa).</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-40-1.png" width="768" /></p>
-<p>The above heat map is drawn such that the feature with the largest proportion of missing data is at the bottom. From the heat map, it looks like 2011 and 2012 have the highest rates of missing data for every features aside from “Inequality in life expectancy (%)” and “Inequality-adjusted life expectancy index”. However, note that the proportion of missing data peaks at around 0.3 and most feature-year combinations have proportion of missing data that are below 0.2, which are manageable.</p>
-<p>The below is the aggregate sum of number of missing entries over all features for each country, filtering only the countries with at least one missing entry.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-41-1.png" width="768" /></p>
-<p>100% of the data is missing for Saint Kitts and Nevis, Liechtenstein, and Dominica. In addition, &gt;87.5% of the data is missing for Nauru, Marshall Islands, Andorra, and Tuvalu. All of these countries are extremely small (most are islands) and it is possible that <code>Inequality</code> data is not collected nationally and/or data collection is not prioritized by the relevant international organizations.</p>
-<p>Due to the large volume of countries, a heat map is not an effective way to visualize the relationship in proportion of data missing between countries and features. A parallel coordinate plot was drawn instead to determine if there’s any relationship between features and proportion of missing data for different countries.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-42-1.png" width="960" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-75-1.png" width="768" /></p>
+<p>The above shows that for 7 of the 9 Inequality features, 20-25% of entries are missing.</p>
+<p>As Inequality data includes only 9 years and 9 features, a heatmap is an appropriate tool to visualize combinations of missing data between <code>Year</code> and the different Inequality features, with the goal of identifying trends in proportion of missing data for specific features across years (and vice-versa).</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-76-1.png" width="768" /></p>
+<p>The above heatmap is drawn such that the feature with the largest proportion of missing data is at the bottom. From the heatmap, it seems 2011 and 2012 show the highest rates of missing data for every feature except Inequality in life expectancy (%) and Inequality-adjusted life expectancy index. However, note that the proportion of missing data peaks at around 0.3 and most feature-year combinations show a proportion of missing data below 0.2, which is manageable.</p>
+<p>Below is the aggregate sum of number of missing entries over all features for each country, filtering only the countries with at least one missing entry.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-77-1.png" width="768" /></p>
+<p>100% of the data is missing for Saint Kitts and Nevis, Liechtenstein, and Dominica. In addition, more than 87.5% of the data is missing for Nauru, Marshall Islands, Andorra, and Tuvalu. All of these countries are extremely small (most are islands); it is possible that Inequality data is not collected nationally and/or data collection is not prioritized by the relevant international organizations.</p>
+<p>Due to the large volume of countries, a heat map is not an effective way to visualize the relationships between proportion of missing data, countries, and features. Instead, a parallel coordinate plot was drawn to assess the presence of a relationship between features and proportion of missing data for different countries.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-78-1.png" width="960" /></p>
 <ul>
-<li><p>Most countries appear to not be missing data for “Inequality-adjusted life expectancy index” and “Inequality in life expectancy (%)” and when they do, both features are missing in similar proportions.</p></li>
+<li><p>Most countries appear to not be missing data for Inequality-adjusted life expectancy index and Inequality in life expectancy (%), and when they do, both features are missing in similar proportions.</p></li>
 <li><p>For remaining features, at intervals of around 0.1 from 0 to 1, there are clusters of countries missing that proportion of data for each feature.</p></li>
-<li><p>There is a small number of countries missing data for most to all of the features (flat line at the top), these are likely the smaller countries found in the bar charts.</p></li>
-<li><p>For “Coefficient of Human Inequality”, “Overall loss in HDI due to inequality (%)”, and “Inequality-adjusted HDI (IHDI)”, countries generally miss the same proportion of the data for all 3 features, indicating that they may be related.</p></li>
-<li><p>For “Inequality-adjusted income index” and “Inequality in income (%)”, countries generally miss the same proportion of the data for these two features; they are likely related. In addition, countries generally are missing an equal to or smaller proportion of data for these two features than the 3 features mentioned in the previous bullet.</p></li>
-<li><p>For “Inequality-adjusted education index” and “Inequality in education (%)” countries generally miss the same proportion of the data for these two features; they are likely related.</p></li>
+<li><p>There are a small number of countries missing data for most to all features (seen as a flat line at the top of the plot). These may be the smaller countries reflected in the bar chart above.</p></li>
+<li><p>For Coefficient of Human Inequality, Overall Loss in HDI due to Inequality (%), and Inequality-Adjusted HDI (IHDI), countries generally miss the same proportion of data for all 3 features, suggesting they may be related.</p></li>
+<li><p>In contrast, countries generally miss the same proportion of data in Inequality-Adjusted Income Index as in Inequality in Income (%), suggesting they may be related. In addition, countries are generally missing as much or less data for these features as they are for Coefficient of Human Inequality, Overall Loss in HDI due to Inequality (%), and Inequality-Adjusted HDI (IHDI).</p></li>
+<li><p>For Inequality-Adjusted Education Index and Inequality in Education (%), countries generally miss the same proportion of data; again, they may be related.</p></li>
 </ul>
 </div>
 <div id="human-security-missing-data" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Human Security Missing Data</h2>
-<p>A significant proportion of data in the Human.Security dataframe is missing. Largely, this seems to be a product of uneven tracking between variables and geographic complications.</p>
-<p>The Human Security dataset shows uneven tracking between variables. Homelessness due to natural disaster is measured on a yearly basis between 1990 and 2018. By contrast, Homicide rate was recorded only in 1990, 1995, 2000, 2005, and yearly from 2010 to 2017. Suicide rate for both males and females were recorded only in the years 2000, 2010, 2015, and 2016.</p>
-<p>Below are the years in the Homelessness due to natural disaster dataset for which data were collected:</p>
-<pre><code>##  [1] &quot;1990&quot; &quot;1991&quot; &quot;1992&quot; &quot;1993&quot; &quot;1994&quot; &quot;1995&quot; &quot;1996&quot; &quot;1997&quot; &quot;1998&quot; &quot;1999&quot; &quot;2000&quot; &quot;2001&quot; &quot;2002&quot; &quot;2003&quot; &quot;2004&quot; &quot;2005&quot; &quot;2006&quot; &quot;2007&quot; &quot;2008&quot; &quot;2009&quot; &quot;2010&quot; &quot;2011&quot; &quot;2012&quot; &quot;2013&quot; &quot;2014&quot;
-## [26] &quot;2015&quot; &quot;2016&quot; &quot;2017&quot; &quot;2018&quot;</code></pre>
-<p>By contrast, homicide data were only collected for the following years:</p>
+<p>The following abbreviations will be used for variables examined in this section:</p>
+<ul>
+<li><p>Homicide Rate (per 100,000 people) - Homicide.Rate</p></li>
+<li><p>Prison Population (per 100,000 people) - Prison.popn</p></li>
+<li><p>Suicide Rate (Male) (per 100,000 people) - Suicide.rate.M</p></li>
+<li><p>Suicide Rate (Female) (per 100,000 people) - Suicide.rate.F</p></li>
+</ul>
+<p>A significant proportion of data in the Human Security dataset is missing. Largely, this seems to be a product of uneven tracking between variables and geographic complications.</p>
+<p>The dataset shows uneven tracking between variables. For example, Homicide Rate is recorded in 1990, 1995, 2000, 2005, and yearly from 2010 to 2017. Suicide Rate for both males and females, by contrast, was recorded only in the years 2000, 2010, 2015, and 2016.</p>
+<p>Below are the years in the Homicide Rate dataset for which data were collected:</p>
 <pre><code>##  [1] &quot;1990&quot; &quot;1995&quot; &quot;2000&quot; &quot;2005&quot; &quot;2010&quot; &quot;2011&quot; &quot;2012&quot; &quot;2013&quot; &quot;2014&quot; &quot;2015&quot; &quot;2016&quot; &quot;2017&quot;</code></pre>
-<p>And suicide rate data for both male and females were only collected in the following years:</p>
+<p>By contrast, Suicide Rate data for both males and females were only collected for the following years:</p>
 <pre><code>## [1] &quot;2000&quot; &quot;2010&quot; &quot;2015&quot; &quot;2016&quot;</code></pre>
-<p>The difference in frequency of data collection between these datasets results in a merged dataframe with a high proportion of missing values. Specifically, the consistency of the Homelessness due to natural disaster data introduces years into the dataframe for which no other variables show recorded data. These remaining variables (Suicide rate [M], Suicide rate [F], Prison population, and Homicide rate) each show missing values over about 75 to 85% of the dataframe, as shown in the graph below.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p>The difference in frequency of data collection between these datasets results in a merged dataframe with a high proportion of missing values.</p>
+<p>Specifically, the consistency of the Prison Population and Homicide Rate data introduces years into the dataframe for which Suicide Rate shows no recorded data. As a result, Suicide Rate (M) and Suicide Rate (F) are both missing values over more than 60% of the dataset, as shown in the graph below.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
 <p>Alternately, the graph below gives a more accurate picture of the proportion of missing data for each variable.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
-<p>This chart reflects the average proportion of missing data for each variable (across all recorded years and countries). Calculating these proportions separately excludes the empty values introduced by the Homelessness dataset. This graph thus accounts for unequal frequency of data collection between variables. The variables with the greatest proportion of missing data (Prison population and Homicide rate) show between 25% and 35% missing data, respectively.</p>
-<p>The following heatmap shows missing data split by variable. Importantly, the map reflects the entire Human Security dataset, thus highlighting trends in missing data due to uneven frequency of data collection.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
-<p>Clearly, Homelessness due to natural disaster is missing the least amount of data. The remaining variables (Homicide rate, Prison population, and Suicide rate [male and female]) are clearly intermittently reported. Male and Female Suicide rate appear to have the greatest amount of missing data, though there seems to be relatively little missing data in the reported years. Homicide rate and Prison population show more years of reported data, and show consistently reported data after the year 2010.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
-<p>The more focused heatmap, above, shows these data from 2010 to 2018.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
+<p>This chart reflects the average proportion of missing data for each variable (across all recorded years and countries). Calculating these proportions separately excludes the empty values introduced by the unequal frequency of data collection between variables. The variables with the greatest proportion of missing data (Prison Population and Homicide Rate) show between 25% and 35% missing data, respectively.</p>
+<p>The following heatmap shows missing data split by variable. Importantly, the map reflects the entire Human Security dataset, again highlighting trends in missing data due to uneven frequency of data collection.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-84-1.png" width="672" /></p>
+<p>Clearly, Suicide Rate (M) and Suicide Rate (F) are missing the greatest amount of data, though there seems to be relatively little missing data in the reported years. Both Homicide Rate and Prison Population are consistently reported between 2005 and 2017, with slight variations in missing data. Homicide Rate shows no data reported for the year 2003, while Prison Population shows no data before 2003.</p>
 <p>A number of unique problems may be incurred in the collection of international data, as discussed briefly in the Data chapter. Certain countries or regions may have presented challenges for data collection, given that collection processes relied on state institutions and infrastructure.</p>
-<p>The Homicide dataset is a particularly demonstrative example. The final entries in the dataset show countries for which there is no recorded homicide data.</p>
+<p>The Homicide Rate dataset is a particularly demonstrative example. The final entries in the dataset show countries for which there is no recorded homicide data.</p>
 <p>These countries are:</p>
-<pre><code>##  [1] &quot;Côte d&#39;Ivoire&quot;                      &quot;Congo (Democratic Republic of the)&quot; &quot;Congo&quot;                              &quot;Comoros&quot;                           
-##  [5] &quot;Djibouti&quot;                           &quot;Eritrea&quot;                            &quot;Ethiopia&quot;                           &quot;Micronesia (Federated States of)&quot;  
-##  [9] &quot;Gabon&quot;                              &quot;Guinea&quot;                             &quot;Gambia&quot;                             &quot;Equatorial Guinea&quot;                 
-## [13] &quot;Lao People&#39;s Democratic Republic&quot;   &quot;Libya&quot;                              &quot;Madagascar&quot;                         &quot;Marshall Islands&quot;                  
-## [17] &quot;Mali&quot;                               &quot;Mauritania&quot;                         &quot;Nigeria&quot;                            &quot;Palau&quot;                             
-## [21] &quot;Sudan&quot;                              &quot;Senegal&quot;                            &quot;Chad&quot;                               &quot;Togo&quot;                              
+<pre><code>##  [1] &quot;Côte d&#39;Ivoire&quot;                      &quot;Congo (Democratic Republic of the)&quot;
+##  [3] &quot;Congo&quot;                              &quot;Comoros&quot;                           
+##  [5] &quot;Djibouti&quot;                           &quot;Eritrea&quot;                           
+##  [7] &quot;Ethiopia&quot;                           &quot;Micronesia (Federated States of)&quot;  
+##  [9] &quot;Gabon&quot;                              &quot;Guinea&quot;                            
+## [11] &quot;Gambia&quot;                             &quot;Equatorial Guinea&quot;                 
+## [13] &quot;Lao People&#39;s Democratic Republic&quot;   &quot;Libya&quot;                             
+## [15] &quot;Madagascar&quot;                         &quot;Marshall Islands&quot;                  
+## [17] &quot;Mali&quot;                               &quot;Mauritania&quot;                        
+## [19] &quot;Nigeria&quot;                            &quot;Palau&quot;                             
+## [21] &quot;Sudan&quot;                              &quot;Senegal&quot;                           
+## [23] &quot;Chad&quot;                               &quot;Togo&quot;                              
 ## [25] &quot;Vanuatu&quot;</code></pre>
 <p>Of these 24 countries, 20 (Cóte d’Ivoire, Congo, Djibouti, Ethiopia, Gabon, Gambia, Madagascar, Mali, Nigeria, Sudan, Chad, Congo [Dem. Republic], Comoros, Eritrea, Guinea, Equatorial Guinea, Libya, Mauritania, Senegal, and Togo) are in Africa. The remaining four (Lao [People’s Dem. Republic], Vanuatu, Micronesia [Fed. States], the Marshall Islands, and Palau) are small island countries in Oceania. Potential association between geographical region and missing data represents an important direction for further research, and provides an example of possible trends in missing data.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-52-1.png" width="768" /></p>
-<p>The above graph shows the proportion of missing data among the Human Security variables by country. To most accurately measure missing data by country, this data controls for uneven data collection frequency by including only years for which all variables report data.</p>
-<p>The Marshall Islands is missing over 80%, with Palau missing over 60% and St. Kitts and Nevis missing over 50% of data.</p>
-<p>Due to the large volume of countries included in this data, and their alphabetical organizational scheme, a heatmap is not an appropriate visualization tool.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-86-1.png" width="768" /></p>
+<p>The above graph shows the proportion of missing data among the Human Security variables by country.</p>
+<p>Note that San Marino, Palau, Nauru, and the Marshall Islands are each missing 75% of data.</p>
+<p>Due to the large volume of countries included in this data, and their alphabetical organizational scheme, a heatmap is not an appropriate visualization tool to examine patterns of missing data by country.</p>
 </div>
 <div id="education-missing-data" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Education Missing Data</h2>
-<p>There are 9.535^{4} missing observations across the variables, year and country. The following bar chart displays an interesting yet confusing pattern. It looks like all countries have between 394 and 725, corresponding to 0.4132145 and 0.7603566 percent of total missings. Keeping in mind the data spans 29 years, and 25 variables, this is sensible, though there doesn’t seem to be much of a pttern to missing observations. Some smaller countries do seem partially more likely to have missing data.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-54-1.png" width="960" /></p>
-<p>For this analysis we want the variables with the least missing values across Countries to have a complete analysis. The chart is too large, and messy to display,but some insights can be gleaned from looking it over that the read is free to explore. Overall it looks like, we can already begin narrowing down some of our variables to the ones that have almost no missings across all countries such as education index, or mean years of schooling. Other interesting notes are that the former Yugoslav Republic of Macedonia seems to have all missing observations– which is correct according to the original source data, and after a little digging is because it has been replaced by North Macedonia, and is likely a left over data point. Percent of students without access to internet seems to be reported by very few, and mostly developed countries. The percent of population with at least some secondary education also seems like a variable that is frequently reported.</p>
-<p>Breaking down the analysis a little further, it looks we should definitely focus on 2010 onwards given the lack of data across countries on a consistent basis for singular years beforehand. It looks like the data was previously released in 5-year buckets. The chart is included to display the yearly pattern across country, though it is still a bit messy.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-56-1.png" width="1920" /></p>
-<p>Interestingly breakding down the missing variables by year confirms what was seen previously. The most reliable variables will be Education Index, Mean Years of Schooling, and Expected Years of Schooling, according to the lower number of missings throughout the years, as well as the variable for population with some secondary education. It also indicates the data is largely lagged as 2018 data seems to be missing while for various variables while previous years have data.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-57-1.png" width="1920" /></p>
+<p>There are 82090 missing observations across all Education variables, years, and countries. The following bar chart displays an interesting yet confusing pattern. All countries appear to have between 342 and 638, corresponding to 0.4166159 and 0.7771958 percent total missing entries. Keeping in mind the data spans 29 years and 22 variables, these measurements seem reasonable, though interestingly there seems to be no apparent overarching pattern between missing observations. Some smaller countries, however, do seem more likely to have missing data.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-88-1.png" width="960" /></p>
+<p>For this analysis, we want the variables with the least missing values across Countries. While the full chart is too large and messy to display, plotting Country versus Variable displays some interesting insights. Overall, some variables can already be narrowed down. For example, variables that show little to no missing data across all countries (such as Education Index, or Mean Years of Schooling) are noteworthy. Among other interesting notes, the former Yugoslav Republic of Macedonia seems to be missing all observations–which is consistent with the original source data. After a little digging, it seems the country’s inclusion is an oversight; “Yugoslav Republic of Macedonia” was replaced by “North Macedonia,” and was likely a left over data point. Very few countries reported the percent of students without access to internet, and of the countries that reported, most seem to be highly developed. The percent of the population with at least some secondary education, by contrast, seems to be consistently reported.</p>
+<p>Breaking down this analysis a little further, the lack of data across countries on a consistent basis before 2010 suggests that analysis should focus on 2010 and later. The data appears to have been released in 5-year increments.</p>
+<p>The following heatmap was included to display yearly patterns across countries, though its messiness may hinder its ability to lend informative analysis. We debated whether to keep this chart along with the previous hidden one. But it was argued that the maps allows one to confirm whether there are patterns across countries by year (and variable), and there quite clearly is. Hence, while messy it allows one to observe this important piece of information. It is also quite important to determine missingness across country, the lack of which would hinder one’s ability to develop a complete analysis of missings. For example–what if there were several countries with missings across year or varriable? One would not be able to observe this clearly like was done for The former Yugoslav Republic of Macedonia. Hence it can be argued that for EDA thhe charts present important information.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-90-1.png" width="1920" /></p>
+<p>Interestingly, breaking down the missing variables by year (below) confirms what was seen previously: the most reliable variables seem to be Education Index, Mean Years of Schooling, and Expected Years of Schooling (according to the amount of missing data across years), as well as the variable for “population with some secondary education”. The following heatmap also suggests data reporting may have lagged, as 2018 data seems to be missing for variables which have otherwise reported more consistent data.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-91-1.png" width="1920" /></p>
 
 </div>
 </div>

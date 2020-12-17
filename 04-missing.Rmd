@@ -298,30 +298,31 @@ Due to the large volume of countries included in this data, and their alphabetic
 
 df_ed_td<-read_csv('./Education/Education_Tidy.csv')
 df_ed_lg<-read_csv('./Education/Education_LG.csv')
-df<-df_ed_td[c(2,4:28)] %>% group_by(Country) %>% select(everything()) %>%
+df<-df_ed_td[c(2,4:25)] %>% group_by(Country) %>% select(everything()) %>%
      summarise_all(funs(sum(is.na(.)))) 
-df$TotalMiss<-rowSums(df[,2:26])
+df$TotalMiss<-rowSums(df[,2:23])
 df$PerTot<-df$TotalMiss*100/sum(df$TotalMiss)
 
 ```
 
 
-There are `r format(sum(df$TotalMiss),scientific=F)` missing observations across all Education variables, years, and countries. The following bar chart displays an interesting yet confusing pattern. All countries appear to have between `r min(df$TotalMiss)` and  `r max(df$TotalMiss)`, corresponding to `r min(df$PerTot)` and `r max(df$PerTot)` percent  total missing entries. Keeping in mind the data spans 29 years and 25 variables, these measurements seem reasonable, though interestingly there seems to be no apparent overarching pattern between missing observations. Some smaller countries, however, do seem more likely to have missing data.
+There are `r format(sum(df$TotalMiss),scientific=F)` missing observations across all Education variables, years, and countries. The following bar chart displays an interesting yet confusing pattern. All countries appear to have between `r min(df$TotalMiss)` and  `r max(df$TotalMiss)`, corresponding to `r min(df$PerTot)` and `r max(df$PerTot)` percent  total missing entries. Keeping in mind the data spans 29 years and 22 variables, these measurements seem reasonable, though interestingly there seems to be no apparent overarching pattern between missing observations. Some smaller countries, however, do seem more likely to have missing data.
 
 ```{r,fig.height=25,fig.width=10}
 ggplot(df,aes(y=fct_reorder(Country,PerTot),x=PerTot)) +
-geom_col()+ylab("Country")+xlab("")+ggtitle("Total Missing") +
-  theme(plot.title = element_text(hjust = 0.5))
+geom_col()+ylab("Country")+xlab("Proportion")+ggtitle("Education Proportion Missing")+
+  theme(plot.title = element_text(hjust = 0.5),text = element_text(size=13))
 ```
 
 
-For this analysis, we want the variables with the least missing values across Countries. While the full chart is too large and messy to display, it lends some insights some insights. Overall, some variables can already be narrowed down. For example, variables that show little to no missing data across all countries (such as Education Index, or Mean Years of Schooling) are noteworthy. Among other interesting notes, the former Yugoslav Republic of Macedonia seems to be missing all observations--which is consistent with the original source data. After a little digging, it seems the country's inclusion is an oversight; "Yugoslav Republic of Macedonia" was replaced by "North Macedonia," and was likely a left over data point. Very few countries reported the percent of students without access to internet, and of the countries that reported, most seem to be highly developed. The percent of the population with at least some secondary education, by contrast, seems to be consistently reported.
+For this analysis, we want the variables with the least missing values across Countries. While the full chart is too large and messy to display, plotting Country versus Variable displays some interesting insights. Overall, some variables can already be narrowed down. For example, variables that show little to no missing data across all countries (such as Education Index, or Mean Years of Schooling) are noteworthy. Among other interesting notes, the former Yugoslav Republic of Macedonia seems to be missing all observations--which is consistent with the original source data. After a little digging, it seems the country's inclusion is an oversight; "Yugoslav Republic of Macedonia" was replaced by "North Macedonia," and was likely a left over data point. Very few countries reported the percent of students without access to internet, and of the countries that reported, most seem to be highly developed. The percent of the population with at least some secondary education, by contrast, seems to be consistently reported.
 
-```{r,fig.height=25,fig.width=20,eval=FALSE}
+```{r,fig.height=30,fig.width=20,eval=FALSE}
 
-ggplot(df[,1:26] %>%
+ggplot(df[,1:23] %>%
      pivot_longer(cols=!c("Country"),names_to="Vari",values_to="Val") ,aes(y=Country,x=Vari,fill=Val))+
-  geom_tile()+xlab("Variable")+ggtitle("Missing by variable and Country")+theme(plot.title = element_text(hjust = 0.5))+
+  geom_tile()+xlab("Variable")+ggtitle("Missing by variable and Country")+
+  theme(plot.title = element_text(hjust = 0.5),text = element_text(size=17),axis.text.x=element_text(angle=90)) +
   scale_fill_continuous(high = "#132B43", low = "#56B1F7")
 
 ```
@@ -329,31 +330,32 @@ ggplot(df[,1:26] %>%
 
 Breaking down this analysis a little further, the lack of data across countries on a consistent basis before 2010 suggests that analysis should focus on 2010 and later. The data appears to have been released in 5-year increments. 
 
-The following heatmap was included to display yearly patterns across countries, though its messiness may hinder its ability to lend informative analysis.
+The following heatmap was included to display yearly patterns across countries, though its messiness may hinder its ability to lend informative analysis. We debated whether to keep this chart along with the previous hidden one. But it was argued that the maps allows one to confirm whether there are patterns across countries by year (and variable), and there quite clearly is. Hence, while messy it allows one to observe this important piece of information. It is also quite important to determine missingness across country, the lack of which would hinder one's ability to develop a complete analysis of missings. For example--what if there were several countries with missings across year or varriable? One would not be able to observe this clearly like was done for The former Yugoslav Republic of Macedonia. Hence it can be argued that for EDA thhe charts present important information.
 
-```{r,fig.height=25,fig.width=20}
+```{r,fig.height=30,fig.width=20}
 
 df<-df_ed_lg %>% pivot_wider(names_from="Year",values_from="HDI")
 df_n<-df[c(2,4:32)] %>% group_by(Country) %>% select(everything()) %>%
      summarise_all(funs(sum(is.na(.)))) 
 ggplot(df_n %>%
      pivot_longer(cols=!c("Country"),names_to="Year",values_to="Val") ,aes(y=Country,x=Year,fill=Val))+
-  geom_tile()+xlab("Year")+ggtitle("Missing by Year")+theme(plot.title = element_text(hjust = 0.5)) +
+  geom_tile()+xlab("Year")+ggtitle("Missing by Year")+
+  theme(plot.title = element_text(hjust = 0.5),text = element_text(size=17)) +
   scale_fill_continuous(high = "#132B43", low = "#56B1F7")
 
 
 ```
 
-Interestingly, breaking down the missing variables by year (below) confirms what was seen previously: the most reliable variables seem to be Education Index, Mean Years of Schooling, and Expected Years of Schooling (according to the amount of missing data across years), as well as the variable for population with some secondary education. The following heatmap also suggests data reporting may have lagged, as 2018 data seems to be missing for variables which have otherwise reported more consistent data.
+Interestingly, breaking down the missing variables by year (below) confirms what was seen previously: the most reliable variables seem to be Education Index, Mean Years of Schooling, and Expected Years of Schooling (according to the amount of missing data across years), as well as the variable for "population with some secondary education". The following heatmap also suggests data reporting may have lagged, as 2018 data seems to be missing for variables which have otherwise reported more consistent data.
 
 ```{r,fig.height=25,fig.width=20}
-df<-df_ed_td[c(3:28)] %>% group_by(Year) %>% select(everything()) %>%
+df<-df_ed_td[c(3:25)] %>% group_by(Year) %>% select(everything()) %>%
      summarise_all(funs(sum(is.na(.)))) 
 df$Year<-factor(df$Year)
 ggplot(df %>%
      pivot_longer(cols=!c("Year"),names_to="Variable",values_to="Val") ,aes(y=Year,x=Variable,fill=Val))+
   geom_tile()+xlab("Variable")+ylab("Year")+ggtitle("Missing by Year and Variable")+
-  theme(plot.title = element_text(hjust = 0.5))+
+  theme(plot.title = element_text(hjust = 0.5),text = element_text(size=17),axis.text.x=element_text(angle=90))+
   scale_fill_continuous(high = "#132B43", low = "#56B1F7")
 
 ```

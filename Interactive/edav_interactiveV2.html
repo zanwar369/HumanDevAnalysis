@@ -1,3 +1,46 @@
+<script src="https://d3js.org/d3.v6.js"></script>
+
+<style type="text/css">
+  .xlabel{
+    font-size: 16px
+  }
+  .ylabel{
+    font-size: 16px
+  }
+
+  #Buttons{
+    float:right;
+    width:50%;
+    margin-top:150px;
+  }
+
+  svg{
+
+    float:right;
+    width:50%;
+  }
+
+  h3{
+    margin-left:100px;
+
+  }
+
+
+</style>
+
+<h3>Education - Inequality - Human Security Feature Relationships</h3>
+<div id="human_dev">
+<div id="Buttons">
+  <select id="selectButtonX"></select> 
+  <p>X-axis Variable</p>
+  <select id="selectButtonY"></select>
+  <p>Y-axis Variable</p>  
+</div>
+
+
+
+</div>
+<script type="text/javascript">
 var h = 500
 var w = 800
 
@@ -25,7 +68,7 @@ var rowConverter = function (d) {
 
 
 d3.csv("https://gist.githubusercontent.com/lubin-liu/c1b2c1df6235addff10810fbf59f7ed3/raw/HumDevAll_narm.csv", 
-	rowConverter).then(function(data) {
+  rowConverter).then(function(data) {
 
 ////
     var allGroup = [["Inequality_adjusted_income_index","Inequality Adjusted Income Index"], 
@@ -38,17 +81,17 @@ d3.csv("https://gist.githubusercontent.com/lubin-liu/c1b2c1df6235addff10810fbf59
 
     d3.select("#selectButtonX")
       .selectAll('myOptions')
-     	.data(allGroup)
+      .data(allGroup)
       .enter()
-    	.append('option')
+      .append('option')
       .text(d => d[1]) 
       .attr("value", d => d[0]) 
 
     d3.select("#selectButtonY")
       .selectAll('myOptions')
-     	.data(allGroup)
+      .data(allGroup)
       .enter()
-    	.append('option')
+      .append('option')
       .text(d => d[1]) 
       .attr("value", d => d[0]) 
 
@@ -116,7 +159,7 @@ d3.csv("https://gist.githubusercontent.com/lubin-liu/c1b2c1df6235addff10810fbf59
 
     function updateX(textX, selectGroupX) {
 
-		var dataFilter = data.map(function(d){return {X: d[selectGroupX]} })
+    var dataFilter = data.map(function(d){return {X: d[selectGroupX]} })
 
       xlabel.text(textX)
 
@@ -125,7 +168,7 @@ d3.csv("https://gist.githubusercontent.com/lubin-liu/c1b2c1df6235addff10810fbf59
       xScale.domain([0.8*minimum, 1.1*maximum])
 
       svg.selectAll("g.xaxis")
-    	   .call(d3.axisBottom(xScale));
+         .call(d3.axisBottom(xScale));
 
       dot.data(dataFilter)
          .attr('cx', d => xScale(+d.X))
@@ -164,3 +207,4 @@ d3.csv("https://gist.githubusercontent.com/lubin-liu/c1b2c1df6235addff10810fbf59
         updateY(textY, selectedOptionY)
     })
 })
+</script>
