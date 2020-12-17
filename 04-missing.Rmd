@@ -310,18 +310,18 @@ There are `r format(sum(df$TotalMiss),scientific=F)` missing observations across
 
 ```{r,fig.height=25,fig.width=10}
 ggplot(df,aes(y=fct_reorder(Country,PerTot),x=PerTot)) +
-geom_col()+ylab("Country")+xlab("Proportion")+ggtitle("Education Proportion Missing")+
+geom_col()+ylab("")+xlab("Proportion")+ggtitle("Education Proportion Missing")+
   theme(plot.title = element_text(hjust = 0.5),text = element_text(size=13))
 ```
 
 
 For this analysis, we want the variables with the least missing values across Countries. While the full chart is too large and messy to display, plotting Country versus Variable displays some interesting insights. Overall, some variables can already be narrowed down. For example, variables that show little to no missing data across all countries (such as Education Index, or Mean Years of Schooling) are noteworthy. Among other interesting notes, the former Yugoslav Republic of Macedonia seems to be missing all observations--which is consistent with the original source data. After a little digging, it seems the country's inclusion is an oversight; "Yugoslav Republic of Macedonia" was replaced by "North Macedonia," and was likely a left over data point. Very few countries reported the percent of students without access to internet, and of the countries that reported, most seem to be highly developed. The percent of the population with at least some secondary education, by contrast, seems to be consistently reported.
 
-```{r,fig.height=30,fig.width=20,eval=FALSE}
+```{r,fig.height=35,fig.width=20,eval=FALSE}
 
 ggplot(df[,1:23] %>%
      pivot_longer(cols=!c("Country"),names_to="Vari",values_to="Val") ,aes(y=Country,x=Vari,fill=Val))+
-  geom_tile()+xlab("Variable")+ggtitle("Missing by variable and Country")+
+  geom_tile()+ylab("")+xlab("Variable")+ggtitle("Missing by variable and Country")+
   theme(plot.title = element_text(hjust = 0.5),text = element_text(size=17),axis.text.x=element_text(angle=90)) +
   scale_fill_continuous(high = "#132B43", low = "#56B1F7")
 
@@ -332,14 +332,14 @@ Breaking down this analysis a little further, the lack of data across countries 
 
 The following heatmap was included to display yearly patterns across countries, though its messiness may hinder its ability to lend informative analysis. We debated whether to keep this chart along with the previous hidden one. But it was argued that the maps allows one to confirm whether there are patterns across countries by year (and variable), and there quite clearly is. Hence, while messy it allows one to observe this important piece of information. It is also quite important to determine missingness across country, the lack of which would hinder one's ability to develop a complete analysis of missings. For example--what if there were several countries with missings across year or varriable? One would not be able to observe this clearly like was done for The former Yugoslav Republic of Macedonia. Hence it can be argued that for EDA thhe charts present important information.
 
-```{r,fig.height=30,fig.width=20}
+```{r,fig.height=35,fig.width=20}
 
 df<-df_ed_lg %>% pivot_wider(names_from="Year",values_from="HDI")
 df_n<-df[c(2,4:32)] %>% group_by(Country) %>% select(everything()) %>%
      summarise_all(funs(sum(is.na(.)))) 
 ggplot(df_n %>%
      pivot_longer(cols=!c("Country"),names_to="Year",values_to="Val") ,aes(y=Country,x=Year,fill=Val))+
-  geom_tile()+xlab("Year")+ggtitle("Missing by Year")+
+  geom_tile()+ylab("")+xlab("Year")+ggtitle("Missing by Year")+
   theme(plot.title = element_text(hjust = 0.5),text = element_text(size=17)) +
   scale_fill_continuous(high = "#132B43", low = "#56B1F7")
 
