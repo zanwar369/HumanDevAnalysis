@@ -98,15 +98,15 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
   summarise_all(~ sum(is.na(.))/n()) %>%
   ungroup() %>% 
   select(-Year, -'HDI Rank (2018)', -Country) %>%
-  rename("Coefficient of \nHuman Inequality" = "Coefficient of Human Inequality",
-        "Overall loss in \nHDI due to \ninequality (%)" = "Overall loss in HDI due to inequality (%)",
-        "Inequality\nadjusted \nHDI (IHDI)" = "Inequality-adjusted HDI (IHDI)",
-        "Inequality\nadjusted \nincome index" = "Inequality-adjusted income index",
-        "Inequality in \nincome (%)" = "Inequality in income (%)",
-        "Inequality\nadjusted \neducation index" = "Inequality-adjusted education index",
-        "Inequality in \neducation (%)" = "Inequality in education (%)",
-        "Inequality in \nlife expectancy (%)" = "Inequality in life expectancy (%)",
-        "Inequality\nadjusted \nlife expectancy \nindex" = "Inequality-adjusted life expectancy index"
+  rename("Coefficient\nof Human\nInequality" = "Coefficient of Human Inequality",
+        "Overall loss\n in HDI\n due to \ninequality\n(%)" = "Overall loss in HDI due to inequality (%)",
+        "Inequality\nadjusted \nHDI\n(IHDI)" = "Inequality-adjusted HDI (IHDI)",
+        "Inequality\nadjusted\nincome\nindex" = "Inequality-adjusted income index",
+        "Inequality\nin\nincome\n(%)" = "Inequality in income (%)",
+        "Inequality\nadjusted\neducation\nindex" = "Inequality-adjusted education index",
+        "Inequality in \neducation\n(%)" = "Inequality in education (%)",
+        "Inequality\nin life\nexpectancy\n(%)" = "Inequality in life expectancy (%)",
+        "Inequality\nadjusted\nlife\nexpectancy\nindex" = "Inequality-adjusted life expectancy index"
          ) %>%
   ggparcoord(alpha = 0.2,
              scale = 'globalminmax',
@@ -114,7 +114,9 @@ inequality_df[,c(1,2,3,4,12,6, 7,10, 5, 9, 11, 8)] %>%
   theme(axis.text.x = element_text(angle = 0)) +
   xlab("") +
   ylab("") + 
-  ggtitle("Inequality Proportion of Missing Data Parallel Coordinate Plot")
+  ggtitle("Inequality Proportion of Missing Data Parallel Coordinate Plot") +
+        theme(plot.title = element_text(size = 18),
+              axis.text.x = element_text(size = 12)) 
 
 ```
 
