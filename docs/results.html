@@ -158,7 +158,7 @@
 </div>
 <div id="education-variable-selection" class="section level3" number="5.1.2">
 <h3><span class="header-section-number">5.1.2</span> Education Variable Selection</h3>
-<p>Initially we pulled only the variables with the least missing data. We then ran ggpairs across these variables to determine if they could be further narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index provides the clearest comparison in analysis of correlations across human development topics.</p>
+<p>Initially we pulled only the variables with the least missing data. We then ran ggpairs across these variables to determine if they could be further narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index (EdInd) provides the clearest comparison in analysis of correlations across human development topics.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
 <p>Next, in determining how to handle the ‘Year’ variable, we examine the yearly breakdown after 2010 (as the Inequality dataset only spans 2010-2018). From here, each year appears highly correlated (.985 to .999), suggesting years do not need to be examined individually, and can be aggregated with a simple average.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-48-1.png" width="1920" /></p>
@@ -187,12 +187,12 @@
 </div>
 <div id="education-versus-human-security-2010---2018" class="section level2" number="5.2">
 <h2><span class="header-section-number">5.2</span> Education versus Human Security (2010 - 2018)</h2>
-<p>For the actual analysis, we compare the average across ‘Education Index’ against the ‘Human Security’ variables:</p>
+<p>For the actual analysis, we compare the average across ‘Education Index’ (EdInd) against the ‘Human Security’ variables:</p>
 <ul>
-<li><p>Homicide Rate (per 100,000 people)</p></li>
-<li><p>Prison Population (per 100,000 people)</p></li>
+<li><p>Homicide Rate (per 100,000 people) (Homicide.rate)</p></li>
+<li><p>Prison Population (per 100,000 people) (Prison.popn)</p></li>
 </ul>
-<p>Here it appears that a high Education Index is associated with low Homicide Rate and Prison Population.Education and Homicides seem to have a direct relation with higher education implying lower homicide rates. Education and Prison Population seem to show a similar relation, though a high Education Index seems to be associated more with a median level of Prison Population. Notably, several countries with high education levels still show higher prison populations.</p>
+<p>Here it appears that a high Education Index is associated with low Homicide Rate and Prison Population. Education and Homicides seem to have a direct relation with higher education implying lower homicide rates. Education and Prison Population seem to show a similar relation, though a high Education Index seems to be associated more with a median level of Prison Population. Notably, several countries with high education levels still show higher prison populations.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
 <p>The following scatterplot matrix seems to show the relationship clearly. While higher levels of education are still associated with low Homicide Rates, restricting the analysis to lower levels of education shows an associated jump in high Homicide outliers. As expected the sign here is negative, confirming the likelihood of a negative relation between the variables.</p>
 <p>The relationship between Education and Prison Population, though is somewhat stronger and more direct, as seen in the matrix, with a correlation of 0.3. Thus, higher levels of education seem to imply higher levels of imprisonment.</p>
