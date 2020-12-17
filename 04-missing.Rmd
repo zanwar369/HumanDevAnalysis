@@ -346,7 +346,7 @@ ggplot(df_n %>%
 
 ```
 
-Interestingly, breaking down the missing variables by year (below) confirms what was seen previously: the most reliable variables seem to be Education Index, Mean Years of Schooling, and Expected Years of Schooling (according to the amount of missing data across years), as well as the variable for "population with some secondary education". The following heatmap also suggests data reporting may have lagged, as 2018 data seems to be missing for variables which have otherwise reported more consistent data.
+Interestingly, breaking down the missing variables by year (below) confirms what was seen previously: the most reliable variables seem to be Education Index (EdInd), Mean Years of Schooling (MYSchl), and Expected Years of Schooling (ExpSch; according to the amount of missing data across years), as well as the variable for "population with some secondary education" (PopSS25U). The following heatmap also suggests data reporting may have lagged, as 2018 data seems to be missing for variables which have otherwise reported more consistent data.
 
 ```{r,fig.height=25,fig.width=20}
 df<-df_ed_td[c(3:25)] %>% group_by(Year) %>% select(everything()) %>%
