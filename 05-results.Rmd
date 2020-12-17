@@ -16,17 +16,17 @@ library(GGally)
 
 ### Inequality Variable Selection
 
-From Section 4.0 Missing Data, it was noted from the parallel coordinate plot of the `Inequality` indicator that the following sets of features had the same proportion of missing data for nearly every country, indicating that they may be related: 
+From Section 4.0 Missing Data, it was noted (from the Inequality parallel coordinate plot) that the following sets of features have the same proportion of missing data for nearly every country, indicating they may be related: 
 
-* "Coefficient of Human Inequality", "Overall loss in HDI due to inequality (%)", and "Inequality-adjusted HDI (IHDI)"
+* Coefficient of Human Inequality, Overall Loss in HDI due to Inequality (%), and Inequality-adjusted HDI (IHDI)
 
-* "Inequality-adjusted income index" and "Inequality in income (%)"
+* Inequality-Adjusted Income Index and Inequality in Income (%)
 
-* "Inequality-adjusted education index" and "Inequality in education (%)"
+* Inequality-Adjusted Education Index and Inequality in Education (%)
 
-* "Inequality-adjusted life expectancy index" and "Inequality in life expectancy (%)"
+* Inequality-Adjusted Life Expectancy Index and Inequality in Life Expectancy (%)
 
-A scatterplot matrix of all 9 features without the missing data is below and such that pairwise correlations between all features can be examined. The analysis will begin with the feature groups listed above with strong relationships in their missing data, then extend to the remaining feature variable pairs. 
+A scatterplot matrix of all 9 features without the missing data is shown below, so that pairwise correlations between all features can be examined. This analysis begins with the feature groups listed above, with strong relationships in their missing data, then extends to the remaining feature variable pairs. 
 
 
 ```{r,fig.height=12, fig.width = 12, warning = FALSE ,  message = FALSE}
@@ -46,41 +46,41 @@ ggpairs(inequality_df_copy[,c(4,12,6, 7,10, 5, 9, 11, 8)], progress = FALSE,
 
 
 
-First, look at the feature groups where missing data appear to be in equal proportions for most countries:
+First, note the feature groups where missing data appear to be in equal proportions for most countries:
 
-* Coefficient of Human Inequality, Overall loss in HDI due to inequality (%), and Inequality-adjusted HDI (IHDI): The three pairwise correlation coefficients between these three features are 0.999, -0.954, and -0.950, showing that these three feature are highly correlated when the data is not missing.
+* Coefficient of Human Inequality, Overall Loss in HDI due to Inequality (%), and Inequality-Adjusted HDI (IHDI): The three pairwise correlation coefficients between these three features are 0.999, -0.954, and -0.950, showing  these three feature are highly correlated when the data is not missing.
 
-* Inequality-adjusted income index and Inequality in income (%): Correlation coefficient of -0.644. Despite countries missing data for both feature consistently, the two feature do not appear to have as strong of correlation as other cases discussed. 
+* Inequality-Adjusted Income Index and Inequality in Income (%): Correlation coefficient of -0.644. Despite countries missing data for both feature consistently, the two features do not appear to have as strong of a correlation as other cases discussed. 
 
-* Inequality-adjusted education index and Inequality in education (%): The correlation coefficient is -0.942, showing that these two feature are highly correlated when the data is not missing.
+* Inequality-Adjusted Education Index and Inequality in Education (%): The correlation coefficient is -0.942, showing that these two features are highly correlated when the data is not missing.
 
-* Inequality-adjusted life expectancy index and Inequality in life expectancy (%): The correlation coefficient is -0.976, showing that these two features are highly correlated when the data is not missing.
+* Inequality-Adjusted Life Expectancy Index and Inequality in Life Expectancy (%): The correlation coefficient is -0.976, showing that these two features are highly correlated when the data is not missing.
 
 On the basis of the results above, the following features can be dropped without significant loss of information:
 
-* Overall loss in HDI due to inequality (%) - due to strong correlation with Coefficient of Human Inequality and the fact both share similar missing patterns. 
+* Overall Loss in HDI due to Inequality (%) - due to strong correlation with Coefficient of Human Inequality and the fact both share similar missing patterns. 
 
-* Inequality-adjusted HDI (IHDI) - highly correlated with multiple features, especially Coefficient of Human Inequality and Overall loss in HDI due to inequality (%) (while also sharing the same missing pattern as the latter two).
+* Inequality-Adjusted HDI (IHDI) - highly correlated with multiple features, especially Coefficient of Human Inequality and Overall Loss in HDI due to Inequality (%) (while also sharing the same missing pattern as the latter two).
 
-* Inequality-adjusted education index - highly correlated with Inequality in education (%) when data is present and in terms of missing pattern.  
+* Inequality-Adjusted Education Index - highly correlated with Inequality in Education (%) when data is present and in terms of missing pattern.  
 
-* Inequality-adjusted life expectancy index - highly correlated with Inequality in life expectancy (%) when data is present and in terms of missing pattern.  
+* Inequality-Adjusted Life Expectancy Index - highly correlated with Inequality in Life Expectancy (%) when data is present and in terms of missing pattern.  
 
-Looking at the pairplot of the 5 remaining variables, it is noted that even though they do not share the same missing patterns, Coefficient of Human Inequality is strongly correlated with 3 of the remaining features (absolute correlation coefficient of ~0.9). Therefore, this feature can also be dropped. As a result, the remaining 'Inequality' features to be kept for analysis with other indicators are:
+Looking at the pairplot of the 5 remaining variables, note that even though the variables do not share the same missing patterns, Coefficient of Human Inequality is strongly correlated with 3 of the remaining features (absolute correlation coefficient of ~0.9). Therefore, this feature can also be dropped. As a result, the remaining 'Inequality' features kept for analysis with other indicators are:
 
-* Inequality-adjusted income index
+* Inequality-Adjusted Income Index
 
-* Inequality in income (%)
+* Inequality in Income (%)
 
-* Inequality in education (%)
+* Inequality in Education (%)
 
-* Inequality in life expectancy (%)
+* Inequality in Life Expectancy (%)
 
 
 
 ### Education Variable Selection
 
-Initially we pulled only the variables that have the least missing data as per Chapter 4. I then ran ggpairs across these variables to determine if they could be narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index provides the clearest comparison in analysis of correlations across human development topics.
+Initially we pulled only the variables with the least missing data. We then ran ggpairs across these variables to determine if they could be further narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index provides the clearest comparison in analysis of correlations across human development topics.
 
 ```{r warning = FALSE,  message = FALSE}
 
@@ -90,7 +90,7 @@ df_ed<-df_ed[,c("HDI Rank (2018)","Country","Year",
 ggpairs(df_ed[,c("EdInd","ExpSch","MYSch","PopSS25U")])
 ```
 
-Next, in determining how to handle the year variable, we examine the yearly breakdown after 2010 (as the Inequality dataset only spans 2010-2018). From here, each year appears highly correlated (.985 to 1), suggesting years do not need to be examined individually, and can be aggregated with a simple average.
+Next, in determining how to handle the 'Year' variable, we examine the yearly breakdown after 2010 (as the Inequality dataset only spans 2010-2018). From here, each year appears highly correlated (.985 to 1), suggesting years do not need to be examined individually, and can be aggregated with a simple average.
 
 ```{r warning = FALSE,  message = FALSE,fig.width=20}
 df<-df_ed[df_ed$Year>=2010,c('Country','Year','EdInd')] %>%
@@ -102,20 +102,20 @@ ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])
 
 ### Human Security Variable Selection
 
-As noted in section 4, the Suicide rate data are collected sporadically.  While these datasets internally show the lowest proportion of missing data, they only reflect data collected for four years, (2000, 2010, 2015, and 2016) which are not consistently spaced across time.
+As noted in section 4, the Suicide Rate data are collected sporadically.  While these datasets internally show the lowest proportion of missing data, they only reflect data collected for four years, (2000, 2010, 2015, and 2016) which are not consistently spaced across time.
 
 The other datasets in this section (Homicide rate and Prison population) show a higher proportion of missing data, but reflect a larger number of consistently sampled years.
 
-Finally, as the Refugees by country of origin and Homelessness due to natural disasters data are unavailable, they cannot be included in this analysis.
+Finally, as the Refugees by Country of Origin and Homelessness due to Natural Disasters data are unavailable, they cannot be included in this analysis.
 
-The following graph shows the pairwise correlation between all variables in the dataset, with the exception of Refugees by country of origin and Homelessness due to natural disaster.
+The following graph shows the pairwise correlation between all variables in the dataset, with the exception of Refugees by Country of Origin and Homelessness due to Natural Disaster.
 
 
 ```{r,fig.height=8, fig.width = 8, warning = FALSE ,  message = FALSE}
 Human.Security <- read_csv("./HumanSecurity/HumanSecurity.Final.Tidy.csv")
 Human.Security <- subset(Human.Security, select = -c(3))
 Human.Security <- Human.Security[rowSums(is.na(Human.Security[,3:6])) != ncol(Human.Security[,3:6]),]
-ggpairs(Human.Security[,c(3:7)], progress = FALSE,
+ggpairs(Human.Security[,c(3:6)], progress = FALSE,
         upper = list(continuous = wrap("cor", size = 4)),
         labeller = label_wrap_gen(10)) + 
       theme(strip.text = element_text(size = 8)) + 
@@ -126,13 +126,13 @@ ggpairs(Human.Security[,c(3:7)], progress = FALSE,
 With the exception of male and female suicide rate (0.552), none of the data show correlation coefficients above 0.5 or below -0.5, indicating they are not highly correlated. 
 
 As a result, the 'Human Security' variables selected for this study are the following: 
-* Homicide rate
-* Prison population
+* Homicide Rate
+* Prison Population
 
 
 ## Education versus Human Security (2010 - 2018)
 
-For the actual analysis we compare the average across 'Education Index' against the 'Human Security' variables:
+For the actual analysis, we compare the average across 'Education Index' against the 'Human Security' variables:
 
 *Homicide rate
 *Prison population 
@@ -146,7 +146,7 @@ EdHS<-All %>% group_by(Country) %>% select(everything()) %>%
 
 ```
 
-Here it appears that high Education Index is associated with low Homicide rate and Prison population. The association between Education Index and Homicide is the clearest. Education and Prison population seems to show a similar relation, though a high education index seems to be associated more with a median level of Prison population, though several countries with high education levels still show higher prison populations.
+Here it appears that high Education Index is associated with low Homicide Rate and Prison Population. The association between Education Index and Homicide is the clearest. Education and Prison Population seem to show a similar relation, though high Education Index seems to be associated more with a median level of Prison Population. Notably, several countries with high education levels still show higher prison populations.
 
 ```{r}
 ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
@@ -158,7 +158,9 @@ ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
 ```
 
 
-The following scatterplot matrix makes the relationship even clearer Ranking high on the education index is highly correlated with Homelessness due to natural disaster. While higher levels of Education are still associated with low Homicide rates, where as if you restrict the analsysis to lower levels of education there seems to be an associated jump in high homicide outliers. The relationship between Education and prison population is somewhat stronger and direct as seen in the matrix--with a correlation of 0.3 higher levels of education seem to imply higher levels of imprisonment.
+The following scatterplot matrix seems to show the relationship clearly. While higher levels of education are still associated with low Homicide Rates, restricting the analysis to lower levels of education shows an associated jump in high Homicide outliers. 
+
+The relationship between Education and Prison Population is somewhat stronger and more direct, as seen in the matrix, with a correlation of 0.3. Thus, higher levels of education seem to imply higher levels of imprisonment.
 
 ```{r warning=FALSE, message=FALSE}
 
@@ -172,19 +174,19 @@ EdHS %>%
 
 ## Inequality versus Education (2010 - 2018)
 
-This section will detail the analysis of `Inequality` versus `Education` indicators for features selected per the above:
+This section details the analysis of Inequality versus Education indicators for the selected features:
 
-`Inequality`
+Inequality
 
-* Inequality-adjusted income index
+* Inequality-Adjusted Income Index
 
-* Inequality in income (%)
+* Inequality in Income (%)
 
-* Inequality in education (%)
+* Inequality in Education (%)
 
-* Inequality in life expectancy (%)
+* Inequality in Life Expectancy (%)
 
-`Education`
+Education
 
 * Education Index
 
@@ -213,7 +215,7 @@ names(inequal_ed) <-  temp
 ```
 
 
-First, all `Inequality` variables were compared with all `Education` variables in a scatter plot, faceted by "Year" from 2010 to 2018 since those were the only years where `Inequality` data was available. It was noted that "Year" did not separate the data, as illustrated in the a sample facet plot below for "Mean Year of Schooling" versus "Inequality in life expectancy (%)". This was the case for every combination of variables. 
+First, all Inequality variables were compared with all Education variables in a scatterplot faceted by year from 2010 to 2018, as those were the only years with available Inequality data. It was noted that "Year" did not separate the data, as illustrated in the a sample facet plot below for Mean Year of Schooling versus Inequality in Life Expectancy (%). This was the case for every combination of variables. 
 
 ```{r, warning = FALSE, fig.height= 8, fig.width= 8}
 inequal_ed %>%
@@ -227,11 +229,11 @@ inequal_ed %>%
 ```
 
 
-Since there are 6 features in total all of which are continuous, a parallel coordinate plot is the most appropriate visualization tool for this type of data. For each of the six features, group by Country and average the data over all Years from 2010 to 2018 ignoring NA's. The rationale is as follows:
+As there are 6 features in total, all of which are continuous, a parallel coordinate plot is the most appropriate visualization tool for this type of data. Each of the six features was grouped by country and averaged over all years from 2010 to 2018, ignoring NA's. The rationale is as follows:
 
 * It was shown from the facet plots previously that "Year" did not distinguish any trends.   
 
-* If every Country-Year combination is a line on the parallel coordinate plot, then it would require that none of the six features have NA's. This is too strong and may lead to under plotting given the amount of missing data in this dataset. This also ensures that every country also shows up only once or not at all. 
+* If every Country-Year combination is a line on the parallel coordinate plot, then it would require that none of the six features have NA's. This is too strong and may lead to underplotting given the amount of missing data in this dataset. This also ensures that every country also shows up only once or not at all. 
 
 
 ```{r, fig.height = 7, fig.width=10}
@@ -259,41 +261,41 @@ inequal_ed[, c(1,2,6,4,3,5,7,8)] %>%
 
 Observations:
 
-* The two `Education` variables, "Education Index" and "Mean Years of Schooling", are positively correlated. Therefore, analysis for this section will be made with "Education Index" only because the same conclusions will apply to "Mean Years of Schooling".
+* The two Education variables, Education Index and Mean Years of Schooling, are positively correlated. Therefore, analysis for this section will be made with Education Index only because the same conclusions will apply to Mean Years of Schooling.
 
-* There is a large cluster of countries (call Cluster 1) with low "Inequality in Income (%)", mid to high "Inequality Adjusted Income Index", low "Inequality in Education (%)", and mid to high "Education Index". 
+* There is a large cluster of countries (Cluster 1) with low Inequality in Income (%), mid to high Inequality Adjusted Income Index, low Inequality in Education (%), and mid to high Education Index. 
 
-* For Cluster 1, there's a visible negative correlation between "Inequality in Education (%)" and "Education Index". 
+* For Cluster 1, there's a visible negative correlation between Inequality in Education (%) and Education Index. 
 
-* Since for Cluster 1 "Inequality Adjusted Income Index" is visibly negatively correlated with "Inequality in Education (%)", it can be inferred that the former is positively correlated with "Education Index". 
+* As Inequality-Adjusted Income Index is visibly negatively correlated with Inequality in Education (%) in Cluster 1, it can be inferred that the former is positively correlated with Education Index. 
 
-* There is another cluster of countries (call Cluster 2) exhibiting the opposite trend. This cluster of countries has low to mid "Inequality Adjusted Income Index", high "Inequality in Education (%)", and low-mid "Education Index".
+* There is another cluster of countries (Cluster 2) exhibiting the opposite trend. This cluster of countries has low to mid Inequality Adjusted Income Index, high Inequality in Education (%), and low-mid Education Index.
 
-* For countries in Cluster 2, there is no obvious negative correlation between "Inequality Adjusted Income Index" - "Education Index" and  "Inequality in Education (%)" - "Education Index" like in Cluster 1.
+* For countries in Cluster 2, there is no obvious negative correlation between Inequality-Adjusted Income Index - Education Index and Inequality in Education (%) - Education Index like in Cluster 1.
 
-* Countries in Cluster 1 has a visible right skew in "Inequality in Education (%)" and a slight left skew in "Education Index", while countries in Cluster 2 exhibit no significant skew for these two features compared to Cluster 1. 
+* Cluster 1 has a visible right skew in Inequality in Education (%) and a slight left skew in Education Index, while countries in Cluster 2 exhibit no significant skew for these two features compared to Cluster 1. 
 
 
 
 ## Inequaity versus Human Security (2010 - 2018)
 
-This section details the analysis of `Inequality` versus `Human Security` given the following variables:
+This section details the analysis of Inequality versus Human Security given the following variables:
 
-`Inequality`
+Inequality
 
-* Inequality-adjusted income index
+* Inequality-Adjusted Income Index
 
-* Inequality in income (%)
+* Inequality in Income (%)
 
-* Inequality in education (%)
+* Inequality in Education (%)
 
-* Inequality in life expectancy (%)
+* Inequality in Life Expectancy (%)
 
 `Human Security`
 
-* Homicide rate (per 100,000 people)
+* Homicide Rate (per 100,000 people)
 
-* Prison population (per 100,000 people)
+* Prison Population (per 100,000 people)
 
 
 ```{r, warning = FALSE, message = FALSE}
@@ -304,7 +306,7 @@ HSINEQ_df <- read_csv("./FinalData/All.csv") %>%
 ```
 
 
-First, `Inequality` variables were contrasted against `Human Security` variables in a scatterplot, faceted by "Year" from 2010 to 2018 (again, the only years `Inequality` data were collected).
+First, Inequality variables were contrasted against Human Security variables in a scatterplot, faceted by year from 2010 to 2018 (again, the only years Inequality data were collected).
 
 ```{r, fig.height=8, fig.width=8, warning = FALSE}
 
@@ -326,15 +328,15 @@ ggpairs(hs.pairs, progress = FALSE,
       ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = "Inequality versus Human Security")
 ```
 
-* The association between the Inequality variables (Inequality-adjusted income index, Inequality in income, Inequality in education, and Inequality in life expectancy) is discussed in the Inequality variable selection, above.
+* The association between the Inequality variables (Inequality-Adjusted Income Index, Inequality in Income, Inequality in Education, and Inequality in Life Expectancy) is discussed in the Inequality variable selection, above.
 
-* Similarly, the association between the Human Security variables (Homelessness due to natural disaster, Homicide rate, and Prison population) are discussed in the Human Security variable selection, above.
+* Similarly, the association between the Human Security variables (Homicide Rate and Prison Population) are discussed in the Human Security variable selection, above.
 
-* Prison population seems to show low positive correlations with two Inequality variables: Inequality-adjusted income index and Inequality in income (with correlation coefficients of .156 and .171, respectively).  Interestingly, Prison population shows negative correlations with both Inequality in education and Inequality in life expectancy (-0.349 and -0.334, respectively).
+* Prison Population seems to show low positive correlations with two Inequality variables: Inequality-Adjusted Income Index and Inequality in Income (with correlation coefficients of .156 and .171, respectively).  Interestingly, Prison Population shows negative correlations with both Inequality in Education and Inequality in Life Expectancy (-0.349 and -0.334, respectively).
 
-* Homicide rate shows low positive correlations with Inequality in education and Inequality in life expectancy (with correlation coefficients of 0.127 and 0.142).
+* Homicide Rate shows low positive correlations with Inequality in Education and Inequality in Life Expectancy (with correlation coefficients of 0.127 and 0.142).
 
-* Homicide rate additionally shows correlations with Inequality-adjusted income index, with a negative correlation of -0.324, and Inequality in income, with a positive correlation of 0.488.
+* Homicide Rate additionally shows correlations with Inequality-Adjusted Income Index, with a negative correlation of -0.324, and Inequality in Income, with a positive correlation of 0.488.
 
 The parallel coordinate plot, below, maps some of these associations.
 
@@ -359,9 +361,9 @@ HSINEQ_df[, c(1,2,5,8,3,6,7)] %>%
 ```
 The above graph reorders variables to visualize new trends.
 
-There is a visual cluster of countries marked by a negative relationship between Inequality in education and Prison population, followed by a positive relationship between Prison population and Inequality adjusted income index, and a negative relationship between Inequality adjusted income index and Inequality in life expectancy.  Some of these countries continue to have what appears to be a uniform relationship between Inequality in life expectancy and Homicide rate.
+There is a visual cluster of countries marked by a negative relationship between Inequality in Education and Prison Population, followed by a positive relationship between Prison Population and Inequality-Adjusted Income Index, and a negative relationship between Inequality-Adjusted Income Index and Inequality in Life Expectancy.  Some of these countries continue to have what appears to be a direct relationship between Inequality in Life Expectancy and Homicide Rate.
 
-Within this cluster, countries demonstrate low Prison population, high Inequality adjusted income, and low Inequality in life expectancy. Some additionally demonstrate low Homicide rate.
+Within this cluster, countries demonstrate low Prison Population, high Inequality-Adjusted Income, and low Inequality in Life Expectancy. Some additionally demonstrate low Homicide Rate.
 
 
 To look at our data more closely, in our interactive component we create a finalized csv to be read into our plot.
