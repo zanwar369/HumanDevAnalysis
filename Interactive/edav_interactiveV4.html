@@ -32,12 +32,11 @@ var svg = d3.select("#human_dev")
 var rowConverter = function (d) {
   return {
       EdInd: +d.EdInd,
-      IneqIncInd: +d['Inequality-adjusted income index'],
-      IneqLE: +d['Inequality in life expectancy (%)'],
-      IneqEd: +d['Inequality in education (%)'],
-      Homicide: +d['Homicide.rate'],
-      Homlessness: +d['Homeless.ND'],
-      PrisonPop: +d['Prison.popn']
+      'Inequality-adjusted income index': +d['Inequality-adjusted income index'],
+      'Inequality in life expectancy (%)': +d['Inequality in life expectancy (%)'],
+      'Inequality in education (%)': +d['Inequality in education (%)'],
+      'Homicide.rate': +d['Homicide.rate'],
+      'Prison.popn': +d['Prison.popn'],
     }
 };  
 
@@ -70,7 +69,6 @@ d3.csv("https://gist.githubusercontent.com/zanwar369/e735c89f3bf6454bd0e38654896
       .text(function(d) {
           if (d=="EdInd") {return "Education Index";}
           else if (d=="Homicide.rate") {return "Homicide Rate";}
-          else if (d=="Homeless.ND") {return "Homelessness due to Natural Disasters";}
           else if (d=="Prison.popn") {return "Prison Population";}
           else {return d;}
         }
@@ -87,7 +85,6 @@ d3.csv("https://gist.githubusercontent.com/zanwar369/e735c89f3bf6454bd0e38654896
       .text(function(d) {
           if (d=="EdInd") {return "Education Index";}
           else if (d=="Homicide.rate") {return "Homicide Rate";}
-          else if (d=="Homeless.ND") {return "Homelessness due to Natural Disasters";}
           else if (d=="Prison.popn") {return "Prison Population";}
           else {return d;}
         }
@@ -157,8 +154,7 @@ d3.csv("https://gist.githubusercontent.com/zanwar369/e735c89f3bf6454bd0e38654896
                     .attr('font-size','20px')
 
     function updateX(textX, selectGroupX) {
-      console.log(data.columns)
-      var dataFilter = data.map(function(d){return {X: d[selectGroupX]} })
+      var dataFilter = data.map(function(d){return {X: d[String(selectGroupX)]} })
 
         xlabel.text(textX)
 
