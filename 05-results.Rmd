@@ -35,7 +35,7 @@ inequality_df_copy <- inequality_df
 names(inequality_df_copy) <- gsub("-", " ", names(inequality_df_copy))
 ggpairs(inequality_df_copy[,c(4,12,6, 7,10, 5, 9, 11, 8)], progress = FALSE,
         upper = list(continuous = wrap("cor", size = 4)),
-        #lower = list(continuous = wrap('points', alpha = 0.3)),
+        lower = list(continuous = wrap('points', alpha = 0.1)),
         labeller = label_wrap_gen(10))+
       ggtitle("Pairwise Correlation Scatterplot Matrix", subtitle = 'Inequality') + 
       theme(plot.title = element_text(size = 24),
@@ -102,6 +102,16 @@ ggpairs(df[,c('2010','2011','2012','2013','2014','2015','2016','2017','2018')])
 
 ### Human Security Variable Selection
 
+The following abbreviations will be used for variables examined in this section: 
+
+* Homicide Rate (per 100,000 people) - Homicide.Rate
+
+* Prison Population (per 100,000 people) - Prison.popn
+
+* Suicide Rate (Male) (per 100,000 people) - Suicide.rate.M
+
+* Suicide Rate (Female) (per 100,000 people) - Suicide.rate.F
+
 As noted in section 4, the Suicide Rate data are collected sporadically.  While these datasets internally show the lowest proportion of missing data, they only reflect data collected for four years, (2000, 2010, 2015, and 2016) which are not consistently spaced across time.
 
 The other datasets in this section (Homicide rate and Prison population) show a higher proportion of missing data, but reflect a larger number of consistently sampled years.
@@ -126,16 +136,19 @@ ggpairs(Human.Security[,c(3:6)], progress = FALSE,
 With the exception of male and female suicide rate (0.552), none of the data show correlation coefficients above 0.5 or below -0.5, indicating they are not highly correlated. 
 
 As a result, the 'Human Security' variables selected for this study are the following: 
-* Homicide Rate
-* Prison Population
+
+* Homicide Rate (per 100,000 people)
+
+* Prison Population (per 100,000 people)
 
 
 ## Education versus Human Security (2010 - 2018)
 
 For the actual analysis, we compare the average across 'Education Index' against the 'Human Security' variables:
 
-*Homicide rate
-*Prison population 
+* Homicide Rate (per 100,000 people)
+
+* Prison Population (per 100,000 people)
 
 ```{r warning=FALSE, message=FALSE}
 All<-read_csv('./FinalData/All.csv')
@@ -197,7 +210,6 @@ Education
 education_df <- read_csv("./Education/Education_Tidy.csv") %>%
                   filter(Year %in% c(2010:2018)) %>%
                   select(Country, Year, EdInd, MYSch)
-# education_df$Country[education_df$Country == 'Ivory Coast'] = "Côte d'Ivoire"
 
 inequal_ed <- inequality_df %>% 
   select(Country, Year, 
@@ -225,7 +237,7 @@ inequal_ed %>%
   xlab('Inequality in Life Expectancy (%)') +
   ylab('Mean Years of Schooling (Years)') +
   ggtitle('Sample Plot of Inequality in Life Expectancy versus Mean Years of \nSchooling Faceted by Years') +
-        theme(plot.title = element_text(size = 18))
+        theme(plot.title = element_text(size = 16))
 ```
 
 
@@ -255,8 +267,8 @@ inequal_ed[, c(1,2,6,4,3,5,7,8)] %>%
     xlab("") +
     ylab("") +
     ggtitle("Inequality versus Education Parallel Coordinate Plot") +
-        theme(plot.title = element_text(size = 18),
-              axis.text.x = element_text(size = 12)) 
+        theme(plot.title = element_text(size = 20),
+              axis.text.x = element_text(size = 14)) 
 ```
 
 Observations:
@@ -277,7 +289,7 @@ Observations:
 
 
 
-## Inequaity versus Human Security (2010 - 2018)
+## Inequality versus Human Security (2010 - 2018)
 
 This section details the analysis of Inequality versus Human Security given the following variables:
 
@@ -291,7 +303,7 @@ Inequality
 
 * Inequality in Life Expectancy (%)
 
-`Human Security`
+Human Security
 
 * Homicide Rate (per 100,000 people)
 
@@ -354,10 +366,11 @@ HSINEQ_df[, c(1,2,5,8,3,6,7)] %>%
   ggparcoord(alpha = 0.25,
                scale = 'uniminmax',
                splineFactor = 0)  +
-    theme(axis.text.x = element_text(angle = 0)) +
     xlab("") +
     ylab("") +
-    ggtitle("Inequality versus Human Security Parallel Coordinate Plot")
+    ggtitle("Inequality versus Human Security Parallel Coordinate Plot") +
+    theme(plot.title = element_text(size = 20),
+          axis.text.x = element_text(size = 14)) 
 ```
 The above graph reorders variables to visualize new trends.
 
