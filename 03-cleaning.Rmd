@@ -1,6 +1,6 @@
 # Data transformation
 
-In order to work with the amount of data we split the work into three separate buckets, one for each indicator: Inequality, Human Security, and Education. Data transformation for every indicator was similar to the process shown in detail for Inequality, which is not fully reproduced for the other two indicators for conciseness.
+The data transformation work was split into three separate buckets, one for each indicator: Inequality, Human Security, and Education. Data transformation for every indicator was similar to the process shown in detail for Inequality, which is not fully reproduced for the other two indicators for conciseness.
 
 
 ## Inequality Data Transformation
@@ -27,7 +27,7 @@ The Inequality indicator has 15 features from years 2010 to 2018 (one column per
 
 ^ Data for 2018 is either from 2018 or the latest year available. 
 
-Note that the column HDI Rank (2018) is kept as a reference column and not for analysis. First all of the files are read parsing through the inequality directory, and using read.csv to read in the relevant raw data files for each variable. The files are read in iteratively such that the data frame for every feature is stored in a R list, creating a list of data frames. 
+Note that the column "HDI Rank (2018)" is kept as a reference column and not for analysis. First, all of the files are read by parsing through the Inequality/inequality_rawdata directory, and using read_csv to read in the relevant raw data files for each variable. The files are read in iteratively such that the data frame for every feature is stored in a R list, creating a list of data frames. 
 
 ```{r}
 library(tidyverse)
@@ -48,7 +48,7 @@ for(i in 1:length(temp)){
 names(inequality_list) <- sub("\\..*", "", temp)
 ```
 
-After reading in the files, a high level look at the data itself was done. The head and tail of one of the feature data frames, one containing data for "Inequality in education (%)", was printed as a representative sample:
+After reading in the files, a high level look at the data itself was done. The head and tail of one of the feature data frames, containing data for "Inequality in education (%)", was printed as a representative sample:
 
 ```{r}
 print(head(inequality_list[[6]]))
@@ -78,7 +78,7 @@ inequality_list[[9]] <- inequality_list[[9]] %>%
                             filter(row_number() <= n()-1)
 ```
 
-The below shows that the number of rows in the data frame for each feature is different. This implies not every feature has the same list of countries. 
+The output below shows that the number of rows in the data frame for each feature is different. This implies not every feature has the same list of countries. 
 
 ```{r warning = FALSE,  message = FALSE}
 for(i in 1:length(inequality_list)){
@@ -100,7 +100,8 @@ print(unique(differences))
 ```
 It looks like these four countries shows up for some features and not others. We can expect a lot of missing data for at least these four countries. 
 
-The next step is to create a single tidy data frame for Inequality. The data frame for each feature has column headings of 2010 to 2018, which are values not variables. In addition, each data frame is from the same observational unit (Inequality) and should be in one data frame. To convert the list of data frames created from the initial import from the .csv files into a single tidy data frame, use `pivot_longer` and `full_join` to create a tidy data frame.   
+The next step is to create a single tidy data frame for Inequality. The data frame for each feature has column headings of 2010 to 2018, which are values, not variables. In addition, each data frame is from the same observational unit (Inequality) and should be in one data frame. To convert the list of data frames created from the initial import from the .csv files into a single tidy data frame, use `pivot_longer` and `full_join` to create a tidy data frame.   
+>>>>>>> 72f7e4f1a771a64a8a225ae5eb18f50dc29a7ec0
 
 ```{r}
 inequality_df <- inequality_list[[1]] %>% 
@@ -119,7 +120,7 @@ for(i in 2:length(inequality_list)){
 head(inequality_df)
 ```
 
-Note that the columns of tidy data frame are currently all of type `<chr>` when only `Country` should be of type `<chr>`, `Year` should be of type integer, and the remaining be of type numeric. This is because missing values are given as '..' instead of `NA`.  Convert the relevant columns to numeric which coerces '..' to `NA`'s in the process.  
+Note that the columns of tidy data frame are currently all of type `<chr>` when only "Country" should be of type `<chr>`, "Year" should be of type integer, and the remaining be of type numeric. This is because missing values are given as '..' instead of `NA`.  Convert the relevant columns to numeric which coerces '..' to `NA`'s in the process.  
 
 ```{r warning = FALSE}
 inequality_df[,4:12] <- as.data.frame(sapply(inequality_df[,4:12], as.numeric))
@@ -127,7 +128,7 @@ inequality_df$Year <- as.integer(inequality_df$Year)
 head(inequality_df)
 ```
 
-To complete the data transformation, notice that under `Country`, the last 17 rows of each data frame contain aggregate data regional data, and are not countries: 
+To complete the data transformation, notice that under "Country", the last 17 rows of each data frame contain aggregate  regional data, and are not countries: 
 
 ```{r}
 tail(inequality_list[[1]]$Country,17)
