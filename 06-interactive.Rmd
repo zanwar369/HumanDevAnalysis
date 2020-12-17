@@ -5,7 +5,6 @@
 library(tidyverse)
 library(readr)
 read_csv('./Interactive/HumDevAll.csv') %>%
-  select(-Homeless.ND) %>%
   na.omit() %>%
   write_csv('./Interactive/HumDevAll_narm.csv')
 ```
