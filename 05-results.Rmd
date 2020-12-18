@@ -82,7 +82,7 @@ Looking at the pairplot of the 5 remaining variables, note that even though the 
 
 Initially we pulled only the variables with the least missing data. We then ran ggpairs across these variables to determine if they could be further narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index (EdInd) provides the clearest comparison in analysis of correlations across human development topics.
 
-```{r warning = FALSE,  message = FALSE,fig.height=10}
+```{r warning = FALSE,  message = FALSE,fig.height=10,fig.width=10}
 
 df_ed<-read_csv('./Education/Education_Tidy.csv')
 df_ed<-df_ed[,c("HDI Rank (2018)","Country","Year",
@@ -170,7 +170,7 @@ ggparcoord(EdHS,scale = 'uniminmax',splineFactor = 5)  +
     theme(axis.text.x = element_text(angle = 0)) +
     xlab("") +
     ylab("") +
-    ggtitle("Human Security versus Education Parallel Coordinate Plot")
+    ggtitle("Human Security versus Education Parallel Coordinates Plot")
 
 ```
 
