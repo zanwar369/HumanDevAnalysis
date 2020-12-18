@@ -341,7 +341,7 @@ df_n<-df[c(2,4:32)] %>% group_by(Country) %>% select(everything()) %>%
 ggplot(df_n %>%
      pivot_longer(cols=!c("Country"),names_to="Year",values_to="Val") ,aes(y=Country,x=Year,fill=Val))+
   geom_tile()+ylab("")+xlab("Year")+ggtitle("Education: Missing by Year and Country")+
-  theme(plot.title = element_text(hjust = 0.5),text = element_text(size=18),axis.text.x=element_text(angle=90)) +
+  theme(plot.title = element_text(hjust = 0.5),text = element_text(size=18,face="bold"),axis.text.x=element_text(angle=90)) +
   scale_fill_continuous(high = "#132B43", low = "#56B1F7")
 
 
@@ -356,7 +356,7 @@ df$Year<-factor(df$Year)
 ggplot(df %>%
      pivot_longer(cols=!c("Year"),names_to="Variable",values_to="Val") ,aes(y=Year,x=Variable,fill=Val))+
   geom_tile()+xlab("Variable")+ylab("Year")+ggtitle("Education: Missing by Year and Variable")+
-  theme(plot.title = element_text(hjust = 0.5),text = element_text(size=17),axis.text.x=element_text(angle=90))+
+  theme(plot.title = element_text(hjust = 0.5),text = element_text(size=17, face="bold"),axis.text.x=element_text(angle=90))+
   scale_fill_continuous(high = "#132B43", low = "#56B1F7")
 
 ```
