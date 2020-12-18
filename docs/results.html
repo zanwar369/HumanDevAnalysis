@@ -133,7 +133,7 @@
 <li><p>Inequality-Adjusted Life Expectancy Index and Inequality in Life Expectancy (%)</p></li>
 </ul>
 <p>A scatterplot matrix of all 9 features without the missing data is shown below, so that pairwise correlations between all features can be examined. This analysis begins with the feature groups listed above, with strong relationships in their missing data, then extends to the remaining feature variable pairs.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-47-1.png" width="1152" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-46-1.png" width="1152" /></p>
 <p>First, note the feature groups where missing data appear to be in equal proportions for most countries:</p>
 <ul>
 <li><p>Coefficient of Human Inequality, Overall Loss in HDI due to Inequality (%), and Inequality-Adjusted HDI (IHDI): The three pairwise correlation coefficients between these three features are 0.999, -0.954, and -0.950, showing these three feature are highly correlated when the data is not missing.</p></li>
@@ -159,9 +159,9 @@
 <div id="education-variable-selection" class="section level3" number="5.1.2">
 <h3><span class="header-section-number">5.1.2</span> Education Variable Selection</h3>
 <p>Initially we pulled only the variables with the least missing data. We then ran ggpairs across these variables to determine if they could be further narrowed in selection. Given that the variables are all relatively highly correlated, it seems Education Index (EdInd) provides the clearest comparison in analysis of correlations across human development topics.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-48-1.png" width="960" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-47-1.png" width="960" /></p>
 <p>Next, in determining how to handle the ‘Year’ variable, we examine the yearly breakdown after 2010 (as the Inequality dataset only spans 2010-2018). From here, each year appears highly correlated (.985 to .999), suggesting years do not need to be examined individually, and can be aggregated with a simple average.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-49-1.png" width="1440" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-48-1.png" width="1440" /></p>
 </div>
 <div id="human-security-variable-selection" class="section level3" number="5.1.3">
 <h3><span class="header-section-number">5.1.3</span> Human Security Variable Selection</h3>
@@ -176,7 +176,7 @@
 <p>The other datasets in this section (Homicide rate and Prison population) show a higher proportion of missing data, but reflect a larger number of consistently sampled years.</p>
 <p>Finally, as the Refugees by Country of Origin and Homelessness due to Natural Disasters data are unavailable, they cannot be included in this analysis.</p>
 <p>The following graph shows the pairwise correlation between all variables in the dataset, with the exception of Refugees by Country of Origin and Homelessness due to Natural Disaster.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-50-1.png" width="768" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-49-1.png" width="768" /></p>
 <p>With the exception of male and female suicide rate (0.552), none of the data show correlation coefficients above 0.5 or below -0.5, indicating they are not highly correlated.</p>
 <p>As a result, the ‘Human Security’ variables selected for this study are the following:</p>
 <ul>
@@ -192,11 +192,11 @@
 <li><p>Homicide Rate (per 100,000 people) (Homicide.rate)</p></li>
 <li><p>Prison Population (per 100,000 people) (Prison.popn)</p></li>
 </ul>
-<p>Here it appears that a high Education Index is associated with low Homicide Rate and lower levels of Prison Population. Education and Homicides seem to have a direct relation with higher education implying lower homicide rates– a somewhat inverse relationship. Education and Prison Population seem to show a similar relation, though a high Education Index seems to be associated more with a median level of Prison Population suggesting a parallel relationship. Notably, several countries with high education levels show higher prison populations.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<p>Here it appears that a high Education Index is associated with low Homicide Rate and all levels of Prison Population. Education and Homicides seem to have a direct relation with higher education implying lower homicide rates– a somewhat inverse relationship. Education and Prison Population seem to show a similar relation, though a high Education Index seems to be associated more with a median level of Prison Population suggesting a parallel relationship. Notably, several countries with high education levels show higher prison populations.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
 <p>The following scatterplot matrix seems to show the relationship clearly. While higher levels of education are still associated with low Homicide Rates, restricting the analysis to lower levels of education shows an associated jump in high Homicide outliers. As expected the sign here is negative, confirming the likelihood of a negative relation between the variables.</p>
 <p>The relationship between Education and Prison Population, though is somewhat stronger and more direct, as seen in the matrix, with a correlation of 0.3. Thus, higher levels of education seem to imply higher levels of imprisonment.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
 </div>
 <div id="inequality-versus-education-2010---2018" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> Inequality versus Education (2010 - 2018)</h2>
@@ -214,13 +214,13 @@
 <li><p>Mean Years of Schooling (Years)</p></li>
 </ul>
 <p>First, all Inequality variables were compared with all Education variables in a scatterplot faceted by year from 2010 to 2018, as those were the only years with available Inequality data. It was noted that “Year” did not separate the data, as illustrated in the a sample facet plot below for Mean Year of Schooling versus Inequality in Life Expectancy (%). This was the case for every combination of variables.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-55-1.png" width="768" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-54-1.png" width="768" /></p>
 <p>As there are 6 features in total, all of which are continuous, a parallel coordinate plot is the most appropriate visualization tool for this type of data. Each of the six features was grouped by country and averaged over all years from 2010 to 2018, ignoring NA’s. The rationale is as follows:</p>
 <ul>
 <li><p>It was shown from the facet plots previously that “Year” did not distinguish any trends, consistent with the trend discovered in “Education Variable Selection” and extends to all other feature pairs between indicators in subsequent analysis.</p></li>
 <li><p>If every Country-Year combination is a line on the parallel coordinate plot, then it would require that none of the six features have NA’s. This is too strong and may lead to underplotting given the amount of missing data in this dataset. This also ensures that every country also shows up only once or not at all.</p></li>
 </ul>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-56-1.png" width="960" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-55-1.png" width="960" /></p>
 <p>Observations:</p>
 <ul>
 <li><p>The two Education variables, Education Index and Mean Years of Schooling, are positively correlated. Therefore, analysis for this section will be made with Education Index only because the same conclusions will apply to Mean Years of Schooling.</p></li>
@@ -248,7 +248,7 @@
 <li><p>Prison Population (per 100,000 people)</p></li>
 </ul>
 <p>First, Inequality variables were contrasted against Human Security variables in a scatterplot, faceted by year from 2010 to 2018 (again, the only years Inequality data were collected).</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-58-1.png" width="768" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-57-1.png" width="768" /></p>
 <ul>
 <li><p>The association between the Inequality variables (Inequality-Adjusted Income Index, Inequality in Income, Inequality in Education, and Inequality in Life Expectancy) is discussed in the Inequality variable selection, above.</p></li>
 <li><p>Similarly, the association between the Human Security variables (Homicide Rate and Prison Population) are discussed in the Human Security variable selection, above.</p></li>
@@ -257,7 +257,7 @@
 <li><p>Homicide Rate additionally shows correlations with Inequality-Adjusted Income Index, with a negative correlation of -0.324, and Inequality in Income, with a positive correlation of 0.488.</p></li>
 </ul>
 <p>The parallel coordinate plot, below, maps some of these associations.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-59-1.png" width="960" />
+<p><img src="finalproj_files/figure-html/unnamed-chunk-58-1.png" width="960" />
 The above graph reorders variables to visualize new trends.</p>
 <p>There is a visual cluster of countries marked by a negative relationship between Inequality in Education and Prison Population, followed by a positive relationship between Prison Population and Inequality-Adjusted Income Index, and a negative relationship between Inequality-Adjusted Income Index and Inequality in Life Expectancy. Some of these countries continue to have what appears to be a direct relationship between Inequality in Life Expectancy and Homicide Rate.</p>
 <p>Within this cluster, countries demonstrate low Prison Population, high Inequality-Adjusted Income, and low Inequality in Life Expectancy. Some additionally demonstrate low Homicide Rate.</p>
